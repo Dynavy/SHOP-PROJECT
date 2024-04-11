@@ -1,24 +1,50 @@
 package model;
 
 public class Product {
+	// Colors start.
+	final String RESET = "\u001B[0m";
+	final String AZUL_CLARO = "\u001B[94m";
+	final String ORANGE = "\u001B[38;5;208m";
+	final String VERDE_CLARO = "\u001B[92m";
+	final String AMARILLO = "\u001B[33m";
+	final String MAGENTA = "\u001B[35m";
+	// Colors end.
 	private int id;
-    private String name;
-    private double publicPrice;
-    private double wholesalerPrice;
-    private boolean available;
-    private int stock;
-    private static int totalProducts;
-    
-    static double EXPIRATION_RATE=0.60;
-    
+	private String name;
+	private Amount publicPrice; // We declare a private object of type Amount named publicPrice. This allows us reference objects from the class 'Amount' on the variable publicPrice.
+	private Amount wholesalerPrice;
+	private boolean available;
+	private int stock;
+	private static int totalProducts;
+	static double EXPIRATION_RATE = 0.60;
+
 	public Product(String name, double wholesalerPrice, boolean available, int stock) {
 		super();
-		this.id = totalProducts+1;
+		this.id = totalProducts + 1;
 		this.name = name;
-		this.wholesalerPrice = wholesalerPrice;
+		this.publicPrice = new Amount(wholesalerPrice * 2); // We create a new object named Amount to the variable															// publicPrice with the value of wholeSalerPrice *2.
+		this.wholesalerPrice = new Amount(wholesalerPrice);
 		this.available = available;
 		this.stock = stock;
 		totalProducts++;
+
+	}
+
+	@Override
+	public String toString() { // CASE 5 AND CASE 7
+
+		/* PRODUCT INFORMATION:
+		 * 1. NAME || 2.PUBLICPRICE 3. WHOLESALERPRICE || 4.STOCK        */
+
+		return "\nProducts ---->" + ORANGE + " Name: " + name + RESET + AMARILLO + ", PublicPrice: " + publicPrice
+				+ RESET + AZUL_CLARO + ", WholesalerPrice: " + wholesalerPrice + RESET + MAGENTA + ", Stock: " + stock
+				+ "." + RESET;
+	}
+
+	public String toStringAmount() { // CASE 8
+		/* I only wanted to show the name of the product so I created a new toString for this case. */
+
+		return "\nProducts bought ---->" + ORANGE + " Name: " + name + RESET;
 	}
 
 	public int getId() {
@@ -37,19 +63,19 @@ public class Product {
 		this.name = name;
 	}
 
-	public double getPublicPrice() {
+	public Amount getPublicPrice() {
 		return publicPrice;
 	}
 
-	public void setPublicPrice(double publicPrice) {
+	public void setPublicPrice(Amount publicPrice) {
 		this.publicPrice = publicPrice;
 	}
 
-	public double getWholesalerPrice() {
+	public Amount getWholesalerPrice() {
 		return wholesalerPrice;
 	}
 
-	public void setWholesalerPrice(double wholesalerPrice) {
+	public void setWholesalerPrice(Amount wholesalerPrice) {
 		this.wholesalerPrice = wholesalerPrice;
 	}
 
@@ -76,14 +102,10 @@ public class Product {
 	public static void setTotalProducts(int totalProducts) {
 		Product.totalProducts = totalProducts;
 	}
-	
+
 	public void expire() {
-		this.publicPrice = this.getPublicPrice()*EXPIRATION_RATE;
+		double expiratedPrice = this.publicPrice.getValue() * (EXPIRATION_RATE); // We set the value of publicPrice a															// 40% cheaper.
+		this.publicPrice.setValue(expiratedPrice); // The new value (40% cheaper) is setted to the variable publicPrice.
 	}
-	
-	
 
-    
-
-    
 }

@@ -1,0 +1,9 @@
+1;Client=dylan;Date=14-03-2024 09:49:15;
+1;Products=Fresa,10.0€;Melocoton,40.0€;
+1;Amount=52.0€;
+1;Client=dylan;Date=14-03-2024 09:51:13;
+1;Products=Fresa,10.0€;
+1;Amount=10.4€;
+1;Client=paco;Date=14-03-2024 09:51:17;
+1;Products=Fresa,10.0€;
+1;Amount=10.4€;

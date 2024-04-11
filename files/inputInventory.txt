@@ -1,0 +1,4 @@
+Product:Manzana;Wholesaler Price:10.00;Stock:10;
+Product:Fresa;Wholesaler Price:5.00;Stock:20;
+Product:Hamburguesa;Wholesaler Price:30.00;Stock:30;
+Product:Melocoton;Wholesaler Price:20.00;Stock:20;
