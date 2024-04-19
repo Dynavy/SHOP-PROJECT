@@ -3,6 +3,7 @@ package main;
 import model.Amount;
 import model.Client;
 import model.Employee;
+import model.Premium;
 import model.Product;
 import model.Sale;
 import java.io.File;
@@ -122,6 +123,41 @@ public class Shop {
 		} while (!exit);
 		scanner.close();
 	}
+	
+	// Method to identify premium users.
+	public boolean premiumUser() {
+
+		boolean answer;
+
+		do {
+
+			// We ask to the client if he is a premium user or not.
+			System.out.println(VERDE_CLARO + "Are you a premium user? TRUE/FALSE" + RESET);
+
+			// The answer need toUpperCase for the if logic.
+			String respuesta = sc.next().toUpperCase();
+
+			// True = return true and break the loop.
+			if (respuesta.equals("TRUE")) {
+				answer = true;
+				break;
+
+				// False = return false and break the loop.
+			} else if (respuesta.equals("FALSE")) {
+				answer = false;
+				break;
+				// We manage invalids outputs on the else section.
+			} else {
+				System.err.println("Invalid input. Please enter TRUE or FALSE.");
+			}
+
+			// Loop is executing permanently until it finds the break on the if or elseif.
+		} while (true);
+
+		// We return true or false and we assign it to the static boolean premium that we declared on our Shop class.
+		return answer;
+
+	}
 
 	// Logeo:
 
@@ -165,7 +201,7 @@ public class Shop {
 
 		// Message if the login was successful.
 		if (login) {
-			System.out.println(VERDE_CLARO + "Welcome to our store!\n" + RESET);
+			System.out.println(VERDE_CLARO + "\nWelcome to our store!" + RESET);
 		}
 
 	}
@@ -203,6 +239,11 @@ public class Shop {
 
 		System.out.println(VERDE_CLARO + "\nTotal Amount of Sales: " + totalAmount + RESET);
 
+		Premium premiumClient = new Premium();
+		
+		// Print of total premium points.
+		premiumClient.premiumPoints(totalAmount);
+				
 		return totalAmount.getValue();
 	}
 
@@ -344,6 +385,10 @@ public class Shop {
 
 		LocalDateTime saleDate = null;
 		Scanner sc = new Scanner(System.in);
+		
+		// We assign if user is premium or not on our premium variable.
+		boolean premium = premiumUser();
+		
 		System.out.println("Realizar venta, escribir nombre cliente");
 		String client = sc.nextLine();
 
@@ -392,8 +437,6 @@ public class Shop {
 
 				System.out.println(VERDE_CLARO + "Producto vendido con éxito\n" + RESET);
 
-				// We assign the exact time of the purchase.
-				saleDate = LocalDateTime.now();
 
 			}
 
@@ -401,8 +444,9 @@ public class Shop {
 				System.err.println("\nProducto no encontrado o sin stock\n");
 			}
 		}
-
-		// Assign the exact time when the user does the purchase.
+		
+		// We assign the exact time of the purchase.
+		saleDate = LocalDateTime.now();
 
 		// show cost total
 		total = total * TAX_RATE; // We add the 4% of IVA to the totalAmount.
@@ -412,6 +456,13 @@ public class Shop {
 		Amount totalAmount = new Amount(total);
 		System.out.println(VERDE_CLARO + "Venta realizada con éxito, total: " + totalAmount + RESET);
 		
+		// User introduces 'TRUE':
+		if (premium) {
+		// We create a premiumClient object so we can be able to invoke the method premiumPoints().
+			Premium premiumClient = new Premium();
+			premiumClient.premiumPoints(totalAmount);
+		}
+				
 		// We create a new boolean with the method pay with the parameter totalAmount (we can do it because the method is a boolean type).
 		boolean redBill = consumer.pay(totalAmount);
 

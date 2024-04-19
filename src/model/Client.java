@@ -19,6 +19,11 @@ public class Client extends Person implements Payable {
 	// The variable 'balance' is initialized with the value of the constant 'BALANCE', which has been transformed into an 'Amount' object.
 	private Amount balance = new Amount (BALANCE);
 
+	// Constructor for the class Premium.
+	public Client() {
+
+	}
+		
 	public Amount getBalance() {
 		return balance;
 	}
