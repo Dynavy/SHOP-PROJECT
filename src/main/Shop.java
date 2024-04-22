@@ -47,10 +47,10 @@ public class Shop {
 
 	public static void main(String[] args) {
 		Shop shop = new Shop();
-		
+
 		// We load our inventory.
 		shop.loadInventory();
-		
+
 		// We call our initSession method to identify the user.
 		shop.initSession();
 
@@ -123,7 +123,7 @@ public class Shop {
 		} while (!exit);
 		scanner.close();
 	}
-	
+
 	// Method to identify premium users.
 	public boolean premiumUser() {
 
@@ -162,10 +162,10 @@ public class Shop {
 	// Logeo:
 
 	public void initSession() {
-		
+
 		// We create the object worker from the class Employee, so we can be able to invoke all the methods from Employee and Person class.
 		Employee worker = new Employee();
-		
+
 		// We declare our variables.
 		int user = 0;
 		String password = null;
@@ -188,7 +188,7 @@ public class Shop {
 
 			System.out.println(VERDE_CLARO + "Introduce your password:" + RESET);
 			password = sc.next();
-			
+
 			// If login = true, we exit the do while.
 			login = worker.login(user, password);
 
@@ -240,10 +240,10 @@ public class Shop {
 		System.out.println(VERDE_CLARO + "\nTotal Amount of Sales: " + totalAmount + RESET);
 
 		Premium premiumClient = new Premium();
-		
+
 		// Print of total premium points.
 		premiumClient.premiumPoints(totalAmount);
-				
+
 		return totalAmount.getValue();
 	}
 
@@ -385,19 +385,19 @@ public class Shop {
 
 		LocalDateTime saleDate = null;
 		Scanner sc = new Scanner(System.in);
-		
+
 		// We assign if user is premium or not on our premium variable.
 		boolean premium = premiumUser();
-		
+
 		System.out.println("Realizar venta, escribir nombre cliente");
 		String client = sc.nextLine();
 
 		ArrayList<Product> saleProducts = new ArrayList<>();
 		// Product[] saleProducts = new Product[10]; 
-		
+
 		// Object named consumer from the client class, so we can be able to invoke all client methods.
 		Client consumer = new Client(client);
-		
+
 		System.out.println("");
 		double total = 0.0;
 		String name = "";
@@ -437,14 +437,13 @@ public class Shop {
 
 				System.out.println(VERDE_CLARO + "Producto vendido con éxito\n" + RESET);
 
-
 			}
 
 			if (!productAvailable) {
 				System.err.println("\nProducto no encontrado o sin stock\n");
 			}
 		}
-		
+
 		// We assign the exact time of the purchase.
 		saleDate = LocalDateTime.now();
 
@@ -455,26 +454,16 @@ public class Shop {
 		sales.add(new Sale(client, saleProducts, total, saleDate)); // It's going to count the sales with the information of the client, what he bought, the amount of the purchased products and the date of the sale.
 		Amount totalAmount = new Amount(total);
 		System.out.println(VERDE_CLARO + "Venta realizada con éxito, total: " + totalAmount + RESET);
-		
+
 		// User introduces 'TRUE':
 		if (premium) {
-		// We create a premiumClient object so we can be able to invoke the method premiumPoints().
+			// We create a premiumClient object so we can be able to invoke the method premiumPoints().
 			Premium premiumClient = new Premium();
 			premiumClient.premiumPoints(totalAmount);
 		}
-				
-		// We create a new boolean with the method pay with the parameter totalAmount (we can do it because the method is a boolean type).
-		boolean redBill = consumer.pay(totalAmount);
 
-		// If the boolean is false (negative numbers), we report to the user with the exact quantity.
-		if (!redBill) {
-			
-			// 50 (always 50) - the total of the sales.
-			double owe = consumer.getBalance().getValue() - total;
-			Amount oweWithEuro = new Amount(owe); // We transform it to Amount so it can have the € sign at the end.
-			
-			System.err.println("You owe the following amount of money: " + oweWithEuro); // Este sysout me esta dando problemas de posicionamiento al imprimirse.
-		}
+		// We create a new boolean with the method pay with the parameter totalAmount (we can do it because the method is a boolean type).
+		consumer.pay(totalAmount);
 
 	}
 

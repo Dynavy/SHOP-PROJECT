@@ -3,8 +3,8 @@ package model;
 public class Premium extends Client {
 
 	// Declare variables:
-
 	private int points = 0;
+	
 
 	public int getPoints() {
 		return points;
