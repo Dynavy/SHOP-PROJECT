@@ -462,7 +462,7 @@ public class Shop {
 			premiumClient.premiumPoints(totalAmount);
 		}
 
-		// We create a new boolean with the method pay with the parameter totalAmount (we can do it because the method is a boolean type).
+		// We invoke the pay method with the totalAmonut as an argument.
 		consumer.pay(totalAmount);
 
 	}
