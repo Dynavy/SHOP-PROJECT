@@ -2,10 +2,10 @@ package main;
 
 import model.Amount;
 import model.Client;
-import model.Employee;
 import model.Premium;
 import model.Product;
 import model.Sale;
+import view.ShopGUI;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
 import java.util.Scanner;
 
 public class Shop {
@@ -36,21 +35,13 @@ public class Shop {
 	int salesCounter = 0; // Variable to count the index of the case 6 array.
 	private Scanner sc = new Scanner(System.in);
 
-	public Shop() {
-
-		// Old code (now we have arraylists with no limits).
-
-		// inventory = new Product[10];
-		// sales = new Sale[10];
-
-	}
-
+	
 	public static void main(String[] args) {
 		Shop shop = new Shop();
 
 		// We load our inventory.
 		shop.loadInventory();
-
+		
 		// We call our initSession method to identify the user.
 		shop.initSession();
 
@@ -162,62 +153,28 @@ public class Shop {
 	// Logeo:
 
 	public void initSession() {
-
-		// We create the object worker from the class Employee, so we can be able to invoke all the methods from Employee and Person class.
-		Employee worker = new Employee();
-
-		// We declare our variables.
-		int user = 0;
-		String password = null;
-		boolean login = false;
-
-		Scanner sc = new Scanner(System.in);
-
-		do {
-			System.out.println(VERDE_CLARO + "Introduce your user:" + RESET);
-
-			if (sc.hasNextInt()) { // Validation error if the user is not a number.
-				user = sc.nextInt();
-			} else {
-
-				System.err.println("Only numbers allowed, try again please:");
-				sc.next(); // Clear the buffer reader.
-				continue;
-
-			}
-
-			System.out.println(VERDE_CLARO + "Introduce your password:" + RESET);
-			password = sc.next();
-
-			// If login = true, we exit the do while.
-			login = worker.login(user, password);
-
-			// Message error if the login credentials are incorrect.
-			if (!login) {
-				System.err.println("Incorrect user or password. Please try again.");
-			}
-
-		} while (!login);
-
-		// Message if the login was successful.
-		if (login) {
-			System.out.println(VERDE_CLARO + "\nWelcome to our store!" + RESET);
+		  ShopGUI shopGUI = new ShopGUI();
+		  // Enable the GUI display.
+		  shopGUI.setVisible(true);
+		  
+		  while (!shopGUI.isCredentialsValid) {
+		        try {
+		            Thread.sleep(100); // Wait 100 miliseconds to verify again.
+		        } catch (InterruptedException e) {
+		            e.printStackTrace();
+		            System.out.println("Error :" + e);
+		        }
+		    }
+		System.out.println(VERDE_CLARO + "Welcome to our store!" + RESET);
+		
 		}
-
-	}
+	
 	// load initial inventory to shop:
 
 	public void loadInventory() {
 
 		// We call the method readFile which have all the default products on the .txt
 		readFile();
-
-		// Old Code:
-
-		/* addProduct(new Product("Manzana", 10.00, true, 10));
-		addProduct(new Product("Hamburguesa", 30.00, true, 30));
-		addProduct(new Product("Fresa", 5.00, true, 20));
-		addProduct(new Product("Melocoton", 20.00, true, 20)); */
 
 	}
 
