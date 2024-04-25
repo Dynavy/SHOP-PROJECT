@@ -5,7 +5,7 @@ import model.Client;
 import model.Premium;
 import model.Product;
 import model.Sale;
-import view.ShopGUI;
+import view.LoginView;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -153,11 +153,11 @@ public class Shop {
 	// Logeo:
 
 	public void initSession() {
-		  ShopGUI shopGUI = new ShopGUI();
+		LoginView loginView = new LoginView();
 		  // Enable the GUI display.
-		  shopGUI.setVisible(true);
+		loginView.setVisible(true);
 		  
-		  while (!shopGUI.isCredentialsValid) {
+		  while (!loginView.isCredentialsValid) {
 		        try {
 		            Thread.sleep(100); // Wait 100 miliseconds to verify again.
 		        } catch (InterruptedException e) {

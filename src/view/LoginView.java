@@ -7,23 +7,27 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.InputStream;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
 import main.Shop;
 import model.Employee;
-import javax.swing.border.LineBorder;
 import javax.swing.UIManager;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
+import org.eclipse.wb.swing.FocusTraversalOnArray;
+import java.awt.Component;
 
-public class ShopGUI extends JFrame {
+public class LoginView extends JFrame implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane = new JPanel();
@@ -38,31 +42,40 @@ public class ShopGUI extends JFrame {
 	private JTextField employeeUser;
 	private JTextField introduceYourUsername;
 	private JTextField introduceYourPassword;
+	private JToggleButton submit;
+	private JPanel panel;
+	private JLabel validationWarningImage;
+	private JLabel passImage;
+	private JLabel idImage;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 
 				// Set the interface visible.
-				ShopGUI shopGUI = new ShopGUI();
-				shopGUI.setVisible(true);
+				LoginView loginView = new LoginView();
+				loginView.setVisible(true);
+				// First input from the user when executing is going to be the employeeUser Jtext.
+				loginView.employeeUser.requestFocusInWindow();
 			}
 		});
 	}
 
-	public ShopGUI() {
+	public LoginView() {
 
 		initUI();
 		loginUI();
+		tabulation();
 		registerFonts();
 		loadIcon();
 		loadImages();
+		
 	}
 
 	public void initUI() {
 
 		// Window title.
-		setTitle("Shop GUI");
+		setTitle("LOGIN GUI");
 		// Size of the window when executing.
 		setSize(900, 700);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -77,7 +90,7 @@ public class ShopGUI extends JFrame {
 	public void registerFonts() {
 		try {
 			// Add 'Poppins-Bold.ttf as a resource font.
-			InputStream inputStream = ShopGUI.class.getResourceAsStream("/resources/fonts/Poppins-Italic.ttf");
+			InputStream inputStream = LoginView.class.getResourceAsStream("/resources/fonts/Poppins-Italic.ttf");
 			Font customFont = Font.createFont(Font.TRUETYPE_FONT, inputStream).deriveFont(24f);
 			// Register the font on our graphic environment.
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -93,8 +106,8 @@ public class ShopGUI extends JFrame {
 	public void loadIcon() {
 
 		// Load image for the taskbar and title bar.
-		ImageIcon icon = new ImageIcon(ShopGUI.class.getResource("/resources/img/shopIcon.png"));
-		// Increaze the image to 128x128.
+		ImageIcon icon = new ImageIcon(LoginView.class.getResource("/resources/img/shopIcon.png"));
+		// Increase the image to 128x128.
 		Image scaledImage = icon.getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH);
 		// We set the image to our window.
 		setIconImage(scaledImage);
@@ -102,17 +115,19 @@ public class ShopGUI extends JFrame {
 
 	public void loadImages() {
 
-		JLabel keyImage = new JLabel(new ImageIcon(ShopGUI.class.getResource("/resources/img/keyImage.png")));
+		JLabel keyImage = new JLabel(new ImageIcon(LoginView.class.getResource("/resources/img/keyImage.png")));
 		keyImage.setBounds(419, 59, 64, 64);
 		contentPane.add(keyImage);
 	}
 
 	public void loginUI() {
 
-		JPanel panel = new JPanel();
+		// PANEL CREATION.
+		panel = new JPanel();
+		// Set panel with absolut layout.
+		contentPane.setLayout(null);
+		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 3)));
 		panel.setLayout(null);
-		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 3), "", TitledBorder.CENTER,
-				TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(262, 145, 350, 320);
 		contentPane.add(panel);
@@ -125,7 +140,7 @@ public class ShopGUI extends JFrame {
 		validateCredentials.setHorizontalAlignment(SwingConstants.CENTER);
 		validateCredentials.setBackground(UIManager.getColor("Button.shadow"));
 		validateCredentials.setText("  EMPLOYEE CREDENTIALS VALIDATION");
-		validateCredentials.setBounds(47, 61, 259, 46);
+		validateCredentials.setBounds(47, 61, 263, 46);
 		validateCredentials.setEditable(false);
 		validateCredentials.setForeground(new Color(0, 108, 84));
 		validateCredentials.setFont(titleFont);
@@ -167,40 +182,48 @@ public class ShopGUI extends JFrame {
 		panel.add(introduceYourPassword);
 
 		// VALIDATION IMAGE.
-		JLabel validationWarningImage = new JLabel(
-				new ImageIcon(ShopGUI.class.getResource("/resources/img/validationWarning.png")));
+		validationWarningImage = new JLabel(
+				new ImageIcon(LoginView.class.getResource("/resources/img/validationWarning.png")));
 		validationWarningImage.setBounds(162, 11, 48, 45);
 		panel.add(validationWarningImage);
 
 		// PASSWORD IMAGE.
-		JLabel passImage = new JLabel(new ImageIcon(ShopGUI.class.getResource("/resources/img/passImage.png")));
+		passImage = new JLabel(new ImageIcon(LoginView.class.getResource("/resources/img/passImage.png")));
 		passImage.setBounds(105, 223, 32, 32);
 		panel.add(passImage);
 
 		// EMPLOYEEID IMAGEE.
-		JLabel idImage = new JLabel(new ImageIcon(ShopGUI.class.getResource("/resources/img/idImage.png")));
+		idImage = new JLabel(new ImageIcon(LoginView.class.getResource("/resources/img/idImage.png")));
 		idImage.setBounds(105, 164, 34, 34);
 		panel.add(idImage);
 
 		// LOG IN BUTTON.
-		JToggleButton submit = new JToggleButton("LOGIN");
+		submit = new JToggleButton("LOGIN");
 		submit.setBackground(new Color(135, 206, 235));
 		submit.setBounds(59, 263, 232, 25);
 		panel.add(submit);
+		submit.addActionListener(this);
 
-		// We add the button to the actionListener.
-		addLoginButtonListener(submit);
-
-		contentPane.setLayout(null); // Absolute layout.
+		// Data from employeUseer and employePass being used when using 'enter'.
+		employeeUser.addKeyListener(this);
+	    employeePass.addKeyListener(this);
+	
 	}
 
-	public void addLoginButtonListener(JToggleButton button) {
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				validateCredentials();
-			}
-		});
+	public void tabulation() {
+
+		// We enable the tabulation.
+		employeeUser.setFocusTraversalKeysEnabled(true);
+		employeePass.setFocusTraversalKeysEnabled(true);
+		submit.setFocusTraversalKeysEnabled(true);
+
+		// We disable the tabulation.
+
+		introduceYourPassword.setFocusTraversalKeysEnabled(false);
+		introduceYourUsername.setFocusTraversalKeysEnabled(false);
+
+		// Order of tabulation.
+		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { employeeUser, employeePass, submit }));
 	}
 
 	public void validateCredentials() {
@@ -213,11 +236,12 @@ public class ShopGUI extends JFrame {
 			userID = Integer.parseInt(stringEmployeeID);
 		} catch (NumberFormatException e) {
 			// Notification in case user doesn't introduce an Integer.
-			JOptionPane.showMessageDialog(ShopGUI.this, "Employee ID must be a number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(LoginView.this, "Employee ID must be a number.", "ERROR MESSAGE DISPLAY.",
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
-		// We assign the password chars to a new array.
+		// We have to assign the password chars to a new array because is a JpasswordField.
 		char[] passwordChars = employeePass.getPassword();
 		// We transform the chars into a String. 
 		String userPassword = new String(passwordChars);
@@ -227,10 +251,40 @@ public class ShopGUI extends JFrame {
 		// If employee introduces wrong credentials.
 		if (!isLogged) {
 			// Error message display.
-			JOptionPane.showMessageDialog(ShopGUI.this, "Invalid credentials, try again.", "Repeat again", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(LoginView.this, "Invalid credentials, try again.",
+					"WARNING! VALIDATION WENT WRONG", JOptionPane.ERROR_MESSAGE);
 		} else {
 			isCredentialsValid = true;
 			dispose();
 		}
 	}
+
+	public void actionPerformed(ActionEvent e) {
+		
+		// Detects if user uses the submit button
+		if (e.getSource() == submit) {
+			// We invoke the method that validates if the introduced credentials are correct or not.
+			validateCredentials();
+		}
+	}
+	
+	// When user press 'enter', it invokes the logic of validateCredentials().
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			validateCredentials();
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+
+	}
+
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+
+	}
+
 }
