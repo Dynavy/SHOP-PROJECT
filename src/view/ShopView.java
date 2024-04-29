@@ -28,10 +28,12 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private JPanel panel;
 	private JPanel leftPanel;
 	private JPanel rightPanel;
+	private JPanel headerPanel;
 	private JToggleButton checkMoney;
 	private JToggleButton addProducts;
 	private JToggleButton addStock;
 	private JLabel menu;
+	private JLabel welcomeText;
 	// Button color:
 	private Color originalColor = new Color(184, 207, 229, 255);
 	private Timer animationTimer;
@@ -55,13 +57,13 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 	public ShopView() {
 
-		initUI();
+		initWindowUI();
 		menuUI();
 		loadIcon();
 		registerFonts();
 	}
 
-	public void initUI() {
+	public void initWindowUI() {
 
 		// Window title.
 		setTitle("SHOP GUI");
@@ -84,10 +86,9 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 			// Register the font on our graphic environment.
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(customFont);
-			ge.registerFont(customFont);
 
 		} catch (Exception e) {
-			System.out.println("Error: " + e);
+			System.out.println("Error, font not found: " + e);
 			e.printStackTrace();
 		}
 	}
@@ -121,14 +122,15 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		Font textFont = new Font("Poppins", Font.PLAIN, 17);
 
 		// HEADER PANEL.
-		JPanel headerPanel = new JPanel();
+		headerPanel = new JPanel();
 		headerPanel.setBackground(new Color(224, 255, 255));
 		headerPanel.setBounds(3, 3, 719, 73);
 		headerPanel.setLayout(null);
 		panel.add(headerPanel);
 
 		// WELCOME TITLE TEXT.
-		JLabel welcomeText = new JLabel("M05 SHOP - WELCOME TO OUR STORE");
+		welcomeText = new JLabel();
+		welcomeText.setText("M05 SHOP - WELCOME TO OUR STORE");
 		welcomeText.setBounds(92, 26, 606, 31);
 		welcomeText.setForeground(new Color(0, 108, 84));
 		welcomeText.setFont(titleFont);
@@ -160,6 +162,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		menu.setFont(subTitle);
 		menu.setForeground(new Color(0, 108, 84));
 
+		// Green line.
 		separatorLine = new JSeparator();
 		separatorLine.setBounds(19, 47, 315, 2);
 		separatorLine.setForeground(new Color(0, 108, 84));
@@ -184,6 +187,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		addProducts.setBackground(originalColor);
 		leftPanel.add(addProducts);
 
+		// CASE 3 BUTTON (addStock).
 		addStock = new JToggleButton("3. Add stock.");
 		addStock.setFont(new Font("Poppins", Font.PLAIN, 17));
 		addStock.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));

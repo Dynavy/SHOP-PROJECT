@@ -57,7 +57,6 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 
-				// Set the interface visible.
 				LoginView loginFrame = new LoginView();
 				loginFrame.setVisible(true);
 				// First input from the user when executing is going to be the employeeUser Jtext.
@@ -68,7 +67,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 
 	public LoginView() {
 
-		initUI();
+		initWindowUI();
 		loginUI();
 		tabulation();
 		registerFonts();
@@ -77,7 +76,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 
 	}
 
-	public void initUI() {
+	public void initWindowUI() {
 
 		// Window title.
 		setTitle("LOGIN GUI");
@@ -94,12 +93,12 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 
 	public void registerFonts() {
 		try {
+			
 			// Add 'Poppins-Bold.ttf as a resource font.
 			InputStream inputStream = LoginView.class.getResourceAsStream("/resources/fonts/Poppins-Italic.ttf");
 			Font customFont = Font.createFont(Font.TRUETYPE_FONT, inputStream).deriveFont(24f);
 			// Register the font on our graphic environment.
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			ge.registerFont(customFont);
 			ge.registerFont(customFont);
 
 		} catch (Exception e) {

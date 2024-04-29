@@ -28,7 +28,6 @@ public class Shop {
 	// New ArrayLists for inventory and sales without any limitations.
 	private ArrayList<Product> inventory = new ArrayList<>();
 	private ArrayList<Sale> sales = new ArrayList<>();
-
 	private Amount cash = new Amount(100); // Initialize the 'cash' object in the class amount with a value of 100.
 	private int numberProducts;
 	final static double TAX_RATE = 1.04; // We change the IVA to a 4%
@@ -257,13 +256,11 @@ public class Shop {
 	}
 
 	// SHOW CURRENT TOTAL CASH
-	private void showCash() {
+	public void showCash() {
 		System.out.println(VERDE_CLARO + "\nDinero actual: " + cash.toString() + RESET); // We call the 'toString' from the class amount so we can print the cash with the '€'
 	}
 
-	/**
-	 * add a new product to inventory getting data from console
-	 */
+	
 	public void addProduct() {
 		if (isInventoryFull()) {
 			System.out.println("No se pueden añadir más productos.");
@@ -598,5 +595,10 @@ public class Shop {
 		} catch (IOException e) {
 			System.err.println("Error al escribir en el archivo: " + e.getMessage());
 		}
+	}
+
+	public String getCashValue() {
+		// TODO Auto-generated method stub
+		return cash.toString();
 	}
 }
