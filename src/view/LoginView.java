@@ -12,6 +12,7 @@ import java.awt.event.KeyListener;
 import java.io.InputStream;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -50,6 +51,8 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 	private JLabel idImage;
 	private int countError = 0;
 
+	ShopView shopFrame = new ShopView();
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -85,7 +88,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		// Window at the center of the screen.
 		setLocationRelativeTo(null);
 		// We define our background color.
-		contentPane.setBackground(new Color(120, 120, 120));
+		contentPane.setBackground(new Color(237, 237, 233));
 		setContentPane(contentPane);
 	}
 
@@ -128,10 +131,10 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		panel = new JPanel();
 		// Set panel with absolut layout.
 		contentPane.setLayout(null);
-		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 3)));
-		panel.setLayout(null);
-		panel.setBackground(new Color(255, 255, 255));
+		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 108, 84), 3)));
+		panel.setBackground(new Color(240, 240, 240));
 		panel.setBounds(269, 145, 350, 320);
+		panel.setLayout(null);
 		contentPane.add(panel);
 		// We add the new font to our texts.
 		Font titleFont = new Font("Poppins", Font.PLAIN, 14);
@@ -139,6 +142,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 
 		// CREDENTIAL VALIDATION TEXT.
 		validateCredentials = new JTextField();
+		validateCredentials.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		validateCredentials.setHorizontalAlignment(SwingConstants.CENTER);
 		validateCredentials.setBackground(UIManager.getColor("Button.shadow"));
 		validateCredentials.setText("  EMPLOYEE CREDENTIALS VALIDATION");
@@ -165,6 +169,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 
 		// INTRODUCE USERNAME TEXT.
 		introduceYourUsername = new JTextField();
+		introduceYourUsername.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		introduceYourUsername.setHorizontalAlignment(SwingConstants.CENTER);
 		introduceYourUsername.setEditable(false);
 		introduceYourUsername.setText("Introduce your employeeID :");
@@ -175,6 +180,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 
 		// INTRODUCE PASSWORD TEXT.
 		introduceYourPassword = new JTextField();
+		introduceYourPassword.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		introduceYourPassword.setHorizontalAlignment(SwingConstants.CENTER);
 		introduceYourPassword.setEditable(false);
 		introduceYourPassword.setText("Introduce your password :");
@@ -203,8 +209,9 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		submit = new JToggleButton("LOGIN");
 		submit.setBackground(new Color(135, 206, 235));
 		submit.setBounds(61, 263, 232, 25);
-		panel.add(submit);
 		submit.addActionListener(this);
+		submit.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		panel.add(submit);
 
 		// Make posible to the user to use 'enter' key above employeUseer, employeePass or submit button.
 		employeeUser.addKeyListener(this);
@@ -256,6 +263,8 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 			} else {
 				// Good credentials --> returns true.
 				dispose();
+				// After doing the dispose on the loginView, we set visible the ShopView.
+				shopFrame.setVisible(true);
 			}
 
 			// Logic if credentials are invalid for the third consecutive time.
@@ -278,10 +287,10 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		}
 	}
 
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent loginButton) {
 
 		// Detects if user uses the submit button.
-		if (e.getSource() == submit) {
+		if (loginButton.getSource() == submit) {
 			// We invoke the method that validates if the introduced credentials are correct or not.
 			validateCredentials();
 		}

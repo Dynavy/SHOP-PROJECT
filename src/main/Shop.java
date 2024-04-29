@@ -164,7 +164,7 @@ public class Shop {
 		            Thread.sleep(100); // Check every 100 miliseconds the boolean.
 		        } catch (InterruptedException error) {
 		            error.printStackTrace();
-		            System.out.println("Error :" + error);
+		            System.err.println("An error has occured.");
 		        }
 		    }
 		  
