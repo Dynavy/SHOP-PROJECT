@@ -25,6 +25,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
+
+import exception.LimitLoginException;
+
 import java.awt.Component;
 
 public class LoginView extends JFrame implements ActionListener, KeyListener {
@@ -34,9 +37,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 	Shop shop = new Shop();
 	Employee employee = new Employee();
 	// Boolean to help us with the credentials validation.
-	private boolean isLogged;
-	// Boolean to help us with the credentials validation.
-	public boolean isCredentialsValid = false;
+	public boolean isLogged;
 	private JTextField validateCredentials;
 	private JPasswordField employeePass;
 	private JTextField employeeUser;
@@ -47,16 +48,17 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 	private JLabel validationWarningImage;
 	private JLabel passImage;
 	private JLabel idImage;
+	private int countError = 0;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 
 				// Set the interface visible.
-				LoginView loginView = new LoginView();
-				loginView.setVisible(true);
+				LoginView loginFrame = new LoginView();
+				loginFrame.setVisible(true);
 				// First input from the user when executing is going to be the employeeUser Jtext.
-				loginView.employeeUser.requestFocusInWindow();
+				loginFrame.employeeUser.requestFocusInWindow();
 			}
 		});
 	}
@@ -69,7 +71,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		registerFonts();
 		loadIcon();
 		loadImages();
-		
+
 	}
 
 	public void initUI() {
@@ -83,7 +85,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		// Window at the center of the screen.
 		setLocationRelativeTo(null);
 		// We define our background color.
-		contentPane.setBackground(new Color(80, 80, 80));
+		contentPane.setBackground(new Color(120, 120, 120));
 		setContentPane(contentPane);
 	}
 
@@ -129,7 +131,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 3)));
 		panel.setLayout(null);
 		panel.setBackground(new Color(255, 255, 255));
-		panel.setBounds(262, 145, 350, 320);
+		panel.setBounds(269, 145, 350, 320);
 		contentPane.add(panel);
 		// We add the new font to our texts.
 		Font titleFont = new Font("Poppins", Font.PLAIN, 14);
@@ -184,7 +186,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		// VALIDATION IMAGE.
 		validationWarningImage = new JLabel(
 				new ImageIcon(LoginView.class.getResource("/resources/img/validationWarning.png")));
-		validationWarningImage.setBounds(162, 11, 48, 45);
+		validationWarningImage.setBounds(151, 11, 48, 45);
 		panel.add(validationWarningImage);
 
 		// PASSWORD IMAGE.
@@ -200,14 +202,15 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		// LOG IN BUTTON.
 		submit = new JToggleButton("LOGIN");
 		submit.setBackground(new Color(135, 206, 235));
-		submit.setBounds(59, 263, 232, 25);
+		submit.setBounds(61, 263, 232, 25);
 		panel.add(submit);
 		submit.addActionListener(this);
 
-		// Data from employeUseer and employePass being used when using 'enter'.
+		// Make posible to the user to use 'enter' key above employeUseer, employeePass or submit button.
 		employeeUser.addKeyListener(this);
-	    employeePass.addKeyListener(this);
-	
+		employeePass.addKeyListener(this);
+		submit.addKeyListener(this);
+
 	}
 
 	public void tabulation() {
@@ -217,7 +220,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		employeePass.setFocusTraversalKeysEnabled(true);
 		submit.setFocusTraversalKeysEnabled(true);
 
-		// We disable the tabulation.
+		// We disable the tabulation for useless inputs.
 
 		introduceYourPassword.setFocusTraversalKeysEnabled(false);
 		introduceYourUsername.setFocusTraversalKeysEnabled(false);
@@ -228,46 +231,62 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 
 	public void validateCredentials() {
 
+		countError++;
 		String stringEmployeeID = employeeUser.getText();
-		int userID;
-
-		try {
-			// userID = the input introduced by the user and we parse it to be able to match as an argument.
-			userID = Integer.parseInt(stringEmployeeID);
-		} catch (NumberFormatException e) {
-			// Notification in case user doesn't introduce an Integer.
-			JOptionPane.showMessageDialog(LoginView.this, "Employee ID must be a number.", "ERROR MESSAGE DISPLAY.",
-					JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-
 		// We have to assign the password chars to a new array because is a JpasswordField.
 		char[] passwordChars = employeePass.getPassword();
 		// We transform the chars into a String. 
 		String userPassword = new String(passwordChars);
+		// Need this variable to parse the stringEmployeeID.
+		int userID = 0;
 
-		isLogged = employee.login(userID, userPassword);
+		try {
 
-		// If employee introduces wrong credentials.
-		if (!isLogged) {
-			// Error message display.
-			JOptionPane.showMessageDialog(LoginView.this, "Invalid credentials, try again.",
-					"WARNING! VALIDATION WENT WRONG", JOptionPane.ERROR_MESSAGE);
-		} else {
-			isCredentialsValid = true;
+			// Since we need an int, we parse the variable so it can match as an argument.
+			userID = Integer.parseInt(stringEmployeeID);
+
+			// It will return true/false to our boolean IsLogged
+			isLogged = employee.login(userID, userPassword);
+
+			// Wrong credentials --> returns false.
+			if (!isLogged) {
+				// Error message display when incorrect credentials.
+				JOptionPane.showMessageDialog(LoginView.this, "Invalid credentials, try again " + countError + "/3.",
+						"WARNING! VALIDATION WENT WRONG", JOptionPane.ERROR_MESSAGE);
+			} else {
+				// Good credentials --> returns true.
+				dispose();
+			}
+
+			// Logic if credentials are invalid for the third consecutive time.
+			if (countError == 3 && !isLogged) {
+				throw new LimitLoginException();
+			}
+
+			// Only executes when the count error is == 3.
+		} catch (LimitLoginException maxAttempts) {
+			JOptionPane.showMessageDialog(LoginView.this, maxAttempts.getMessage(), "LEAVING THE PROGRAM.",
+					JOptionPane.ERROR_MESSAGE);
 			dispose();
+
+			// If it can't parse (its not an int), the catch is going to execute.
+		} catch (NumberFormatException invalidInput) {
+			// User notification about only introducing a natural number.
+			JOptionPane.showMessageDialog(LoginView.this,
+					"Employee ID must be a natural number, try again " + countError + "/3.", "ERROR MESSAGE DISPLAY.",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		
-		// Detects if user uses the submit button
+
+		// Detects if user uses the submit button.
 		if (e.getSource() == submit) {
 			// We invoke the method that validates if the introduced credentials are correct or not.
 			validateCredentials();
 		}
 	}
-	
+
 	// When user press 'enter', it invokes the logic of validateCredentials().
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -280,7 +299,6 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 	public void keyTyped(KeyEvent e) {
 
 	}
-
 
 	@Override
 	public void keyReleased(KeyEvent e) {

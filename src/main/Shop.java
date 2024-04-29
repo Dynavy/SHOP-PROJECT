@@ -157,14 +157,17 @@ public class Shop {
 		  // Enable the GUI display.
 		loginView.setVisible(true);
 		  
-		  while (!loginView.isCredentialsValid) {
+		
+		  // If credentials are invalid this is going to execute constantly stoping the code on this spot.	
+		  while (!loginView.isLogged) {
 		        try {
-		            Thread.sleep(100); // Wait 100 miliseconds to verify again.
-		        } catch (InterruptedException e) {
-		            e.printStackTrace();
-		            System.out.println("Error :" + e);
+		            Thread.sleep(100); // Check every 100 miliseconds the boolean.
+		        } catch (InterruptedException error) {
+		            error.printStackTrace();
+		            System.out.println("Error :" + error);
 		        }
 		    }
+		  
 		System.out.println(VERDE_CLARO + "Welcome to our store!" + RESET);
 		
 		}
