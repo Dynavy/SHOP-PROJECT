@@ -93,7 +93,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 
 	public void registerFonts() {
 		try {
-			
+
 			// Add 'Poppins-Bold.ttf as a resource font.
 			InputStream inputStream = LoginView.class.getResourceAsStream("/resources/fonts/Poppins-Italic.ttf");
 			Font customFont = Font.createFont(Font.TRUETYPE_FONT, inputStream).deriveFont(24f);
@@ -248,6 +248,10 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 
 		try {
 
+			// Logic if credentials are invalid for the third consecutive time.
+			if (countError >= 3 && !isLogged) {
+				throw new LimitLoginException();
+			}
 			// Since we need an int, we parse the variable so it can match as an argument.
 			userID = Integer.parseInt(stringEmployeeID);
 
@@ -264,11 +268,6 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 				dispose();
 				// After doing the dispose on the loginView, we set visible the ShopView.
 				shopFrame.setVisible(true);
-			}
-
-			// Logic if credentials are invalid for the third consecutive time.
-			if (countError == 3 && !isLogged) {
-				throw new LimitLoginException();
 			}
 
 			// Only executes when the count error is == 3.
