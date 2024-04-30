@@ -29,7 +29,6 @@ public class Shop {
 	private ArrayList<Product> inventory = new ArrayList<>();
 	private ArrayList<Sale> sales = new ArrayList<>();
 	private Amount cash = new Amount(100); // Initialize the 'cash' object in the class amount with a value of 100.
-	private int numberProducts;
 	final static double TAX_RATE = 1.04; // We change the IVA to a 4%
 	int salesCounter = 0; // Variable to count the index of the case 6 array.
 	private Scanner sc = new Scanner(System.in);
@@ -262,13 +261,7 @@ public class Shop {
 
 	
 	public void addProduct() {
-		if (isInventoryFull()) {
-			System.out.println("No se pueden añadir más productos.");
-			return;
-		}
-
-		Scanner sc = new Scanner(System.in);
-
+		
 		System.out.print("Nombre: ");
 		String name = sc.nextLine();
 		System.out.print("Precio mayorista: ");
@@ -454,27 +447,11 @@ public class Shop {
 	 * @param product
 	 */
 	public void addProduct(Product product) {
-		if (isInventoryFull()) {
-			System.out.println("No se pueden añadir más productos, se ha alcanzado el máximo de " + inventory.size());
-			return;
-		}
-
+		
 		inventory.add(product);
 
 	}
-
-	/**
-	 * check if inventory is full or not
-	 */
-	public boolean isInventoryFull() {
-		if (numberProducts == 10) {
-			return true;
-		} else {
-			return false;
-		}
-
-	}
-
+	
 	/**
 	 * find product by name
 	 *
