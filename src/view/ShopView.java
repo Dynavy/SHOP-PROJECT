@@ -18,6 +18,9 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+
+import main.Shop;
+
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
 
@@ -34,15 +37,17 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private JToggleButton addStock;
 	private JLabel menu;
 	private JLabel welcomeText;
-	// Button color:
-	private Color originalColor = new Color(184, 207, 229, 255);
 	private Timer animationTimer;
+	// Buttons color:
+	private Color originalColor = new Color(184, 207, 229, 255);
 	// How many pixels jump the button when clicked.
 	private int animationDelta = 1;
 	private int animationDirection = 1;
 	private int originalY;
 	private JSeparator separatorLine;
 
+	Shop loadInventory = new Shop();
+	// Object cashDialog from cashView class.
 	CashView cashDialog = new CashView();
 	
 	public static void main(String[] args) {
@@ -56,7 +61,10 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	}
 
 	public ShopView() {
-
+		// We load the inventory.
+		loadInventory.loadInventory();
+		
+		// Invoke all the methods.
 		initWindowUI();
 		menuUI();
 		loadIcon();
@@ -65,6 +73,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 	public void initWindowUI() {
 
+		
 		// Window title.
 		setTitle("SHOP GUI");
 		// Size of the window when executing.
@@ -74,7 +83,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		// Window at the center of the screen.
 		setLocationRelativeTo(null);
 		// We define our background color.
-		contentPane.setBackground(new Color(237, 237, 233));
+		contentPane.setBackground(Color.LIGHT_GRAY);
 		setContentPane(contentPane);
 	}
 
@@ -164,7 +173,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 		// Green line.
 		separatorLine = new JSeparator();
-		separatorLine.setBounds(19, 47, 315, 2);
+		separatorLine.setBounds(19, 42, 315, 11);
 		separatorLine.setForeground(new Color(0, 108, 84));
 		separatorLine.setBackground(new Color(0, 108, 84));
 		leftPanel.add(separatorLine);
@@ -185,16 +194,60 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		addProducts.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		addProducts.setBounds(93, 157, 173, 25);
 		addProducts.setBackground(originalColor);
+		addProducts.addActionListener(this);
 		leftPanel.add(addProducts);
 
 		// CASE 3 BUTTON (addStock).
 		addStock = new JToggleButton("3. Add stock.");
 		addStock.setFont(new Font("Poppins", Font.PLAIN, 17));
 		addStock.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-		addStock.setBounds(93, 216, 173, 25);
+		addStock.setBounds(93, 217, 173, 25);
 		addStock.setBackground(originalColor);
+		addStock.addActionListener(this);
 		leftPanel.add(addStock);
+		
+		JToggleButton tglbtnDeleteProduct = new JToggleButton("9. Delete product.");
+		tglbtnDeleteProduct.setFont(new Font("Poppins", Font.PLAIN, 17));
+		tglbtnDeleteProduct.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		tglbtnDeleteProduct.setBackground(new Color(184, 207, 229));
+		tglbtnDeleteProduct.setBounds(93, 277, 173, 25);
+		leftPanel.add(tglbtnDeleteProduct);
 
+	}
+	
+	// Buttons interaction.
+	public void actionPerformed(ActionEvent buttonInteraction) {
+		if (buttonInteraction.getSource() == checkMoney) {
+			// Invoke the check money method.
+			checkMoney();
+			
+			
+		} else if (buttonInteraction.getSource() == addProducts) {
+			// Invoke the add products method.
+			addProducts();
+		} else if (buttonInteraction.getSource() == addStock) {
+			// Invoke the add stock method.
+			addStock();
+		}
+			
+	}
+	
+	public void checkMoney() {
+		// Invoke the animation method.
+//		startAnimation();
+		cashDialog.setVisible(true);
+	}
+	
+	
+	public void addProducts() {
+		// Invoke the animation method.
+//		startAnimation();
+		
+	}
+	
+	public void addStock() {
+		// Invoke the animation method.
+//		startAnimation();
 	}
 
 	public void startAnimation() {
@@ -210,7 +263,8 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				animationTimer.stop(); // Stop the animation
-			}
+				
+			} 
 
 		});
 
@@ -243,21 +297,11 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-
+		
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 
 	}
-
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == checkMoney) {
-			// Invoke the animation method.
-			startAnimation();
-			cashDialog.setVisible(true);
-		}
-	}
-
-
 }

@@ -11,9 +11,5 @@ public class LimitLoginException extends Exception{
 		super(CustomMessage);
 	}
 	
-	public LimitLoginException(String a) {
-		super(CustomMessage);
-	}
-	
 	
 }

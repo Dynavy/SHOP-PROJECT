@@ -87,7 +87,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		// Window at the center of the screen.
 		setLocationRelativeTo(null);
 		// We define our background color.
-		contentPane.setBackground(new Color(237, 237, 233));
+		contentPane.setBackground(Color.LIGHT_GRAY);
 		setContentPane(contentPane);
 	}
 
@@ -120,7 +120,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 	public void loadImages() {
 
 		JLabel keyImage = new JLabel(new ImageIcon(LoginView.class.getResource("/resources/img/keyImage.png")));
-		keyImage.setBounds(419, 59, 64, 64);
+		keyImage.setBounds(419, 94, 64, 64);
 		contentPane.add(keyImage);
 	}
 
@@ -131,8 +131,8 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		// Set panel with absolut layout.
 		contentPane.setLayout(null);
 		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 108, 84), 3)));
-		panel.setBackground(new Color(240, 240, 240));
-		panel.setBounds(269, 145, 350, 320);
+		panel.setBackground(new Color(238, 238, 238));
+		panel.setBounds(269, 187, 350, 320);
 		panel.setLayout(null);
 		contentPane.add(panel);
 		// We add the new font to our texts.
@@ -248,10 +248,11 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 
 		try {
 
-			// Logic if credentials are invalid for the third consecutive time.
-			if (countError >= 3 && !isLogged) {
+			// The first thing that is going check is if credentials are invalid for the third consecutive time .
+			if (countError == 3 && !isLogged) {
 				throw new LimitLoginException();
 			}
+			
 			// Since we need an int, we parse the variable so it can match as an argument.
 			userID = Integer.parseInt(stringEmployeeID);
 

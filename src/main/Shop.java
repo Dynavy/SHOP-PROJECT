@@ -597,6 +597,7 @@ public class Shop {
 		}
 	}
 
+	// Information for the cashView.
 	public String getCashValue() {
 		// TODO Auto-generated method stub
 		return cash.toString();
