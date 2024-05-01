@@ -45,10 +45,13 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private int animationDirection = 1;
 	private int originalY;
 	private JSeparator separatorLine;
-
-	Shop loadInventory = new Shop();
+	
+	// This instance is going to be used by differents classes so we don't have any inconsistencies.
+	private Shop shop;
+	
 	// Object cashDialog from cashView class.
 	CashView cashDialog = new CashView();
+	
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -61,15 +64,17 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	}
 
 	public ShopView() {
-		// We load the inventory.
-		loadInventory.loadInventory();
 		
+		this.shop = new Shop();
+		shop.loadInventory();
+		shop.showInventory();
 		// Invoke all the methods.
 		initWindowUI();
 		menuUI();
 		loadIcon();
 		registerFonts();
 	}
+	
 
 	public void initWindowUI() {
 
@@ -206,12 +211,13 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		addStock.addActionListener(this);
 		leftPanel.add(addStock);
 		
-		JToggleButton tglbtnDeleteProduct = new JToggleButton("9. Delete product.");
-		tglbtnDeleteProduct.setFont(new Font("Poppins", Font.PLAIN, 17));
-		tglbtnDeleteProduct.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-		tglbtnDeleteProduct.setBackground(new Color(184, 207, 229));
-		tglbtnDeleteProduct.setBounds(93, 277, 173, 25);
-		leftPanel.add(tglbtnDeleteProduct);
+		// Case 9 button (deleteProduct).
+		JToggleButton deleteProduct = new JToggleButton("9. Delete product.");
+		deleteProduct.setFont(new Font("Poppins", Font.PLAIN, 17));
+		deleteProduct.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		deleteProduct.setBackground(new Color(184, 207, 229));
+		deleteProduct.setBounds(93, 277, 173, 25);
+		leftPanel.add(deleteProduct);
 
 	}
 	
@@ -219,12 +225,13 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	public void actionPerformed(ActionEvent buttonInteraction) {
 		if (buttonInteraction.getSource() == checkMoney) {
 			// Invoke the check money method.
-			checkMoney();
+			openCashView();
 			
 			
 		} else if (buttonInteraction.getSource() == addProducts) {
 			// Invoke the add products method.
-			addProducts();
+			openProductView();
+			
 		} else if (buttonInteraction.getSource() == addStock) {
 			// Invoke the add stock method.
 			addStock();
@@ -232,16 +239,19 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 			
 	}
 	
-	public void checkMoney() {
+	public void openCashView() {
 		// Invoke the animation method.
-//		startAnimation();
+		startAnimation();
 		cashDialog.setVisible(true);
 	}
 	
 	
-	public void addProducts() {
+	public void openProductView() {
 		// Invoke the animation method.
-//		startAnimation();
+		startAnimation();
+		// We open ProductView dialog passing our instance of shop so both classes can share it.
+		ProductView addProductDialog = new ProductView(shop);
+		addProductDialog.setVisible(true);
 		
 	}
 	

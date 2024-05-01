@@ -35,11 +35,10 @@ public class Shop {
 
 	
 	public static void main(String[] args) {
-		Shop shop = new Shop();
-
-		// We load our inventory.
-		shop.loadInventory();
 		
+		Shop shop = new Shop();
+	
+
 		// We call our initSession method to identify the user.
 		shop.initSession();
 
@@ -154,18 +153,7 @@ public class Shop {
 		LoginView loginView = new LoginView();
 		  // Enable the GUI display.
 		loginView.setVisible(true);
-		  
 		
-		  // If credentials are invalid this is going to execute constantly stoping the code on this spot.	
-		  while (!loginView.isLogged) {
-		        try {
-		            Thread.sleep(100); // Check every 100 miliseconds the boolean.
-		        } catch (InterruptedException error) {
-		            error.printStackTrace();
-		            System.err.println("An error has occured.");
-		        }
-		    }
-		  
 		System.out.println(VERDE_CLARO + "Welcome to our store!" + RESET);
 		
 		}
@@ -173,9 +161,63 @@ public class Shop {
 	// load initial inventory to shop:
 
 	public void loadInventory() {
-
+		
 		// We call the method readFile which have all the default products on the .txt
 		readFile();
+
+	}
+	
+	public void readFile() {
+
+		try {
+			// Path to our .txt with the default products.
+			File files = new File("files/inputInventory.txt"); // Observation: it's not key sensitive.
+			// This scanned is going to read all our inputInventory.txt
+			Scanner scanner = new Scanner(files);
+
+			// While .txt has text in the line:
+			while (scanner.hasNextLine()) {
+				String data = scanner.nextLine();
+				// We split all the ';' of the text.
+				String[] line1 = data.split(";");
+
+				// We need to declare variables before the loop.
+				String nombre = null;
+				double wholesalerPrice = 0.0;
+				int stock = 0;
+
+				// line1.length = lines on the .txt.
+				for (int i = 0; i < line1.length; i++) {
+					// We split with differents lines by ":"
+					String[] line2 = line1[i].split(":");
+
+					switch (i) {
+
+					// We need to parse every single variable that is not string.
+					case 0:
+						nombre = line2[1];
+						break;
+					case 1:
+						// Parse to Double because its settled as string.
+						wholesalerPrice = Double.parseDouble(line2[1]);
+						break;
+					case 2:
+						// Parse to Integer because its settled as string.
+						stock = Integer.parseInt(line2[1]);
+						break;
+					default:
+						System.err.println("Error in the array position.");
+					}
+				}
+				// We pass all the variables as an argument to the addProduct method.
+				addProduct(new Product(nombre, wholesalerPrice, true, stock));
+
+			}
+			scanner.close();
+		} catch (FileNotFoundException error) {
+			System.err.println("An error occurred.");
+			error.printStackTrace();
+		}
 
 	}
 
@@ -441,87 +483,27 @@ public class Shop {
 		}
 	}
 
-	/**
-	 * add a product to inventory
-	 * 
-	 * @param product
-	 */
+	// Add the product information to the inventory array.
 	public void addProduct(Product product) {
 		
 		inventory.add(product);
 
 	}
 	
-	/**
-	 * find product by name
-	 *
-	 * @param product name
-	 */
+	// Check if a product is on our inventory array.
 	public Product findProduct(String name) {
 		for (int i = 0; i < inventory.size(); i++) {
+			
 			if (inventory.get(i) != null && inventory.get(i).getName().equalsIgnoreCase(name)) { // We fix the key sensitive (equalsIgnoreCase).
 				return inventory.get(i); // Adapt the arraylist.
 			}
 		}
+		
 		return null;
 
 	}
 
-	public void readFile() {
-
-		try {
-
-			// Path to our .txt with the default products.
-			File files = new File("files/inputInventory.txt"); // Observation: it's not key sensitive.
-			// This scanned is going to read all our inputInventory.txt
-			Scanner scanner = new Scanner(files);
-
-			// While .txt has text in the line:
-			while (scanner.hasNextLine()) {
-				String data = scanner.nextLine();
-				// We split all the ';' of the text.
-				String[] line1 = data.split(";");
-
-				// We need to declare variables before the loop.
-				String nombre = null;
-				double wholesalerPrice = 0.0;
-				int stock = 0;
-
-				// line1.length = lines on the .txt.
-				for (int i = 0; i < line1.length; i++) {
-					// We split with differents lines by ":"
-					String[] line2 = line1[i].split(":");
-
-					switch (i) {
-
-					// We need to parse every single variable that is not string.
-					case 0:
-						nombre = line2[1];
-						break;
-					case 1:
-						// Parse to Double because its settled as string.
-						wholesalerPrice = Double.parseDouble(line2[1]);
-						break;
-					case 2:
-						// Parse to Integer because its settled as string.
-						stock = Integer.parseInt(line2[1]);
-						break;
-					default:
-						System.err.println("Error in the array position.");
-					}
-				}
-				// We pass all the variables as an argument to the constructor Product of class Product.
-				addProduct(new Product(nombre, wholesalerPrice, true, stock));
-
-			}
-			scanner.close();
-		} catch (FileNotFoundException error) {
-			System.err.println("An error occurred.");
-			error.printStackTrace();
-		}
-
-	}
-
+	
 	public void writeFile() {
 
 		try {

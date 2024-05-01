@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InputStream;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import main.Shop;
@@ -18,9 +17,9 @@ import javax.swing.ImageIcon;
 public class CashView extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
-	private final JPanel contentPane = new JPanel();
 	private JTextField availableMoney;
 	private JToggleButton okButton;
+	private JLabel cashImage;
 
 	Shop shop = new Shop();
 
@@ -28,15 +27,10 @@ public class CashView extends JDialog implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 
-				CashView cash = new CashView();
-				cash.setVisible(true);
 			}
 		});
 	}
 
-	/**
-	 * Create the dialog.
-	 */
 	public CashView() {
 
 		initWindowUI();
@@ -65,7 +59,7 @@ public class CashView extends JDialog implements ActionListener {
 		getContentPane().setLayout(null);
 
 		// Cash Image.
-		JLabel cashImage = new JLabel("");
+		cashImage = new JLabel("");
 		cashImage.setIcon(new ImageIcon(CashView.class.getResource("/resources/img/cashImage.png")));
 		cashImage.setBounds(104, 53, 133, 135);
 		getContentPane().add(cashImage);
@@ -122,8 +116,6 @@ public class CashView extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent buttonInteraction) {
 
 		if (buttonInteraction.getSource() == okButton) {
-			
-			
 			dispose();
 
 		}

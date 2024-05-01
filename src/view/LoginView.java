@@ -35,7 +35,6 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane = new JPanel();
-	Shop shop = new Shop();
 	Employee employee = new Employee();
 	// Boolean to help us with the credentials validation.
 	public boolean isLogged;
@@ -49,18 +48,18 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 	private JLabel validationWarningImage;
 	private JLabel passImage;
 	private JLabel idImage;
+	
+	// We need this variable to manage the user attempts. 
 	private int countError = 0;
 
-	ShopView shopFrame = new ShopView();
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-
 				LoginView loginFrame = new LoginView();
-				loginFrame.setVisible(true);
 				// First input from the user when executing is going to be the employeeUser Jtext.
 				loginFrame.employeeUser.requestFocusInWindow();
+				loginFrame.setVisible(true);
 			}
 		});
 	}
@@ -212,8 +211,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		submit.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		panel.add(submit);
 
-		// Make posible to the user to use 'enter' key above employeUseer, employeePass or submit button.
-		employeeUser.addKeyListener(this);
+		// KeyListener so we can detech when te user uses a key when on those inputs.
 		employeePass.addKeyListener(this);
 		submit.addKeyListener(this);
 
@@ -236,7 +234,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 	}
 
 	public void validateCredentials() {
-
+		// Every user introduces wrong credentials, we add 1 to the class variable. 
 		countError++;
 		String stringEmployeeID = employeeUser.getText();
 		// We have to assign the password chars to a new array because is a JpasswordField.
@@ -267,6 +265,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 			} else {
 				// Good credentials --> returns true.
 				dispose();
+				ShopView shopFrame = new ShopView();
 				// After doing the dispose on the loginView, we set visible the ShopView.
 				shopFrame.setVisible(true);
 			}
@@ -295,10 +294,11 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		}
 	}
 
-	// When user press 'enter', it invokes the logic of validateCredentials().
 	@Override
-	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+	public void keyPressed(KeyEvent buttonEnter) {
+		// When user press 'enter', it invokes the logic of validateCredentials().
+		// This only applicates on the KeyListeners inputs, defined above.
+		if (buttonEnter.getKeyCode() == KeyEvent.VK_ENTER) {
 			validateCredentials();
 		}
 	}
