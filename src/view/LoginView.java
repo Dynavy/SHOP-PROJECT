@@ -211,8 +211,9 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		submit.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		panel.add(submit);
 
-		// KeyListener so we can detech when te user uses a key when on those inputs.
+		// KeyListener so we can detect when the user uses a key when on those inputs.
 		employeePass.addKeyListener(this);
+		employeeUser.addKeyListener(this);
 		submit.addKeyListener(this);
 
 	}
@@ -296,6 +297,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent buttonEnter) {
+		
 		// When user press 'enter', it invokes the logic of validateCredentials().
 		// This only applicates on the KeyListeners inputs, defined above.
 		if (buttonEnter.getKeyCode() == KeyEvent.VK_ENTER) {

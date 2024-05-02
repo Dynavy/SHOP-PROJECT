@@ -32,7 +32,10 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 	private JSeparator separatorLine;
 	private JButton backButton;
 	private JButton okeyButton;
-
+	private JLabel introduceProductName;
+	private JLabel introduceProductStock;
+	private JLabel introduceProductPrice;
+	
 	// Here we will save the instance that came from ShopView.
 	private Shop shop;
 
@@ -89,19 +92,19 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 		getContentPane().add(introduceDataTitle);
 
 		// Introduce product name text.
-		JLabel introduceProductName = new JLabel("Product name :");
+		introduceProductName = new JLabel("Product name :");
 		introduceProductName.setBounds(50, 110, 92, 16);
 		introduceProductName.setFont(textFont);
 		getContentPane().add(introduceProductName);
 
 		// Introduce product stock text.
-		JLabel introduceProductStock = new JLabel("Product stock :");
+		introduceProductStock = new JLabel("Product stock :");
 		introduceProductStock.setBounds(50, 172, 92, 16);
 		introduceProductStock.setFont(textFont);
 		getContentPane().add(introduceProductStock);
 
 		// Introduce product price text.
-		JLabel introduceProductPrice = new JLabel("Product price :");
+		introduceProductPrice = new JLabel("Product price :");
 		introduceProductPrice.setBounds(50, 234, 92, 16);
 		introduceProductPrice.setFont(textFont);
 		getContentPane().add(introduceProductPrice);
@@ -230,7 +233,7 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 		// This logic only works when user uses the key 'enter'.
 		if (buttonEnter.getKeyCode() == KeyEvent.VK_ENTER) {
 
-			// This line is goingg to get the current key that user is focused into.
+			// This line is going to get the current key that user is focused into.
 			// We can check in which key the user is pressing enter and work with that information.
 			// We need it since I want to do different behaviors between the keys.
 			Component focusedComponent = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
