@@ -70,7 +70,9 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 		this.shop = new Shop();
 		shop.loadInventory();
+
 		shop.showInventory();
+
 		// Invoke all the methods.
 		initWindowUI();
 		menuUI();
@@ -200,7 +202,6 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		addProducts.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		addProducts.setBounds(93, 157, 173, 25);
 		addProducts.setBackground(originalColor);
-		addProducts.addActionListener(this);
 		leftPanel.add(addProducts);
 
 		// CASE 3 BUTTON (addStock).
@@ -209,16 +210,20 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		addStock.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		addStock.setBounds(93, 217, 173, 25);
 		addStock.setBackground(originalColor);
-		addStock.addActionListener(this);
 		leftPanel.add(addStock);
 
 		// Case 9 button (deleteProduct).
 		deleteProduct = new JToggleButton("9. Delete product.");
 		deleteProduct.setFont(new Font("Poppins", Font.PLAIN, 17));
 		deleteProduct.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-		deleteProduct.setBackground(new Color(184, 207, 229));
+		addStock.setBackground(originalColor);;
 		deleteProduct.setBounds(93, 277, 173, 25);
 		leftPanel.add(deleteProduct);
+		
+		// Allow button interaction.
+		addStock.addActionListener(this);
+		addProducts.addActionListener(this);
+		deleteProduct.addActionListener(this);
 
 		// KeyListener so we can detect when the user the keyboard.
 		this.addKeyListener(this);
@@ -227,39 +232,40 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 	// Buttons interaction.
 	public void actionPerformed(ActionEvent buttonInteraction) {
+		
 		if (buttonInteraction.getSource() == checkMoney) {
 			// Invoke the check money method.
 			openCashView();
 
 		} else if (buttonInteraction.getSource() == addProducts) {
-			// Invoke the add products method.
-			openProductView();
+			// We open the productView with 2 as an argument.
+			openProductView(2);
 
 		} else if (buttonInteraction.getSource() == addStock) {
-			// Invoke the add stock method.
-			addStock();
-		}
+			// We open the productView with 3 as an argument.
+			openProductView(3);
+
+		} else if (buttonInteraction.getSource() == deleteProduct) {
+			// We open the productView with 9 as an argument.
+			openProductView(9);
+		} 
+		
 
 	}
 
 	public void openCashView() {
+
 		// Invoke the animation method.
 		startAnimation();
 		cashDialog.setVisible(true);
 	}
 
-	public void openProductView() {
-		// Invoke the animation method.
-		startAnimation();
+	public void openProductView(int option) {
+
 		// We open ProductView dialog passing our instance of shop so both classes can share it.
-		ProductView addProductDialog = new ProductView(shop);
+		ProductView addProductDialog = new ProductView(option, shop);
 		addProductDialog.setVisible(true);
 
-	}
-
-	public void addStock() {
-		// Invoke the animation method.
-		//		startAnimation();
 	}
 
 	public void startAnimation() {
@@ -309,13 +315,27 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent numberInteraction) {
+		
+		int key = numberInteraction.getKeyCode();
+		
+		switch (key) {
 
-		if (numberInteraction.getKeyChar() == '1') {
+		case KeyEvent.VK_1:
 			openCashView();
-		} else if (numberInteraction.getKeyChar() == '2') {
-			openProductView();
-		} else if (numberInteraction.getKeyChar() == '3') {
-			openProductView();
+			break;
+			
+		case KeyEvent.VK_2:
+			
+			openProductView(2);
+			break;
+			
+		case KeyEvent.VK_3:
+			openProductView(3);
+			break;
+			
+		case KeyEvent.VK_9:
+			openProductView(9);
+			break;
 		}
 
 	}
