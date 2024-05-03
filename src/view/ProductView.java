@@ -32,28 +32,32 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 	private JSeparator separatorLine;
 	private JButton backButton;
 	private JButton okeyButton;
+	private JLabel introduceProductName;
+	private JLabel introduceProductStock;
+	private JLabel introduceProductPrice;
 
 	// Here we will save the instance that came from ShopView.
 	private Shop shop;
+	private int option;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 
 			public void run() {
-				Shop shop = new Shop();
-				ProductView dialog = new ProductView(shop);
-				// First input on productName.
-				dialog.productName.requestFocusInWindow();
-				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				
+				
+				
+			
 
 			}
 		});
 	}
 
-	// We receive the shop instance from ShopView and inicialize it on our ProductView class.
-	public ProductView(Shop shop) {
+	// We receive the shop instance from ShopView and initialize it on our ProductView class.
+	public ProductView(int option, Shop shop) {
 
 		this.shop = shop;
+		this.option = option;
 		initWindowUI();
 		productViewUI();
 
@@ -88,20 +92,21 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 		introduceDataTitle.setForeground(new Color(0, 108, 34));
 		getContentPane().add(introduceDataTitle);
 
+		
 		// Introduce product name text.
-		JLabel introduceProductName = new JLabel("Product name :");
+		introduceProductName = new JLabel("Product name :");
 		introduceProductName.setBounds(50, 110, 92, 16);
 		introduceProductName.setFont(textFont);
 		getContentPane().add(introduceProductName);
 
 		// Introduce product stock text.
-		JLabel introduceProductStock = new JLabel("Product stock :");
+		introduceProductStock = new JLabel("Product stock :");
 		introduceProductStock.setBounds(50, 172, 92, 16);
 		introduceProductStock.setFont(textFont);
 		getContentPane().add(introduceProductStock);
 
 		// Introduce product price text.
-		JLabel introduceProductPrice = new JLabel("Product price :");
+		introduceProductPrice = new JLabel("Product price :");
 		introduceProductPrice.setBounds(50, 234, 92, 16);
 		introduceProductPrice.setFont(textFont);
 		getContentPane().add(introduceProductPrice);
@@ -143,13 +148,29 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 		backButton.setBounds(175, 284, 117, 29);
 		getContentPane().add(backButton);
 
-		// KeyListener so we can detech when te user uses a key when on those inputs/buttons.
+		// KeyListener so we can detect when the user uses a key when on those inputs/buttons.
 		productName.addKeyListener(this);
 		productPrice.addKeyListener(this);
 		productStock.addKeyListener(this);
 		okeyButton.addKeyListener(this);
 		backButton.addKeyListener(this);
 
+		// Focus on productName input.
+		this.productName.requestFocusInWindow();
+		
+		
+		if (option == 3) {
+			
+			introduceProductPrice.setVisible(false);
+			productPrice.setVisible(false);
+			
+		} else if (option == 9) {
+			
+			introduceProductPrice.setVisible(false);
+			productPrice.setVisible(false);
+			introduceProductStock.setVisible(false);
+			productStock.setVisible(false);
+		}
 	}
 
 	@Override
@@ -165,52 +186,52 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 
 	public void addProduct() {
 
-		// Recopile  data from the user.
-		String product = productName.getText();
-		double price = 0.0;
-		int stock = 0;
+			// Recopile  data from the user.
+			String product = productName.getText();
+			double price = 0.0;
+			int stock = 0;
 
-		try {
+			try {
 
-			if (product.isEmpty()) {
-				// If the product is empty, we throw the exception.
-				throw new IllegalArgumentException("PRODUCT NAME CAN'T BE EMPTY.");
+				if (product.isEmpty()) {
+					// If the product is empty, we throw the exception.
+					throw new IllegalArgumentException("PRODUCT NAME CAN'T BE EMPTY.");
+				}
+				// If its not empty, we parse it in order to match the constructor parameters.
+				if (!productPrice.getText().isEmpty() && !productStock.getText().isEmpty()) {
+					price = Double.parseDouble(productPrice.getText());
+					stock = Integer.parseInt(productStock.getText());
+
+				} else {
+					// If price and stock are empty, we throw the exception.
+					throw new NumberFormatException("PRICE AND STOCK CAN'T BE EMPTY.");
+				}
+
+				// Using the constructor from Product class with our arguments.
+				Product newProduct = new Product(product, price, true, stock);
+
+				// Check if the product already exists on our inventory.
+				// We are operating on the same instance than ShopView.
+				if (shop.findProduct(product) == null) {
+					shop.addProduct(newProduct);
+					shop.showInventory();
+					showProductAddedMessage();
+					dispose();
+
+				} else { // If product exists:
+					JOptionPane.showMessageDialog(ProductView.this, "PRODUCT ALREADY EXISTS, TRY AGAIN.",
+							"WARNING! CAN'T ADD THE PRODUCT", JOptionPane.ERROR_MESSAGE);
+				}
+
+				// Exception to control if price and stock are empty.
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(ProductView.this, e.getMessage(), "WARNING, WE DETECTED AN ERROR",
+						JOptionPane.ERROR_MESSAGE);
+				// Exception to control if product is empty.
+			} catch (IllegalArgumentException e) {
+				JOptionPane.showMessageDialog(ProductView.this, e.getMessage(), "WARNING, WE DETECTED AN ERROR.",
+						JOptionPane.ERROR_MESSAGE);
 			}
-			// If its not empty, we parse it in order to match the constructor parameters.
-			if (!productPrice.getText().isEmpty() && !productStock.getText().isEmpty()) {
-				price = Double.parseDouble(productPrice.getText());
-				stock = Integer.parseInt(productStock.getText());
-
-			} else {
-				// If price and stock are empty, we throw the exception.
-				throw new NumberFormatException("PRICE AND STOCK CAN'T BE EMPTY.");
-			}
-
-			// Using the constructor from Product class with our arguments.
-			Product newProduct = new Product(product, price, true, stock);
-
-			// Check if the product already exists on our inventory.
-			// We are operating on the same instance than ShopView.
-			if (shop.findProduct(product) == null) {
-				shop.addProduct(newProduct);
-				shop.showInventory();
-				showProductAddedMessage();
-				dispose();
-
-			} else { // If product exists:
-				JOptionPane.showMessageDialog(ProductView.this, "PRODUCT ALREADY EXISTS, TRY AGAIN.",
-						"WARNING! CAN'T ADD THE PRODUCT", JOptionPane.ERROR_MESSAGE);
-			}
-
-			// Exception to control if price and stock are empty.
-		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(ProductView.this, e.getMessage(), "WARNING, WE DETECTED AN ERROR",
-					JOptionPane.ERROR_MESSAGE);
-			// Exception to control if product is empty.
-		} catch (IllegalArgumentException e) {
-			JOptionPane.showMessageDialog(ProductView.this, e.getMessage(), "WARNING, WE DETECTED AN ERROR.",
-					JOptionPane.ERROR_MESSAGE);
-		}
 	}
 
 	private void showProductAddedMessage() {
@@ -226,11 +247,11 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 
 	@Override
 	public void keyPressed(KeyEvent buttonEnter) {
-		
+
 		// This logic only works when user uses the key 'enter'.
 		if (buttonEnter.getKeyCode() == KeyEvent.VK_ENTER) {
 
-			// This line is goingg to get the current key that user is focused into.
+			// This line is going to get the current key that user is focused into.
 			// We can check in which key the user is pressing enter and work with that information.
 			// We need it since I want to do different behaviors between the keys.
 			Component focusedComponent = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
@@ -239,7 +260,7 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 			if (focusedComponent == okeyButton || focusedComponent == productName || focusedComponent == productPrice
 					|| focusedComponent == productStock) {
 				addProduct();
-				
+
 				// When users uses enter on the backButton, we dispose() the JDialog.
 			} else if (focusedComponent == backButton) {
 				dispose();

@@ -35,8 +35,10 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private JToggleButton checkMoney;
 	private JToggleButton addProducts;
 	private JToggleButton addStock;
+	private JToggleButton deleteProduct;
 	private JLabel menu;
 	private JLabel welcomeText;
+	private JLabel shopImage;
 	private Timer animationTimer;
 	// Buttons color:
 	private Color originalColor = new Color(184, 207, 229, 255);
@@ -45,40 +47,41 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private int animationDirection = 1;
 	private int originalY;
 	private JSeparator separatorLine;
-	
+
 	// This instance is going to be used by differents classes so we don't have any inconsistencies.
 	private Shop shop;
-	
+
 	// Object cashDialog from cashView class.
 	CashView cashDialog = new CashView();
-	
-	
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 
 				ShopView shopFrame = new ShopView();
 				shopFrame.setVisible(true);
+				// Focusable on true so we can detect the keyboard focus.
+				shopFrame.setFocusable(true);
 			}
 		});
 	}
 
 	public ShopView() {
-		
+
 		this.shop = new Shop();
 		shop.loadInventory();
+
 		shop.showInventory();
+
 		// Invoke all the methods.
 		initWindowUI();
 		menuUI();
 		loadIcon();
 		registerFonts();
 	}
-	
 
 	public void initWindowUI() {
 
-		
 		// Window title.
 		setTitle("SHOP GUI");
 		// Size of the window when executing.
@@ -101,9 +104,9 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(customFont);
 
-		} catch (Exception e) {
-			System.out.println("Error, font not found: " + e);
-			e.printStackTrace();
+		} catch (Exception fontError) {
+			System.out.println("Error, font not found: " + fontError);
+			fontError.printStackTrace();
 		}
 	}
 
@@ -115,7 +118,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		Image scaledImage = icon.getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH);
 		// We set the image to our window.
 		setIconImage(scaledImage);
-		
+
 	}
 
 	public void menuUI() {
@@ -151,7 +154,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		headerPanel.add(welcomeText);
 
 		// SHOP IMAGE.
-		JLabel shopImage = new JLabel("");
+		shopImage = new JLabel("");
 		shopImage.setBounds(13, 0, 72, 72);
 		headerPanel.add(shopImage);
 		shopImage.setIcon(new ImageIcon(ShopView.class.getResource("/resources/img/shopImage.png")));
@@ -199,7 +202,6 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		addProducts.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		addProducts.setBounds(93, 157, 173, 25);
 		addProducts.setBackground(originalColor);
-		addProducts.addActionListener(this);
 		leftPanel.add(addProducts);
 
 		// CASE 3 BUTTON (addStock).
@@ -208,56 +210,62 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		addStock.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		addStock.setBounds(93, 217, 173, 25);
 		addStock.setBackground(originalColor);
-		addStock.addActionListener(this);
 		leftPanel.add(addStock);
-		
+
 		// Case 9 button (deleteProduct).
-		JToggleButton deleteProduct = new JToggleButton("9. Delete product.");
+		deleteProduct = new JToggleButton("9. Delete product.");
 		deleteProduct.setFont(new Font("Poppins", Font.PLAIN, 17));
 		deleteProduct.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-		deleteProduct.setBackground(new Color(184, 207, 229));
+		addStock.setBackground(originalColor);;
 		deleteProduct.setBounds(93, 277, 173, 25);
 		leftPanel.add(deleteProduct);
+		
+		// Allow button interaction.
+		addStock.addActionListener(this);
+		addProducts.addActionListener(this);
+		deleteProduct.addActionListener(this);
+
+		// KeyListener so we can detect when the user the keyboard.
+		this.addKeyListener(this);
 
 	}
-	
+
 	// Buttons interaction.
 	public void actionPerformed(ActionEvent buttonInteraction) {
+		
 		if (buttonInteraction.getSource() == checkMoney) {
 			// Invoke the check money method.
 			openCashView();
-			
-			
+
 		} else if (buttonInteraction.getSource() == addProducts) {
-			// Invoke the add products method.
-			openProductView();
-			
+			// We open the productView with 2 as an argument.
+			openProductView(2);
+
 		} else if (buttonInteraction.getSource() == addStock) {
-			// Invoke the add stock method.
-			addStock();
-		}
-			
+			// We open the productView with 3 as an argument.
+			openProductView(3);
+
+		} else if (buttonInteraction.getSource() == deleteProduct) {
+			// We open the productView with 9 as an argument.
+			openProductView(9);
+		} 
+		
+
 	}
-	
+
 	public void openCashView() {
+
 		// Invoke the animation method.
 		startAnimation();
 		cashDialog.setVisible(true);
 	}
-	
-	
-	public void openProductView() {
-		// Invoke the animation method.
-		startAnimation();
+
+	public void openProductView(int option) {
+
 		// We open ProductView dialog passing our instance of shop so both classes can share it.
-		ProductView addProductDialog = new ProductView(shop);
+		ProductView addProductDialog = new ProductView(option, shop);
 		addProductDialog.setVisible(true);
-		
-	}
-	
-	public void addStock() {
-		// Invoke the animation method.
-//		startAnimation();
+
 	}
 
 	public void startAnimation() {
@@ -273,8 +281,8 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				animationTimer.stop(); // Stop the animation
-				
-			} 
+
+			}
 
 		});
 
@@ -306,8 +314,30 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
+	public void keyPressed(KeyEvent numberInteraction) {
 		
+		int key = numberInteraction.getKeyCode();
+		
+		switch (key) {
+
+		case KeyEvent.VK_1:
+			openCashView();
+			break;
+			
+		case KeyEvent.VK_2:
+			
+			openProductView(2);
+			break;
+			
+		case KeyEvent.VK_3:
+			openProductView(3);
+			break;
+			
+		case KeyEvent.VK_9:
+			openProductView(9);
+			break;
+		}
+
 	}
 
 	@Override
