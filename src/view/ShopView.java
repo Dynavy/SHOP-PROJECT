@@ -57,7 +57,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-
+				
 				ShopView shopFrame = new ShopView();
 				shopFrame.setVisible(true);
 				// Focusable on true so we can detect the keyboard focus.
@@ -78,10 +78,11 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		menuUI();
 		loadIcon();
 		registerFonts();
+		
 	}
 
 	public void initWindowUI() {
-
+		
 		// Window title.
 		setTitle("SHOP GUI");
 		// Size of the window when executing.
@@ -122,7 +123,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	}
 
 	public void menuUI() {
-
+		
 		// PANEL CREATION.
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 108, 84), 3)));
@@ -218,6 +219,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		deleteProduct.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		addStock.setBackground(originalColor);;
 		deleteProduct.setBounds(93, 277, 173, 25);
+		deleteProduct.setBackground(originalColor);
 		leftPanel.add(deleteProduct);
 		
 		// Allow button interaction.
@@ -232,7 +234,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 	// Buttons interaction.
 	public void actionPerformed(ActionEvent buttonInteraction) {
-		
+
 		if (buttonInteraction.getSource() == checkMoney) {
 			// Invoke the check money method.
 			openCashView();
@@ -248,9 +250,10 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		} else if (buttonInteraction.getSource() == deleteProduct) {
 			// We open the productView with 9 as an argument.
 			openProductView(9);
-		} 
+		}
 		
-
+		// Focus on the frame after clicking a button.
+		this.requestFocus();
 	}
 
 	public void openCashView() {
@@ -315,24 +318,24 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent numberInteraction) {
-		
+
 		int key = numberInteraction.getKeyCode();
-		
+
 		switch (key) {
 
 		case KeyEvent.VK_1:
 			openCashView();
 			break;
-			
+
 		case KeyEvent.VK_2:
-			
+
 			openProductView(2);
 			break;
-			
+
 		case KeyEvent.VK_3:
 			openProductView(3);
 			break;
-			
+
 		case KeyEvent.VK_9:
 			openProductView(9);
 			break;

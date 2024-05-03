@@ -17,7 +17,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import main.Shop;
 import model.Employee;
 import javax.swing.UIManager;
 import javax.swing.JPasswordField;
@@ -269,6 +268,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 				ShopView shopFrame = new ShopView();
 				// After doing the dispose on the loginView, we set visible the ShopView.
 				shopFrame.setVisible(true);
+				shopFrame.requestFocus();
 			}
 
 			// Only executes when the count error is == 3.
