@@ -20,6 +20,8 @@ public class CashView extends JDialog implements ActionListener {
 	private JTextField availableMoney;
 	private JToggleButton okButton;
 	private JLabel cashImage;
+	private JLabel moneyIncashText;
+	private JLabel arrowImage;
 
 	Shop shop = new Shop();
 
@@ -65,7 +67,7 @@ public class CashView extends JDialog implements ActionListener {
 		getContentPane().add(cashImage);
 
 		// Money in cash text.
-		JLabel moneyIncashText = new JLabel("Money in cash.");
+		moneyIncashText = new JLabel("Money in cash.");
 		moneyIncashText.setFont(textFont);
 		moneyIncashText.setBounds(104, 37, 209, 41);
 		moneyIncashText.setForeground(new Color(0,108,84));
@@ -81,13 +83,12 @@ public class CashView extends JDialog implements ActionListener {
 		getContentPane().add(availableMoney);
 
 		// Arrow image
-		JLabel arrowImage = new JLabel("");
+		arrowImage = new JLabel("");
 		arrowImage.setIcon(new ImageIcon(CashView.class.getResource("/resources/img/arrowImage.png")));
 		arrowImage.setBounds(135, 173, 72, 72);
 		getContentPane().add(arrowImage);
 
 		// Ok button.
-
 		okButton = new JToggleButton("OK");
 		okButton.setBounds(117, 297, 104, 43);
 		okButton.setActionCommand("OK");
