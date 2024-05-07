@@ -241,9 +241,9 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 
 		// Just did this modification on the JOption pane so the button says "Back to the menu" instead of "OK".
 		ImageIcon customIcon = new ImageIcon(getClass().getResource("/resources/img/checkImage.png"));
-		JOptionPane newProductPane = new JOptionPane(
-				"Congratulations, your petition has been done successfuly!", JOptionPane.INFORMATION_MESSAGE,
-				JOptionPane.DEFAULT_OPTION, customIcon, new Object[] { "BACK TO THE MENU" });
+		JOptionPane newProductPane = new JOptionPane("Congratulations, your petition has been done successfuly!",
+				JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, customIcon,
+				new Object[] { "BACK TO THE MENU" });
 		JDialog productAdded = newProductPane.createDialog("PETITION DONE.");
 		productAdded.setVisible(true);
 	}
@@ -276,8 +276,8 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 				productName.setStock(addStock);
 				showProductAddedMessage();
 				dispose();
-				
-			} 
+
+			}
 
 			// Exception to control if stock is empty.
 		} catch (NumberFormatException e) {
@@ -293,9 +293,29 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 	}
 
 	public void deleteProduct() {
-		
+
+		// Recopile data from user.
+		String product = productName.getText();
+		Product productName = shop.findProduct(product);
+
+		try {
+
+			if (product.isEmpty()) {
+				// If the product is empty, we throw the exception.
+				throw new IllegalArgumentException("PRODUCT NAME CAN'T BE EMPTY.");
+				
+			} 
+			if (product != null) {
+				
+			}
+			
+
+		} catch (IllegalArgumentException e) {
+			JOptionPane.showMessageDialog(ProductView.this, e.getMessage(), "WARNING, WE DETECTED AN ERROR.",
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
-	
+
 	@Override
 	public void keyPressed(KeyEvent buttonEnter) {
 		// This logic only works when user uses the key 'enter'.
