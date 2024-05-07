@@ -38,16 +38,13 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 
 	// Here we will save the instance that came from ShopView.
 	private Shop shop;
+
 	private int option;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 
 			public void run() {
-				
-				
-				
-			
 
 			}
 		});
@@ -92,7 +89,6 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 		introduceDataTitle.setForeground(new Color(0, 108, 34));
 		getContentPane().add(introduceDataTitle);
 
-		
 		// Introduce product name text.
 		introduceProductName = new JLabel("Product name :");
 		introduceProductName.setBounds(50, 110, 92, 16);
@@ -157,15 +153,14 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 
 		// Focus on productName input.
 		this.productName.requestFocusInWindow();
-		
-		
+
 		if (option == 3) {
-			
+
 			introduceProductPrice.setVisible(false);
 			productPrice.setVisible(false);
-			
+
 		} else if (option == 9) {
-			
+
 			introduceProductPrice.setVisible(false);
 			productPrice.setVisible(false);
 			introduceProductStock.setVisible(false);
@@ -178,60 +173,62 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 
 		if (inputButton.getSource() == backButton) {
 			dispose();
-		} else if (inputButton.getSource() == okeyButton) {
+		} else if (inputButton.getSource() == okeyButton && option == 2) {
 			addProduct();
+		} else if (inputButton.getSource() == okeyButton && option == 3) {
+			addStock();
 		}
 
 	}
 
 	public void addProduct() {
 
-			// Recopile  data from the user.
-			String product = productName.getText();
-			double price = 0.0;
-			int stock = 0;
+		// Recopile  data from the user.
+		String product = productName.getText();
+		double price = 0.0;
+		int stock = 0;
 
-			try {
+		try {
 
-				if (product.isEmpty()) {
-					// If the product is empty, we throw the exception.
-					throw new IllegalArgumentException("PRODUCT NAME CAN'T BE EMPTY.");
-				}
-				// If its not empty, we parse it in order to match the constructor parameters.
-				if (!productPrice.getText().isEmpty() && !productStock.getText().isEmpty()) {
-					price = Double.parseDouble(productPrice.getText());
-					stock = Integer.parseInt(productStock.getText());
-
-				} else {
-					// If price and stock are empty, we throw the exception.
-					throw new NumberFormatException("PRICE AND STOCK CAN'T BE EMPTY.");
-				}
-
-				// Using the constructor from Product class with our arguments.
-				Product newProduct = new Product(product, price, true, stock);
-
-				// Check if the product already exists on our inventory.
-				// We are operating on the same instance than ShopView.
-				if (shop.findProduct(product) == null) {
-					shop.addProduct(newProduct);
-					shop.showInventory();
-					showProductAddedMessage();
-					dispose();
-
-				} else { // If product exists:
-					JOptionPane.showMessageDialog(ProductView.this, "PRODUCT ALREADY EXISTS, TRY AGAIN.",
-							"WARNING! CAN'T ADD THE PRODUCT", JOptionPane.ERROR_MESSAGE);
-				}
-
-				// Exception to control if price and stock are empty.
-			} catch (NumberFormatException e) {
-				JOptionPane.showMessageDialog(ProductView.this, e.getMessage(), "WARNING, WE DETECTED AN ERROR",
-						JOptionPane.ERROR_MESSAGE);
-				// Exception to control if product is empty.
-			} catch (IllegalArgumentException e) {
-				JOptionPane.showMessageDialog(ProductView.this, e.getMessage(), "WARNING, WE DETECTED AN ERROR.",
-						JOptionPane.ERROR_MESSAGE);
+			if (product.isEmpty()) {
+				// If the product is empty, we throw the exception.
+				throw new IllegalArgumentException("PRODUCT NAME CAN'T BE EMPTY.");
 			}
+			// If its not empty, we parse it in order to match the constructor parameters.
+			if (!productPrice.getText().isEmpty() && !productStock.getText().isEmpty()) {
+				price = Double.parseDouble(productPrice.getText());
+				stock = Integer.parseInt(productStock.getText());
+
+			} else {
+				// If price and stock are empty, we throw the exception.
+				throw new NumberFormatException("PRICE AND STOCK CAN'T BE EMPTY.");
+			}
+
+			// Using the constructor from Product class with our arguments.
+			Product newProduct = new Product(product, price, true, stock);
+
+			// Check if the product already exists on our inventory.
+			// We are operating on the same instance than ShopView.
+			if (shop.findProduct(product) == null) {
+				shop.addProduct(newProduct);
+				shop.showInventory();
+				showProductAddedMessage();
+				dispose();
+
+			} else { // If product exists:
+				JOptionPane.showMessageDialog(ProductView.this, "PRODUCT ALREADY EXISTS, TRY AGAIN.",
+						"WARNING! CAN'T ADD THE PRODUCT", JOptionPane.ERROR_MESSAGE);
+			}
+
+			// Exception to control if price and stock are empty.
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(ProductView.this, e.getMessage(), "WARNING, WE DETECTED AN ERROR",
+					JOptionPane.ERROR_MESSAGE);
+			// Exception to control if product is empty.
+		} catch (IllegalArgumentException e) {
+			JOptionPane.showMessageDialog(ProductView.this, e.getMessage(), "WARNING, WE DETECTED AN ERROR.",
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private void showProductAddedMessage() {
@@ -243,6 +240,47 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 				JOptionPane.DEFAULT_OPTION, customIcon, new Object[] { "BACK TO THE MENU" });
 		JDialog productAdded = newProductPane.createDialog("PRODUCT ADDED SUCCESSFULLY.");
 		productAdded.setVisible(true);
+	}
+
+	public void addStock() {
+
+		// Recopile data from user.
+		String product = productName.getText();
+		// Create a variable of type Product, invoke findProduct method, use the inputVariable to find product.
+		Product productName = shop.findProduct(product);
+		int stock = 0;
+
+		try {
+			// If the product is empty, we throw the exception.
+			if (product.isEmpty()) {
+				// If the product is empty, we throw the exception.
+				throw new IllegalArgumentException("PRODUCT NAME CAN'T BE EMPTY.");
+			}
+
+			if (!productStock.getText().isEmpty()) {
+				stock = Integer.parseInt(productStock.getText());
+
+			} else {
+				// If stock is empty we throw the exception.
+				throw new NumberFormatException("STOCK CAN'T BE EMPTY.");
+			}
+			// If the product exists on our inventory.
+			if (product != null) {
+				int addStock = productName.getStock() + stock;
+				productName.setStock(addStock);
+				dispose();
+			}
+
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(ProductView.this, e.getMessage(), "WARNING, WE DETECTED AN ERROR.",
+					JOptionPane.ERROR_MESSAGE);
+
+			// Exception to control if product is empty.
+		} catch (IllegalArgumentException e) {
+			JOptionPane.showMessageDialog(ProductView.this, e.getMessage(), "WARNING, WE DETECTED AN ERROR.",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
 	}
 
 	@Override
