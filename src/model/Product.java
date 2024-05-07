@@ -22,7 +22,7 @@ public class Product {
 		super();
 		this.id = totalProducts + 1;
 		this.name = name;
-		this.publicPrice = new Amount(wholesalerPrice * 2); // We create a new object named Amount to the variable															// publicPrice with the value of wholeSalerPrice *2.
+		this.publicPrice = new Amount(wholesalerPrice * 2); // We create a new object named Amount to the variable								
 		this.wholesalerPrice = new Amount(wholesalerPrice);
 		this.available = available;
 		this.stock = stock;
