@@ -181,6 +181,8 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 			// If user selected option 3, we invoke addStock() method.
 		} else if (inputButton.getSource() == okeyButton && option == 3) {
 			addStock();
+		} else if (inputButton.getSource() == okeyButton && option == 9) {
+			deleteProduct();
 		}
 
 	}
