@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -173,8 +174,11 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 
 		if (inputButton.getSource() == backButton) {
 			dispose();
+
+			// If user selected option 2, we invoke addProducty() method.
 		} else if (inputButton.getSource() == okeyButton && option == 2) {
 			addProduct();
+			// If user selected option 3, we invoke addStock() method.
 		} else if (inputButton.getSource() == okeyButton && option == 3) {
 			addStock();
 		}
@@ -233,12 +237,12 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 
 	private void showProductAddedMessage() {
 
-		// Just did this modification on the JOption pane so the button says "Back to the menu" instaf of "OK".
+		// Just did this modification on the JOption pane so the button says "Back to the menu" instead of "OK".
 		ImageIcon customIcon = new ImageIcon(getClass().getResource("/resources/img/checkImage.png"));
 		JOptionPane newProductPane = new JOptionPane(
-				"Congratulations, the new product has been added to the inventory!", JOptionPane.INFORMATION_MESSAGE,
+				"Congratulations, your petition has been done successfuly!", JOptionPane.INFORMATION_MESSAGE,
 				JOptionPane.DEFAULT_OPTION, customIcon, new Object[] { "BACK TO THE MENU" });
-		JDialog productAdded = newProductPane.createDialog("PRODUCT ADDED SUCCESSFULLY.");
+		JDialog productAdded = newProductPane.createDialog("PETITION DONE.");
 		productAdded.setVisible(true);
 	}
 
@@ -251,12 +255,12 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 		int stock = 0;
 
 		try {
-			// If the product is empty, we throw the exception.
+
 			if (product.isEmpty()) {
 				// If the product is empty, we throw the exception.
 				throw new IllegalArgumentException("PRODUCT NAME CAN'T BE EMPTY.");
 			}
-
+			// If its not empty, we parse it in order to match the getter parameter (int).
 			if (!productStock.getText().isEmpty()) {
 				stock = Integer.parseInt(productStock.getText());
 
@@ -264,13 +268,16 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 				// If stock is empty we throw the exception.
 				throw new NumberFormatException("STOCK CAN'T BE EMPTY.");
 			}
-			// If the product exists on our inventory.
+			// Add stock if the product exists on our inventory.
 			if (product != null) {
 				int addStock = productName.getStock() + stock;
 				productName.setStock(addStock);
+				showProductAddedMessage();
 				dispose();
-			}
+				
+			} 
 
+			// Exception to control if stock is empty.
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(ProductView.this, e.getMessage(), "WARNING, WE DETECTED AN ERROR.",
 					JOptionPane.ERROR_MESSAGE);
@@ -283,9 +290,12 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 
 	}
 
+	public void deleteProduct() {
+		
+	}
+	
 	@Override
 	public void keyPressed(KeyEvent buttonEnter) {
-
 		// This logic only works when user uses the key 'enter'.
 		if (buttonEnter.getKeyCode() == KeyEvent.VK_ENTER) {
 
@@ -294,12 +304,26 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 			// We need it since I want to do different behaviors between the keys.
 			Component focusedComponent = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 
-			// If user uses enter on those inputs/buttons the addProduct method is going to get executed.
-			if (focusedComponent == okeyButton || focusedComponent == productName || focusedComponent == productPrice
-					|| focusedComponent == productStock) {
+			// This array is going to have the differents buttons/inputs.
+			ArrayList<Component> componentList = new ArrayList<>();
+			// Add inputs/buttons to the array.
+			componentList.add(okeyButton);
+			componentList.add(productName);
+			componentList.add(productStock);
+			componentList.add(productPrice);
+
+			// If user uses enter on the ArrayList components and the chosed option is 2, we invoke addProduct().
+			if (componentList.contains(focusedComponent) && option == 2) {
 				addProduct();
 
+				// If user uses enter on the ArrayList components and the chosed option is 3, we invoke addStock().
+			} else if (componentList.contains(focusedComponent) && option == 3) {
+				addStock();
+
 				// When users uses enter on the backButton, we dispose() the JDialog.
+			} else if (componentList.contains(focusedComponent) && option == 9) {
+				deleteProduct();
+
 			} else if (focusedComponent == backButton) {
 				dispose();
 			}
