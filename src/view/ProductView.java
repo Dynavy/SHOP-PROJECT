@@ -156,12 +156,12 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 		this.productName.requestFocusInWindow();
 
 		if (option == 3) {
-
+			setTitle("ADD STOCK");
 			introduceProductPrice.setVisible(false);
 			productPrice.setVisible(false);
 
 		} else if (option == 9) {
-
+			setTitle("DELETE PRODUCT");
 			introduceProductPrice.setVisible(false);
 			productPrice.setVisible(false);
 			introduceProductStock.setVisible(false);
