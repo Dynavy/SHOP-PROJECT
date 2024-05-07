@@ -240,15 +240,15 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 			openCashView();
 
 		} else if (buttonInteraction.getSource() == addProducts) {
-			// We open the productView with 2 as an argument.
+			// We invoke the openProductView() with 2 as an argument.
 			openProductView(2);
 
 		} else if (buttonInteraction.getSource() == addStock) {
-			// We open the productView with 3 as an argument.
+			// We invoke the openProductView() with 3 as an argument.
 			openProductView(3);
 
 		} else if (buttonInteraction.getSource() == deleteProduct) {
-			// We open the productView with 9 as an argument.
+			// We invoke the openProductView() with 9 as an argument.
 			openProductView(9);
 		}
 		
@@ -262,10 +262,11 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		startAnimation();
 		cashDialog.setVisible(true);
 	}
-
+	
+	// Option parameter is the chosen option by the user.
 	public void openProductView(int option) {
 
-		// We open ProductView dialog passing our instance of shop so both classes can share it.
+		// Create a ProductView object passing our instance of shop and chosen open as an argument.
 		ProductView addProductDialog = new ProductView(option, shop);
 		addProductDialog.setVisible(true);
 
@@ -328,15 +329,17 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 			break;
 
 		case KeyEvent.VK_2:
-
+			// We invoke the openProductView() with 2 as an argument.
 			openProductView(2);
 			break;
 
 		case KeyEvent.VK_3:
+			// We invoke the openProductView() with 3 as an argument.
 			openProductView(3);
 			break;
 
 		case KeyEvent.VK_9:
+			// We invoke the openProductView() with 9 as an argument.
 			openProductView(9);
 			break;
 		}
