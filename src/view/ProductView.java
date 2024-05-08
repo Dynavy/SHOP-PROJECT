@@ -305,13 +305,22 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 				throw new IllegalArgumentException("PRODUCT NAME CAN'T BE EMPTY.");
 				
 			} 
-			if (product != null) {
-				
+			// Executes when product exists on our inventory.
+			if (productName != null) {
+				shop.getInventory().remove(productName);
+				shop.showInventory();
+				showProductAddedMessage();
+				dispose();
+			} 
+			else {
+				// Product doesn't exit popup.
+				JOptionPane.showMessageDialog(ProductView.this, "PRODUCT DOESN'T EXISTS, TRY AGAIN.",
+						"WARNING! CAN'T REMOVE THE PRODUCT", JOptionPane.ERROR_MESSAGE);
 			}
 			
 
-		} catch (IllegalArgumentException e) {
-			JOptionPane.showMessageDialog(ProductView.this, e.getMessage(), "WARNING, WE DETECTED AN ERROR.",
+		} catch (IllegalArgumentException emptyName) {
+			JOptionPane.showMessageDialog(ProductView.this, emptyName.getMessage(), "WARNING, WE DETECTED AN ERROR.",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
