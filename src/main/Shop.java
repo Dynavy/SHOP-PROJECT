@@ -556,9 +556,14 @@ public class Shop {
 		}
 	}
 
-	// Information for the cashView.
+	// Getter to get cashView.
 	public String getCashValue() {
 		// TODO Auto-generated method stub
 		return cash.toString();
+	}
+	
+	// Getter to get inventory ArrayList.
+	public ArrayList<Product> getInventory() {
+		return inventory;
 	}
 }
