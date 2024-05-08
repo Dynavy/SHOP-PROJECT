@@ -22,9 +22,8 @@ public class CashView extends JDialog implements ActionListener {
 	private JLabel cashImage;
 	private JLabel moneyIncashText;
 	private JLabel arrowImage;
-
-	Shop shop = new Shop();
-
+	private Shop shop;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -33,8 +32,9 @@ public class CashView extends JDialog implements ActionListener {
 		});
 	}
 
-	public CashView() {
-
+	public CashView(Shop shop) {
+		
+		this.shop = shop;
 		initWindowUI();
 		cashViewUI();
 		registerFonts();

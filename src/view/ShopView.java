@@ -48,11 +48,8 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private int originalY;
 	private JSeparator separatorLine;
 
-	// This instance is going to be used by differents classes so we don't have any inconsistencies.
+	// This instance is going to be used by different classes so we don't have any inconsistencies.
 	private Shop shop;
-
-	// Object cashDialog from cashView class.
-	CashView cashDialog = new CashView();
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -258,6 +255,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 	public void openCashView() {
 
+		CashView cashDialog = new CashView(shop);
 		// Invoke the animation method.
 		startAnimation();
 		cashDialog.setVisible(true);
