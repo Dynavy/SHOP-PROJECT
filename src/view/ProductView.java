@@ -53,6 +53,7 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 
 	// We receive the shop instance from ShopView and initialize it on our ProductView class.
 	public ProductView(int option, Shop shop) {
+		
 
 		this.shop = shop;
 		this.option = option;
@@ -79,13 +80,14 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 
 	public void productViewUI() {
 
+		getContentPane().setBackground(Color.LIGHT_GRAY);
 		Font titleFont = new Font("Poppins", Font.PLAIN, 19);
 		Font textFont = new Font("Poppins", Font.PLAIN, 12);
 		getContentPane().setLayout(null);
 
 		// Introduce data title.
 		introduceDataTitle = new JLabel("INTRODUCE THE FOLLOWING DATA");
-		introduceDataTitle.setBounds(6, 44, 326, 16);
+		introduceDataTitle.setBounds(10, 30, 326, 16);
 		introduceDataTitle.setFont(titleFont);
 		introduceDataTitle.setForeground(new Color(0, 108, 34));
 		getContentPane().add(introduceDataTitle);
@@ -128,7 +130,7 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 
 		// Green line.
 		separatorLine = new JSeparator();
-		separatorLine.setBounds(6, 61, 313, 11);
+		separatorLine.setBounds(15, 47, 313, 11);
 		separatorLine.setForeground(new Color(0, 108, 84));
 		separatorLine.setBackground(new Color(0, 108, 84));
 		getContentPane().add(separatorLine);

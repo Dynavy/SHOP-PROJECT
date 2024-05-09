@@ -41,6 +41,8 @@ public class CashView extends JDialog implements ActionListener {
 	}
 
 	public void initWindowUI() {
+		
+		
 		// Window title.
 		setTitle("CASH");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -56,7 +58,8 @@ public class CashView extends JDialog implements ActionListener {
 	}
 
 	public void cashViewUI() {
-
+		
+		getContentPane().setBackground(Color.LIGHT_GRAY);
 		Font textFont = new Font("Poppins", Font.PLAIN, 17);
 		getContentPane().setLayout(null);
 
