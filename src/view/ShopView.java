@@ -36,6 +36,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private JToggleButton addProducts;
 	private JToggleButton addStock;
 	private JToggleButton deleteProduct;
+	private JToggleButton showInventory;
 	private JLabel menu;
 	private JLabel welcomeText;
 	private JLabel shopImage;
@@ -204,10 +205,19 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		deleteProduct.setBackground(originalColor);
 		leftPanel.add(deleteProduct);
 		
+		
+		showInventory = new JToggleButton("5. Show inventory");
+		showInventory.setFont(new Font("Poppins", Font.PLAIN, 17));
+		showInventory.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		showInventory.setBackground(new Color(184, 207, 229));
+		showInventory.setBounds(93, 339, 173, 25);
+		leftPanel.add(showInventory);
+		
 		// Allow button interaction.
 		addStock.addActionListener(this);
 		addProducts.addActionListener(this);
 		deleteProduct.addActionListener(this);
+		showInventory.addActionListener(this);
 
 		// KeyListener so we can detect when the user the keyboard.
 		this.addKeyListener(this);
@@ -232,6 +242,8 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		} else if (buttonInteraction.getSource() == deleteProduct) {
 			// We invoke the openProductView() with 9 as an argument.
 			openProductView(9);
+		} else if (buttonInteraction.getSource() == showInventory) {
+			openInventoryView(5);
 		}
 		
 		// Focus on the frame after clicking a button.
@@ -250,9 +262,15 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	public void openProductView(int option) {
 
 		// Create a ProductView object passing our instance of shop and chosen open as an argument.
-		ProductView addProductDialog = new ProductView(option, shop);
-		addProductDialog.setVisible(true);
+		ProductView openProductDialog = new ProductView(option, shop);
+		openProductDialog.setVisible(true);
 
+	}
+	
+	public void openInventoryView(int option) {
+		
+		ProductsView openInventoryDialog = new ProductsView(option, shop);
+		openInventoryDialog.setVisible(true);
 	}
 
 	public void startAnimation() {
@@ -324,6 +342,11 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		case KeyEvent.VK_9:
 			// We invoke the openProductView() with 9 as an argument.
 			openProductView(9);
+			break;
+			
+		case KeyEvent.VK_5:
+			// We invoke the openInventoryView() with 5 as an argument.
+			openInventoryView(5);
 			break;
 		}
 
