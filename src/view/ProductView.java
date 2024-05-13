@@ -130,9 +130,9 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 
 		// Green line.
 		separatorLine = new JSeparator();
-		separatorLine.setBounds(15, 47, 313, 11);
-		separatorLine.setForeground(new Color(0, 108, 84));
-		separatorLine.setBackground(new Color(0, 108, 84));
+		separatorLine.setBounds(9, 47, 313, 11);
+		separatorLine.setForeground(new Color(0, 108, 34));
+		separatorLine.setBackground(new Color(0, 108, 34));
 		getContentPane().add(separatorLine);
 
 		// Add button.
@@ -279,6 +279,11 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 				showProductAddedMessage();
 				dispose();
 
+			}
+			
+			// Logic to control when product doesn't exists on our array.
+			if (product == null) {
+				
 			}
 
 			// Exception to control if stock is empty.
