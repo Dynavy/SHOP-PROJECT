@@ -51,12 +51,13 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 		});
 	}
 
-	// We receive the shop instance from ShopView and initialize it on our ProductView class.
+	
 	public ProductView(int option, Shop shop) {
 		
-
+		// Inicialize the shop and option from ShopView class.
 		this.shop = shop;
 		this.option = option;
+		
 		initWindowUI();
 		productViewUI();
 
