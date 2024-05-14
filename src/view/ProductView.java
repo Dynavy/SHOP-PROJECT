@@ -230,12 +230,12 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 			}
 
 			// Exception to control if price and stock are empty.
-		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(ProductView.this, e.getMessage(), "WARNING, WE DETECTED AN ERROR",
+		} catch (NumberFormatException emptyError) {
+			JOptionPane.showMessageDialog(ProductView.this, emptyError.getMessage(), "WARNING, WE DETECTED AN ERROR",
 					JOptionPane.ERROR_MESSAGE);
 			// Exception to control if product is empty.
-		} catch (IllegalArgumentException e) {
-			JOptionPane.showMessageDialog(ProductView.this, e.getMessage(), "WARNING, WE DETECTED AN ERROR.",
+		} catch (IllegalArgumentException emptyError) {
+			JOptionPane.showMessageDialog(ProductView.this, emptyError.getMessage(), "WARNING, WE DETECTED AN ERROR.",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
