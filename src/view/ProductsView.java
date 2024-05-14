@@ -15,6 +15,7 @@ import main.Shop;
 
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
+import java.awt.BorderLayout;
 
 public class ProductsView extends JDialog {
 
@@ -37,7 +38,9 @@ public class ProductsView extends JDialog {
 		this.shop = shop;
 		this.option = option;
 		
+		
 		initWindowUI();
+		productsViewUI();
 		
 	}
 
