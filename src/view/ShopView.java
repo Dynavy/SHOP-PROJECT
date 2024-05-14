@@ -3,13 +3,13 @@ package view;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.GraphicsEnvironment;
+
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.InputStream;
+import util.Constants;
 import javax.swing.Timer;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -189,28 +189,29 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		leftPanel.add(addProducts);
 
 		// CASE 3 BUTTON (addStock).
-		addStock = new JToggleButton("3. Add stock.");
+		addStock = new JToggleButton("3. Update stock.");
 		addStock.setFont(new Font("Poppins", Font.PLAIN, 17));
 		addStock.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		addStock.setBounds(93, 217, 173, 25);
 		addStock.setBackground(originalColor);
+		
 		leftPanel.add(addStock);
 
 		// Case 9 button (deleteProduct).
 		deleteProduct = new JToggleButton("9. Delete product.");
 		deleteProduct.setFont(new Font("Poppins", Font.PLAIN, 17));
-		deleteProduct.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-		addStock.setBackground(originalColor);;
-		deleteProduct.setBounds(93, 277, 173, 25);
+		deleteProduct.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));	
+		deleteProduct.setBounds(93, 339, 173, 25);
 		deleteProduct.setBackground(originalColor);
 		leftPanel.add(deleteProduct);
 		
 		
-		showInventory = new JToggleButton("5. Show inventory");
+		showInventory = new JToggleButton("5. Show inventory.");
 		showInventory.setFont(new Font("Poppins", Font.PLAIN, 17));
 		showInventory.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		showInventory.setBackground(new Color(184, 207, 229));
-		showInventory.setBounds(93, 339, 173, 25);
+		showInventory.setBounds(93, 277, 173, 25);
+		
 		leftPanel.add(showInventory);
 		
 		// Allow button interaction.
@@ -229,30 +230,31 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 		if (buttonInteraction.getSource() == checkMoney) {
 			// Invoke the check money method.
-			openCashView();
+			openCashView(Constants.CHECK_MONEY);
 
 		} else if (buttonInteraction.getSource() == addProducts) {
 			// We invoke the openProductView() with 2 as an argument.
-			openProductView(2);
+			 openProductView(Constants.ADD_PRODUCTS);
 
 		} else if (buttonInteraction.getSource() == addStock) {
 			// We invoke the openProductView() with 3 as an argument.
-			openProductView(3);
+			openProductView(Constants.ADD_STOCK);
 
 		} else if (buttonInteraction.getSource() == deleteProduct) {
 			// We invoke the openProductView() with 9 as an argument.
-			openProductView(9);
+			openProductView(Constants.DELETE_PRODUCT);
+			
 		} else if (buttonInteraction.getSource() == showInventory) {
-			openInventoryView(5);
+			openProductView(Constants.SHOW_INVENTORY);
 		}
 		
 		// Focus on the frame after clicking a button.
 		this.requestFocus();
 	}
 
-	public void openCashView() {
+	public void openCashView(int option) {
 
-		CashView cashDialog = new CashView(shop);
+		CashView cashDialog = new CashView(option, shop);
 		// Invoke the animation method.
 		startAnimation();
 		cashDialog.setVisible(true);
@@ -326,27 +328,27 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		switch (key) {
 
 		case KeyEvent.VK_1:
-			openCashView();
+			openCashView(Constants.CHECK_MONEY);
 			break;
 
 		case KeyEvent.VK_2:
 			// We invoke the openProductView() with 2 as an argument.
-			openProductView(2);
+			 openProductView(Constants.ADD_PRODUCTS);
 			break;
 
 		case KeyEvent.VK_3:
 			// We invoke the openProductView() with 3 as an argument.
-			openProductView(3);
+			openProductView(Constants.ADD_STOCK);
 			break;
 
 		case KeyEvent.VK_9:
 			// We invoke the openProductView() with 9 as an argument.
-			openProductView(9);
+			openProductView(Constants.DELETE_PRODUCT);
 			break;
 			
 		case KeyEvent.VK_5:
 			// We invoke the openInventoryView() with 5 as an argument.
-			openInventoryView(5);
+			openInventoryView(Constants.SHOW_INVENTORY);
 			break;
 		}
 
