@@ -51,13 +51,12 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 		});
 	}
 
-	
 	public ProductView(int option, Shop shop) {
-		
+
 		// Inicialize the shop and option from ShopView class.
 		this.shop = shop;
 		this.option = option;
-		
+
 		initWindowUI();
 		productViewUI();
 
@@ -66,7 +65,7 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 	public void initWindowUI() {
 
 		// Window title.
-		setTitle("ADD PRODUCT");
+		setTitle("INVENTORY DISPLAY.");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setResizable(false);
 		// Size of the window when executing.
@@ -231,10 +230,12 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 
 			// Exception to control if price and stock are empty.
 		} catch (NumberFormatException emptyError) {
+
 			JOptionPane.showMessageDialog(ProductView.this, emptyError.getMessage(), "WARNING, WE DETECTED AN ERROR",
 					JOptionPane.ERROR_MESSAGE);
 			// Exception to control if product is empty.
 		} catch (IllegalArgumentException emptyError) {
+
 			JOptionPane.showMessageDialog(ProductView.this, emptyError.getMessage(), "WARNING, WE DETECTED AN ERROR.",
 					JOptionPane.ERROR_MESSAGE);
 		}
@@ -274,17 +275,16 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 				throw new NumberFormatException("STOCK CAN'T BE EMPTY.");
 			}
 			// Add stock if the product exists on our inventory.
-			if (product != null) {
+			if (productName != null) {
 				int addStock = productName.getStock() + stock;
 				productName.setStock(addStock);
 				showProductAddedMessage();
 				dispose();
 
-			}
-			
-			// Logic to control when product doesn't exists on our array.
-			if (product == null) {
-				
+				// Display error if the product doesn't exists.
+			} else {
+				JOptionPane.showMessageDialog(ProductView.this, "PRODUCT DOESN'T EXISTS, TRY AGAIN.",
+						"WARNING! CAN'T ADD THE PRODUCT", JOptionPane.ERROR_MESSAGE);
 			}
 
 			// Exception to control if stock is empty.
@@ -311,21 +311,19 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 			if (product.isEmpty()) {
 				// If the product is empty, we throw the exception.
 				throw new IllegalArgumentException("PRODUCT NAME CAN'T BE EMPTY.");
-				
-			} 
+
+			}
 			// Executes when product exists on our inventory.
 			if (productName != null) {
 				shop.getInventory().remove(productName);
 				shop.showInventory();
 				showProductAddedMessage();
 				dispose();
-			} 
-			else {
+			} else {
 				// Product doesn't exit popup.
 				JOptionPane.showMessageDialog(ProductView.this, "PRODUCT DOESN'T EXISTS, TRY AGAIN.",
 						"WARNING! CAN'T REMOVE THE PRODUCT", JOptionPane.ERROR_MESSAGE);
 			}
-			
 
 		} catch (IllegalArgumentException emptyName) {
 			JOptionPane.showMessageDialog(ProductView.this, emptyName.getMessage(), "WARNING, WE DETECTED AN ERROR.",
