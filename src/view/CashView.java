@@ -32,7 +32,7 @@ public class CashView extends JDialog implements ActionListener {
 		});
 	}
 
-	public CashView(Shop shop) {
+	public CashView(int option, Shop shop) {
 		
 		this.shop = shop;
 		initWindowUI();
