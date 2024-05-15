@@ -65,12 +65,11 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	}
 
 	public ShopView() {
-		
 		// We inicialize a shop instance and load the inventory.
 		this.shop = new Shop();
 		shop.loadInventory();
-
-		shop.showInventory();
+		
+		// shop.showInventory();
 
 		// Invoke all the methods.
 		initWindowUI();
@@ -175,7 +174,6 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		checkMoney.setBounds(93, 97, 173, 25);
 		checkMoney.setFont(textFont);
 		checkMoney.setBackground(originalColor);
-		checkMoney.addActionListener(this);
 		originalY = checkMoney.getY();
 		checkMoney.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		leftPanel.add(checkMoney);
@@ -215,6 +213,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		leftPanel.add(showInventory);
 		
 		// Allow button interaction.
+		checkMoney.addActionListener(this);
 		addStock.addActionListener(this);
 		addProducts.addActionListener(this);
 		deleteProduct.addActionListener(this);
@@ -245,7 +244,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 			openProductView(Constants.DELETE_PRODUCT);
 			
 		} else if (buttonInteraction.getSource() == showInventory) {
-			openProductView(Constants.SHOW_INVENTORY);
+			openInventoryView(Constants.SHOW_INVENTORY);
 		}
 		
 		// Focus on the frame after clicking a button.
@@ -256,7 +255,6 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 		CashView cashDialog = new CashView(option, shop);
 		// Invoke the animation method.
-		startAnimation();
 		cashDialog.setVisible(true);
 	}
 	
@@ -273,46 +271,6 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		
 		ProductsView openInventoryDialog = new ProductsView(option, shop);
 		openInventoryDialog.setVisible(true);
-	}
-
-	public void startAnimation() {
-
-		// We verify if an animation is in progress and if it is, we stop it.
-		if (animationTimer != null && animationTimer.isRunning()) {
-
-			animationTimer.stop();
-		}
-
-		// Stoping the animation after 500miliseconds.
-		Timer delayTimer = new Timer(500, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				animationTimer.stop(); // Stop the animation
-
-			}
-
-		});
-
-		// Don't allow the temporizer to repeat.
-		delayTimer.setRepeats(false);
-		// Start temporizer.
-		delayTimer.start();
-
-		// A temporizer that is going to execute every time the user click the button.
-		animationTimer = new Timer(10, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Movement.
-				int newY = checkMoney.getY() + (int) (animationDelta * animationDirection);
-				if (newY <= originalY - 5) {
-					animationDirection = 1;
-				} else if (newY >= originalY + 5) {
-					animationDirection = -1;
-				}
-				checkMoney.setLocation(checkMoney.getX(), newY);
-			}
-		});
-		animationTimer.start();
 	}
 
 	@Override
