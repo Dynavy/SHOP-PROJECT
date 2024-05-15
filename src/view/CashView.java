@@ -93,7 +93,6 @@ public class CashView extends JDialog implements ActionListener {
 		// Ok button.
 		okButton = new JToggleButton("OK");
 		okButton.setBounds(117, 297, 104, 43);
-		okButton.setActionCommand("OK");
 		okButton.addActionListener(this);
 		getContentPane().add(okButton);
 
