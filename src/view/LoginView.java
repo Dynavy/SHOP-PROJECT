@@ -206,10 +206,11 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		submit = new JToggleButton("LOGIN");
 		submit.setBackground(new Color(135, 206, 235));
 		submit.setBounds(61, 263, 232, 25);
-		submit.addActionListener(this);
 		submit.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		panel.add(submit);
-
+		
+		// ActionListener so we can detect when uses clicks submit button.
+		submit.addActionListener(this);
 		// KeyListener so we can detect when the user uses a key when on those inputs.
 		employeePass.addKeyListener(this);
 		employeeUser.addKeyListener(this);
@@ -285,6 +286,12 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
+	// We are invoking this everytime user interacts with loginButton.
+	public void resetText () {
+		employeeUser.setText("");
+		employeePass.setText("");
+	}
 
 	public void actionPerformed(ActionEvent loginButton) {
 
@@ -292,6 +299,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		if (loginButton.getSource() == submit) {
 			// We invoke the method that validates if the introduced credentials are correct or not.
 			validateCredentials();
+			resetText();
 		}
 	}
 
@@ -302,6 +310,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		// This only applicates on the KeyListeners inputs, defined above.
 		if (buttonEnter.getKeyCode() == KeyEvent.VK_ENTER) {
 			validateCredentials();
+			resetText();
 		}
 	}
 
