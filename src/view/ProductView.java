@@ -100,7 +100,7 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 
 		// Introduce product stock text.
 		introduceProductStock = new JLabel("Product stock :");
-		introduceProductStock.setBounds(50, 172, 92, 16);
+		introduceProductStock.setBounds(50, 172, 112, 16);
 		introduceProductStock.setFont(textFont);
 		getContentPane().add(introduceProductStock);
 
@@ -157,11 +157,17 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 		// Focus on productName input.
 		this.productName.requestFocusInWindow();
 
+		
+		
+		// View when user wants to add stock.
 		if (option == 3) {
 			setTitle("ADD STOCK");
+			introduceProductStock.setText("Add new stock :");
 			introduceProductPrice.setVisible(false);
 			productPrice.setVisible(false);
-
+			
+		// View when user wants to delete products.
+			
 		} else if (option == 9) {
 			setTitle("DELETE PRODUCT");
 			introduceProductPrice.setVisible(false);
@@ -169,24 +175,6 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 			introduceProductStock.setVisible(false);
 			productStock.setVisible(false);
 		}
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent inputButton) {
-
-		if (inputButton.getSource() == backButton) {
-			dispose();
-
-			// If user selected option 2, we invoke addProducty() method.
-		} else if (inputButton.getSource() == okeyButton && option == 2) {
-			addProduct();
-			// If user selected option 3, we invoke addStock() method.
-		} else if (inputButton.getSource() == okeyButton && option == 3) {
-			addStock();
-		} else if (inputButton.getSource() == okeyButton && option == 9) {
-			deleteProduct();
-		}
-
 	}
 
 	public void addProduct() {
@@ -278,6 +266,7 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 			if (productName != null) {
 				int addStock = productName.getStock() + stock;
 				productName.setStock(addStock);
+				shop.showInventory();
 				showProductAddedMessage();
 				dispose();
 
@@ -329,6 +318,25 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 			JOptionPane.showMessageDialog(ProductView.this, emptyName.getMessage(), "WARNING, WE DETECTED AN ERROR.",
 					JOptionPane.ERROR_MESSAGE);
 		}
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent inputButton) {
+
+		if (inputButton.getSource() == backButton) {
+			dispose();
+
+			// If user selected option 2 and clicks 'okeyButton' we invoke addProducty() method.
+		} else if (inputButton.getSource() == okeyButton && option == 2) {
+			addProduct();
+			// If user selected option 3 and clicks 'okeyButton' we invoke addStock() method.
+		} else if (inputButton.getSource() == okeyButton && option == 3) {
+			addStock();
+			// If user selected option 9 and clicks 'okeyButton' we invoke deleteProduct() method.
+		} else if (inputButton.getSource() == okeyButton && option == 9) {
+			deleteProduct();
+		}
+
 	}
 
 	@Override
