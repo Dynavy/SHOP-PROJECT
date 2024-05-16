@@ -3,7 +3,6 @@ package view;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -20,20 +19,14 @@ public class ProductsView extends JDialog {
 	private JSeparator separatorLine;
 	private Shop shop;
 	int option;
-
-	public static void main(String[] args) {
-
-	}
-
+	
 	public ProductsView(int option, Shop shop) {
 		// Inicialize the same instance and option from ShopView class.
 		this.shop = shop;
 		this.option = option;
-
 		initWindowUI();
 		productsViewUI();
 		tableInformation();
-
 	}
 
 	public void initWindowUI() {
@@ -52,10 +45,8 @@ public class ProductsView extends JDialog {
 	}
 
 	public void productsViewUI() {
-
-
-		Font titleFont = new Font("Poppins", Font.PLAIN, 19);
 		
+		Font titleFont = new Font("Poppins", Font.PLAIN, 19);
 		
 		// Title text.
 		availableProductsInput = new JLabel("AVAILABLE PRODUCTS");
@@ -95,6 +86,13 @@ public class ProductsView extends JDialog {
 		
 		productTable = new JTable(data, columnNames);
 		JScrollPane scrollPane = new JScrollPane(productTable);
+		
+		// Modify width for each column.
+		productTable.getColumnModel().getColumn(0).setPreferredWidth(20); // Id.
+		productTable.getColumnModel().getColumn(1).setPreferredWidth(80); // Name.
+		productTable.getColumnModel().getColumn(2).setPreferredWidth(80); // PublicPrice.
+		productTable.getColumnModel().getColumn(3).setPreferredWidth(110); // WholeSalerPrice.
+		productTable.getColumnModel().getColumn(4).setPreferredWidth(40); // Stock
 		
 		// Set size of the table.
 		scrollPane.setBounds(10, 50, 310, 300);
