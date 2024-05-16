@@ -3,6 +3,7 @@ package view;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import util.Constants;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -248,7 +249,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		try {
 
 			// The first thing that is going check is if credentials are invalid for the third consecutive time .
-			if (countError == 3 && !isLogged) {
+			if (countError >= Constants.MAX_ATTEMPTS && !isLogged) {
 				throw new LimitLoginException();
 			}
 			
@@ -261,7 +262,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 			// Wrong credentials --> returns false.
 			if (!isLogged) {
 				// Error message display when incorrect credentials.
-				JOptionPane.showMessageDialog(LoginView.this, "Invalid credentials, try again " + countError + "/3.",
+				JOptionPane.showMessageDialog(LoginView.this, "Invalid credentials, try again " + countError + "/" + Constants.MAX_ATTEMPTS + ".",
 						"WARNING! VALIDATION WENT WRONG", JOptionPane.ERROR_MESSAGE);
 			} else {
 				// Good credentials --> returns true.
