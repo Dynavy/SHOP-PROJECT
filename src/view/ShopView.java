@@ -69,7 +69,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		this.shop = new Shop();
 		shop.loadInventory();
 		
-		// shop.showInventory();
+		 shop.showInventory();
 
 		// Invoke all the methods.
 		initWindowUI();
@@ -203,13 +203,12 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		deleteProduct.setBackground(originalColor);
 		leftPanel.add(deleteProduct);
 		
-		
+		// Case 5 button (showInventory).
 		showInventory = new JToggleButton("5. Show inventory.");
 		showInventory.setFont(new Font("Poppins", Font.PLAIN, 17));
 		showInventory.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		showInventory.setBackground(new Color(184, 207, 229));
 		showInventory.setBounds(93, 277, 173, 25);
-		
 		leftPanel.add(showInventory);
 		
 		// Allow button interaction.
@@ -226,24 +225,25 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 	// Buttons interaction.
 	public void actionPerformed(ActionEvent buttonInteraction) {
-
+		
 		if (buttonInteraction.getSource() == checkMoney) {
 			// Invoke the check money method.
 			openCashView(Constants.CHECK_MONEY);
 
 		} else if (buttonInteraction.getSource() == addProducts) {
-			// We invoke the openProductView() with 2 as an argument.
+			// We invoke the openProductView() with his constant as an argument.
 			 openProductView(Constants.ADD_PRODUCTS);
 
 		} else if (buttonInteraction.getSource() == addStock) {
-			// We invoke the openProductView() with 3 as an argument.
+			// We invoke the openProductView() with his constant as an argument.
 			openProductView(Constants.ADD_STOCK);
 
 		} else if (buttonInteraction.getSource() == deleteProduct) {
-			// We invoke the openProductView() with 9 as an argument.
+			// We invoke the openProductView() with his constant as an argument.
 			openProductView(Constants.DELETE_PRODUCT);
 			
 		} else if (buttonInteraction.getSource() == showInventory) {
+			// We invoke the openInventoryView() with his constant as an argument.
 			openInventoryView(Constants.SHOW_INVENTORY);
 		}
 		
@@ -286,26 +286,27 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		switch (key) {
 
 		case KeyEvent.VK_1:
+			// We invoke the openCashView() with his constant as an argument.
 			openCashView(Constants.CHECK_MONEY);
 			break;
 
 		case KeyEvent.VK_2:
-			// We invoke the openProductView() with 2 as an argument.
+			// We invoke the openProductView() with his constant as an argument.
 			 openProductView(Constants.ADD_PRODUCTS);
 			break;
 
 		case KeyEvent.VK_3:
-			// We invoke the openProductView() with 3 as an argument.
+			// We invoke the openProductView() with his constant as an argument.
 			openProductView(Constants.ADD_STOCK);
 			break;
 
 		case KeyEvent.VK_9:
-			// We invoke the openProductView() with 9 as an argument.
+			// We invoke the openProductView() with his constant as an argument.
 			openProductView(Constants.DELETE_PRODUCT);
 			break;
 			
 		case KeyEvent.VK_5:
-			// We invoke the openInventoryView() with 5 as an argument.
+			// We invoke the openInventoryView() with his constant as an argument.
 			openInventoryView(Constants.SHOW_INVENTORY);
 			break;
 		}
