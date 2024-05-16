@@ -40,13 +40,9 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private JLabel menu;
 	private JLabel welcomeText;
 	private JLabel shopImage;
-	private Timer animationTimer;
 	// Buttons color:
 	private Color originalColor = new Color(184, 207, 229, 255);
 	// How many pixels jump the button when clicked.
-	private int animationDelta = 1;
-	private int animationDirection = 1;
-	private int originalY;
 	private JSeparator separatorLine;
 
 	// This instance is going to be used by different classes so we don't have any inconsistencies.
@@ -174,7 +170,6 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		checkMoney.setBounds(93, 97, 173, 25);
 		checkMoney.setFont(textFont);
 		checkMoney.setBackground(originalColor);
-		originalY = checkMoney.getY();
 		checkMoney.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		leftPanel.add(checkMoney);
 
