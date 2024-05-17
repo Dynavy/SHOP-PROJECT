@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
@@ -33,7 +32,6 @@ public class CashView extends JDialog implements ActionListener {
 	}
 
 	public void initWindowUI() {
-		
 		
 		// Window title.
 		setTitle("CASH");
