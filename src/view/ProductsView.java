@@ -33,7 +33,7 @@ public class ProductsView extends JDialog {
 	public void initWindowUI() {
 
 		// Window title.
-		setTitle("Products View");
+		setTitle("PRODUCTS VIEW");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		// Size of the window when executing.
 		setSize(345, 400);
