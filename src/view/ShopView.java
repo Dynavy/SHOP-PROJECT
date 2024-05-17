@@ -1,16 +1,18 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import util.Constants;
-import javax.swing.Timer;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -51,7 +53,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				
+
 				ShopView shopFrame = new ShopView();
 				shopFrame.setVisible(true);
 				// Focusable on true so we can detect the keyboard focus.
@@ -64,18 +66,18 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		// We inicialize a shop instance and load the inventory.
 		this.shop = new Shop();
 		shop.loadInventory();
-		
-		 shop.showInventory();
+
+		shop.showInventory();
 
 		// Invoke all the methods.
 		initWindowUI();
 		menuUI();
 		loadIcon();
-		
+
 	}
 
 	public void initWindowUI() {
-		
+
 		// Window title.
 		setTitle("SHOP GUI");
 		// Size of the window when executing.
@@ -101,7 +103,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	}
 
 	public void menuUI() {
-		
+
 		// PANEL CREATION.
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 108, 84), 3)));
@@ -187,17 +189,17 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		addStock.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		addStock.setBounds(93, 217, 173, 25);
 		addStock.setBackground(originalColor);
-		
+
 		leftPanel.add(addStock);
 
 		// Case 9 button (deleteProduct).
 		deleteProduct = new JToggleButton("9. Delete product.");
 		deleteProduct.setFont(new Font("Poppins", Font.PLAIN, 17));
-		deleteProduct.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));	
+		deleteProduct.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		deleteProduct.setBounds(93, 339, 173, 25);
 		deleteProduct.setBackground(originalColor);
 		leftPanel.add(deleteProduct);
-		
+
 		// Case 5 button (showInventory).
 		showInventory = new JToggleButton("5. Show inventory.");
 		showInventory.setFont(new Font("Poppins", Font.PLAIN, 17));
@@ -205,7 +207,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		showInventory.setBackground(new Color(184, 207, 229));
 		showInventory.setBounds(93, 277, 173, 25);
 		leftPanel.add(showInventory);
-		
+
 		// Allow button interaction.
 		checkMoney.addActionListener(this);
 		addStock.addActionListener(this);
@@ -220,14 +222,14 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 	// Buttons interaction.
 	public void actionPerformed(ActionEvent buttonInteraction) {
-		
+
 		if (buttonInteraction.getSource() == checkMoney) {
 			// Invoke the check money method.
 			openCashView(Constants.CHECK_MONEY);
 
 		} else if (buttonInteraction.getSource() == addProducts) {
 			// We invoke the openProductView() with his constant as an argument.
-			 openProductView(Constants.ADD_PRODUCTS);
+			openProductView(Constants.ADD_PRODUCTS);
 
 		} else if (buttonInteraction.getSource() == addStock) {
 			// We invoke the openProductView() with his constant as an argument.
@@ -236,12 +238,12 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		} else if (buttonInteraction.getSource() == deleteProduct) {
 			// We invoke the openProductView() with his constant as an argument.
 			openProductView(Constants.DELETE_PRODUCT);
-			
+
 		} else if (buttonInteraction.getSource() == showInventory) {
 			// We invoke the openInventoryView() with his constant as an argument.
 			openInventoryView(Constants.SHOW_INVENTORY);
 		}
-		
+
 		// Focus on the frame after clicking a button.
 		this.requestFocus();
 	}
@@ -251,21 +253,25 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		CashView cashDialog = new CashView(option, shop);
 		// Invoke the animation method.
 		cashDialog.setVisible(true);
+		cashDialog.setLocation(calculateDialogPosition());
+
 	}
-	
+
 	// Option parameter is the chosen option by the user.
 	public void openProductView(int option) {
 
 		// Create a ProductView object passing our instance of shop and chosen open as an argument.
 		ProductView openProductDialog = new ProductView(option, shop);
 		openProductDialog.setVisible(true);
+		openProductDialog.setLocation(calculateDialogPosition());
 
 	}
-	
+
 	public void openInventoryView(int option) {
-		
+
 		ProductsView openInventoryDialog = new ProductsView(option, shop);
 		openInventoryDialog.setVisible(true);
+		openInventoryDialog.setLocation(calculateDialogPosition());
 	}
 
 	@Override
@@ -287,7 +293,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 		case KeyEvent.VK_2:
 			// We invoke the openProductView() with his constant as an argument.
-			 openProductView(Constants.ADD_PRODUCTS);
+			openProductView(Constants.ADD_PRODUCTS);
 			break;
 
 		case KeyEvent.VK_3:
@@ -299,7 +305,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 			// We invoke the openProductView() with his constant as an argument.
 			openProductView(Constants.DELETE_PRODUCT);
 			break;
-			
+
 		case KeyEvent.VK_5:
 			// We invoke the openInventoryView() with his constant as an argument.
 			openInventoryView(Constants.SHOW_INVENTORY);
@@ -310,6 +316,20 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		
+	}
+	// Method to calculate the default relative dimensions. 
+	private Point calculateDialogPosition(double relativeX, double relativeY) {
 
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int x = (int) (screenSize.getWidth() * relativeX);
+		int y = (int) (screenSize.getHeight() * relativeY);
+		return new Point(x, y);
+	}
+	
+	// Method to open our JDialogs on the correct position.
+	private Point calculateDialogPosition() {
+		// We use the dimensions that we want for our popups.
+		return calculateDialogPosition(Constants.DEFAULT_RELATIVE_X, Constants.DEFAULT_RELATIVE_Y);
 	}
 }
