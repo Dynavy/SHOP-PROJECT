@@ -21,6 +21,7 @@ public class ProductsView extends JDialog {
 	int option;
 	
 	public ProductsView(int option, Shop shop) {
+		
 		// Inicialize the same instance and option from ShopView class.
 		this.shop = shop;
 		this.option = option;
@@ -37,8 +38,6 @@ public class ProductsView extends JDialog {
 		// Size of the window when executing.
 		setSize(345, 400);
 		setResizable(false);
-		// Window at the center of the screen.
-		setLocationRelativeTo(null);
 		// We define our background color.
 		setBackground(new Color(237, 237, 233));
 		getContentPane().setLayout(null);
@@ -68,14 +67,11 @@ public class ProductsView extends JDialog {
 
 		// List of Product class with the inventory information.
 		ArrayList<Product> productsInfo = shop.getInventory();
-
 		// Table column information.
 		String[] columnNames = { "Id", "Name", "PublicPrice", "WholesalerPrice ", "Stock" };
-
 		Object[][] data = new Object[productsInfo.size()][5];
 
 		for (int i = 0; i < productsInfo.size(); i++) {
-			
 			Product product = productsInfo.get(i);
 			data[i][0] = product.getId();
 			data[i][1] = product.getName();
@@ -93,7 +89,6 @@ public class ProductsView extends JDialog {
 		productTable.getColumnModel().getColumn(2).setPreferredWidth(80); // PublicPrice.
 		productTable.getColumnModel().getColumn(3).setPreferredWidth(110); // WholeSalerPrice.
 		productTable.getColumnModel().getColumn(4).setPreferredWidth(40); // Stock
-		
 		// Set size of the table.
 		scrollPane.setBounds(10, 50, 310, 300);
 		getContentPane().add(scrollPane);

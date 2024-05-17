@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -56,7 +55,6 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 		// Inicialize the shop and option from ShopView class.
 		this.shop = shop;
 		this.option = option;
-
 		initWindowUI();
 		productViewUI();
 
@@ -71,8 +69,6 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 		// Size of the window when executing.
 		setSize(345, 400);
 		setResizable(false);
-		// Window at the center of the screen.
-		setLocationRelativeTo(null);
 		// We define our background color.
 		setBackground(new Color(237, 237, 233));
 
@@ -156,8 +152,6 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 
 		// Focus on productName input.
 		this.productName.requestFocusInWindow();
-
-		
 		
 		// View when user wants to add stock.
 		if (option == 3) {
@@ -167,7 +161,6 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 			productPrice.setVisible(false);
 			
 		// View when user wants to delete products.
-			
 		} else if (option == 9) {
 			setTitle("DELETE PRODUCT");
 			introduceProductPrice.setVisible(false);

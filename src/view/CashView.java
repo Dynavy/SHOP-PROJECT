@@ -49,8 +49,6 @@ public class CashView extends JDialog implements ActionListener {
 		setResizable(false);
 		// Size of the window when executing.
 		setSize(345, 400);
-		// Window at the center of the screen.
-		setLocationRelativeTo(null);
 		// We define our background color.
 		setBackground(new Color(237, 237, 233));
 
