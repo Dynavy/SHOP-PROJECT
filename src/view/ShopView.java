@@ -44,36 +44,20 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private JLabel shopImage;
 	// Buttons color:
 	private Color originalColor = new Color(184, 207, 229, 255);
-	// How many pixels jump the button when clicked.
 	private JSeparator separatorLine;
-
 	// This instance is going to be used by different classes so we don't have any inconsistencies.
 	private Shop shop;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-
-				ShopView shopFrame = new ShopView();
-				shopFrame.setVisible(true);
-				// Focusable on true so we can detect the keyboard focus.
-				shopFrame.setFocusable(true);
-			}
-		});
-	}
-
 	public ShopView() {
+		
 		// We inicialize a shop instance and load the inventory.
 		this.shop = new Shop();
 		shop.loadInventory();
-
 		shop.showInventory();
-
 		// Invoke all the methods.
 		initWindowUI();
 		menuUI();
 		loadIcon();
-
 	}
 
 	public void initWindowUI() {
@@ -89,6 +73,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		// We define our background color.
 		contentPane.setBackground(Color.LIGHT_GRAY);
 		setContentPane(contentPane);
+		setFocusable(true);
 	}
 
 	public void loadIcon() {
@@ -99,11 +84,10 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		Image scaledImage = icon.getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH);
 		// We set the image to our window.
 		setIconImage(scaledImage);
-
 	}
 
 	public void menuUI() {
-
+	
 		// PANEL CREATION.
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 108, 84), 3)));
@@ -311,7 +295,6 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 			openInventoryView(Constants.SHOW_INVENTORY);
 			break;
 		}
-
 	}
 
 	@Override

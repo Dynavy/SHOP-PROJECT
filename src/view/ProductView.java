@@ -35,20 +35,10 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 	private JLabel introduceProductName;
 	private JLabel introduceProductStock;
 	private JLabel introduceProductPrice;
-
-	// Here we will save the instance that came from ShopView.
+	// We inicialize the instance from ShopView on this variable.
 	private Shop shop;
-
+	// We inicialize the chosen option on this variable.
 	private int option;
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-
-			public void run() {
-
-			}
-		});
-	}
 
 	public ProductView(int option, Shop shop) {
 
@@ -57,7 +47,6 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 		this.option = option;
 		initWindowUI();
 		productViewUI();
-
 	}
 
 	public void initWindowUI() {
@@ -71,7 +60,6 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 		setResizable(false);
 		// We define our background color.
 		setBackground(new Color(237, 237, 233));
-
 	}
 
 	public void productViewUI() {

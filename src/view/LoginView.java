@@ -48,21 +48,9 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 	private JLabel validationWarningImage;
 	private JLabel passImage;
 	private JLabel idImage;
-	
 	// We need this variable to manage the user attempts. 
 	private int countError = 0;
 
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				LoginView loginFrame = new LoginView();
-				// First input from the user when executing is going to be the employeeUser Jtext.
-				loginFrame.employeeUser.requestFocusInWindow();
-				loginFrame.setVisible(true);
-			}
-		});
-	}
 
 	public LoginView() {
 
@@ -72,11 +60,10 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		registerFonts();
 		loadIcon();
 		loadImages();
-
 	}
 
 	public void initWindowUI() {
-
+		
 		// Window title.
 		setTitle("LOGIN GUI");
 		// Size of the window when executing.
@@ -209,7 +196,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		submit.setBounds(61, 263, 232, 25);
 		submit.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		panel.add(submit);
-		
+
 		// ActionListener so we can detect when uses clicks submit button.
 		submit.addActionListener(this);
 		// KeyListener so we can detect when the user uses a key when on those inputs.
@@ -252,7 +239,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 			if (countError >= Constants.MAX_ATTEMPTS && !isLogged) {
 				throw new LimitLoginException();
 			}
-			
+
 			// Since we need an int, we parse the variable so it can match as an argument.
 			userID = Integer.parseInt(stringEmployeeID);
 
@@ -262,7 +249,8 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 			// Wrong credentials --> returns false.
 			if (!isLogged) {
 				// Error message display when incorrect credentials.
-				JOptionPane.showMessageDialog(LoginView.this, "Invalid credentials, try again " + countError + "/" + Constants.MAX_ATTEMPTS + ".",
+				JOptionPane.showMessageDialog(LoginView.this,
+						"Invalid credentials, try again " + countError + "/" + Constants.MAX_ATTEMPTS + ".",
 						"WARNING! VALIDATION WENT WRONG", JOptionPane.ERROR_MESSAGE);
 			} else {
 				// Good credentials --> returns true.
@@ -287,9 +275,9 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	
+
 	// We are invoking this everytime user interacts with loginButton.
-	public void resetText () {
+	public void resetText() {
 		employeeUser.setText("");
 		employeePass.setText("");
 	}
@@ -306,7 +294,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent buttonEnter) {
-		
+
 		// When user press 'enter', it invokes the logic of validateCredentials().
 		// This only applicates on the KeyListeners inputs, defined above.
 		if (buttonEnter.getKeyCode() == KeyEvent.VK_ENTER) {

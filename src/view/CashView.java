@@ -23,14 +23,6 @@ public class CashView extends JDialog implements ActionListener {
 	private JLabel moneyIncashText;
 	private JLabel arrowImage;
 	private Shop shop;
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-
-			}
-		});
-	}
 
 	public CashView(int option, Shop shop) {
 		
