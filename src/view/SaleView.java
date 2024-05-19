@@ -43,12 +43,12 @@ public class SaleView extends JDialog implements ActionListener, KeyListener {
 	private JComboBox<String> isPremiumBox;
 	private JButton okeyButton;
 	private JButton backButton;
-	private Client client;
+	private Client newClient;
 
-	public SaleView(Shop shop, Client client) {
+	public SaleView(Shop shop) {
 
 		this.shop = shop;
-		this.client = client;
+		
 		initWindowUI();
 		salesViewUI();
 	}
@@ -175,7 +175,7 @@ public class SaleView extends JDialog implements ActionListener, KeyListener {
 		ArrayList<Product> saleProducts = new ArrayList<>();
 		double total = 0.0;
 		int stock = 0;
-
+	
 		try {
 
 			stock = Integer.parseInt(productStock.getText());
@@ -194,10 +194,15 @@ public class SaleView extends JDialog implements ActionListener, KeyListener {
 
 			// We check if the stock for that product is available.
 			checkStock(stock, checkProduct.getStock());
-
+			
+			// Only creates a new Client Object if not done previosly.
+			if (newClient == null) {
+	            newClient = new Client(client);
+	        }
+			
 			// Product is on our shop.
 			if (checkProduct != null) {
-
+		
 				saleProducts.add(checkProduct);
 				// We calculate the total money that the client will spent.
 				total += checkProduct.getPublicPrice().getValue() * stock;
@@ -235,10 +240,10 @@ public class SaleView extends JDialog implements ActionListener, KeyListener {
 	public boolean pay(Amount amount) {
 
 		// Calculates the remaining money of the client after a purchase.
-		double newBalance = client.getBalance().getValue() - amount.getValue();
+		double newBalance = newClient.getBalance().getValue() - amount.getValue();
 		Amount finalBalance = new Amount(newBalance);
 		// Update client balance.
-		client.setBalance(finalBalance);
+		newClient.setBalance(finalBalance);
 
 		if (newBalance < 0) {
 			JOptionPane.showMessageDialog(SaleView.this, "YOU DIDN'T HAVE ENOUGH MONEY, YOU NOW OWE " + finalBalance,
@@ -290,7 +295,6 @@ public class SaleView extends JDialog implements ActionListener, KeyListener {
 			ArrayList<Component> componentList = new ArrayList<>();
 			// Add inputs/buttons to the array.
 			componentList.add(okeyButton);
-			componentList.add(backButton);
 			componentList.add(productName);
 			componentList.add(productStock);
 			componentList.add(clientName);

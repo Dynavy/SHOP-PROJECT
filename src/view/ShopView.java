@@ -49,13 +49,11 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private JSeparator separatorLine;
 	// This instance is going to be used by different classes so we don't have any inconsistencies.
 	private Shop shop;
-	private Client client;
 
 	public ShopView() {
 
 		// We inicialize a shop instance and load the inventory.
 		this.shop = new Shop();
-		this.client = new Client();
 		shop.loadInventory();
 		shop.showInventory();
 		// Invoke all the methods.
@@ -267,15 +265,17 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	}
 
 	public void openInventoryView(int option) {
-
+		
+		// Create a ProductsView object passing our instance of shop and chosen open as an argument.
 		ProductsView openInventoryDialog = new ProductsView(option, shop);
 		openInventoryDialog.setVisible(true);
 		openInventoryDialog.setLocation(calculateDialogPosition());
 	}
 
 	public void openSalesView() {
-
-		SaleView openSaleDialog = new SaleView(shop, client);
+		
+		// Create a SaleView object passing our instance of shop as an argument.
+		SaleView openSaleDialog = new SaleView(shop);
 		openSaleDialog.setVisible(true);
 		openSaleDialog.setLocation(calculateDialogPosition());
 	}

@@ -37,8 +37,9 @@ public class Shop {
 	public static void main(String[] args) {
 		
 		Shop shop = new Shop();
+		// Commented this line because it was affecting the ID numbers of the product when showing the inventary.
+		//	shop.loadInventory();
 		
-//		shop.loadInventory();
 		// We call our initSession method to identify the user.
 		shop.initSession();
 
