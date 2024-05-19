@@ -23,7 +23,7 @@ public class CashView extends JDialog implements ActionListener {
 	private JLabel arrowImage;
 	private Shop shop;
 
-	public CashView(int option, Shop shop) {
+	public CashView(Shop shop) {
 		
 		this.shop = shop;
 		initWindowUI();
