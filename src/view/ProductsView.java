@@ -49,7 +49,8 @@ public class ProductsView extends JDialog implements ActionListener {
 	}
 
 	public void productsViewUI() {
-
+		
+		getContentPane().setBackground(Color.LIGHT_GRAY);
 		Font titleFont = new Font("Poppins", Font.PLAIN, 19);
 
 		// Title text.
