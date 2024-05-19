@@ -29,7 +29,7 @@ public class Shop {
 	private ArrayList<Product> inventory = new ArrayList<>();
 	private ArrayList<Sale> sales = new ArrayList<>();
 	private Amount cash = new Amount(100); // Initialize the 'cash' object in the class amount with a value of 100.
-	final static double TAX_RATE = 1.04; // We change the IVA to a 4%
+	public final static double TAX_RATE = 1.04; // We change the IVA to a 4%
 	int salesCounter = 0; // Variable to count the index of the case 6 array.
 	private Scanner sc = new Scanner(System.in);
 
@@ -37,8 +37,8 @@ public class Shop {
 	public static void main(String[] args) {
 		
 		Shop shop = new Shop();
-	
-
+		
+		shop.loadInventory();
 		// We call our initSession method to identify the user.
 		shop.initSession();
 
@@ -500,10 +500,8 @@ public class Shop {
 		}
 		
 		return null;
-
 	}
 
-	
 	public void writeFile() {
 
 		try {
@@ -556,14 +554,21 @@ public class Shop {
 		}
 	}
 
-	// Getter to get cashView.
 	public String getCashValue() {
-		// TODO Auto-generated method stub
 		return cash.toString();
 	}
-	
-	// Getter to get inventory ArrayList.
+
+	public void setCashValue(Amount cash) {
+		this.cash = cash;
+		
+	}
+
 	public ArrayList<Product> getInventory() {
 		return inventory;
 	}
+	
+	public ArrayList<Sale> getSales() {
+		return sales;
+	}
+
 }
