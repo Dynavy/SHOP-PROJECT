@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import util.Constants;
 import java.awt.GraphicsEnvironment;
@@ -214,7 +213,6 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 		submit.setFocusTraversalKeysEnabled(true);
 
 		// We disable the tabulation for useless inputs.
-
 		introduceYourPassword.setFocusTraversalKeysEnabled(false);
 		introduceYourUsername.setFocusTraversalKeysEnabled(false);
 
@@ -239,7 +237,6 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 			if (countError >= Constants.MAX_ATTEMPTS && !isLogged) {
 				throw new LimitLoginException();
 			}
-
 			// Since we need an int, we parse the variable so it can match as an argument.
 			userID = Integer.parseInt(stringEmployeeID);
 
