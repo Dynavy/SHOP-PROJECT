@@ -38,7 +38,7 @@ public class Shop {
 		
 		Shop shop = new Shop();
 		
-		shop.loadInventory();
+//		shop.loadInventory();
 		// We call our initSession method to identify the user.
 		shop.initSession();
 
