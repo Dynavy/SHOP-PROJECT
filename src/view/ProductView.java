@@ -2,7 +2,6 @@ package view;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -35,6 +34,7 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 	private JLabel introduceProductName;
 	private JLabel introduceProductStock;
 	private JLabel introduceProductPrice;
+	
 	// We inicialize the instance from ShopView on this variable.
 	private Shop shop;
 	// We inicialize the chosen option on this variable.
