@@ -22,6 +22,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import main.Shop;
+import model.Client;
 
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
@@ -38,6 +39,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private JToggleButton addProducts;
 	private JToggleButton addStock;
 	private JToggleButton deleteProduct;
+	private JToggleButton makeSale;
 	private JToggleButton showInventory;
 	private JLabel menu;
 	private JLabel welcomeText;
@@ -47,11 +49,13 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private JSeparator separatorLine;
 	// This instance is going to be used by different classes so we don't have any inconsistencies.
 	private Shop shop;
+	private Client client;
 
 	public ShopView() {
-		
+
 		// We inicialize a shop instance and load the inventory.
 		this.shop = new Shop();
+		this.client = new Client();
 		shop.loadInventory();
 		shop.showInventory();
 		// Invoke all the methods.
@@ -87,7 +91,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	}
 
 	public void menuUI() {
-	
+
 		// PANEL CREATION.
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 108, 84), 3)));
@@ -139,14 +143,14 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		// MENU TITLE
 		menu = new JLabel();
 		menu.setText(" MENU - CHOOSE AN OPTION :");
-		menu.setBounds(21, 17, 314, 33);
+		menu.setBounds(22, 26, 314, 33);
 		leftPanel.add(menu);
 		menu.setFont(subTitle);
 		menu.setForeground(new Color(0, 108, 84));
 
 		// Green line.
 		separatorLine = new JSeparator();
-		separatorLine.setBounds(19, 42, 315, 11);
+		separatorLine.setBounds(20, 51, 315, 11);
 		separatorLine.setForeground(new Color(0, 108, 84));
 		separatorLine.setBackground(new Color(0, 108, 84));
 		leftPanel.add(separatorLine);
@@ -180,11 +184,19 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		deleteProduct = new JToggleButton("9. Delete product.");
 		deleteProduct.setFont(new Font("Poppins", Font.PLAIN, 17));
 		deleteProduct.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-		deleteProduct.setBounds(93, 339, 173, 25);
+		deleteProduct.setBounds(93, 397, 173, 25);
 		deleteProduct.setBackground(originalColor);
 		leftPanel.add(deleteProduct);
 
 		// Case 5 button (showInventory).
+		makeSale = new JToggleButton("6. Make purchase.");
+		makeSale.setFont(new Font("Poppins", Font.PLAIN, 17));
+		makeSale.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		makeSale.setBackground(new Color(184, 207, 229));
+		makeSale.setBounds(93, 337, 173, 25);
+		leftPanel.add(makeSale);
+
+		// Case 6 button (makeSale).
 		showInventory = new JToggleButton("5. Show inventory.");
 		showInventory.setFont(new Font("Poppins", Font.PLAIN, 17));
 		showInventory.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
@@ -197,6 +209,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		addStock.addActionListener(this);
 		addProducts.addActionListener(this);
 		deleteProduct.addActionListener(this);
+		makeSale.addActionListener(this);
 		showInventory.addActionListener(this);
 
 		// KeyListener so we can detect when the user the keyboard.
@@ -209,7 +222,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 		if (buttonInteraction.getSource() == checkMoney) {
 			// Invoke the check money method.
-			openCashView(Constants.CHECK_MONEY);
+			openCashView();
 
 		} else if (buttonInteraction.getSource() == addProducts) {
 			// We invoke the openProductView() with his constant as an argument.
@@ -223,8 +236,12 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 			// We invoke the openProductView() with his constant as an argument.
 			openProductView(Constants.DELETE_PRODUCT);
 
-		} else if (buttonInteraction.getSource() == showInventory) {
+		} else if (buttonInteraction.getSource() == makeSale) {
 			// We invoke the openInventoryView() with his constant as an argument.
+			openSalesView();
+			
+			// We invoke the openSalesView().
+		} else if (buttonInteraction.getSource() == showInventory) {
 			openInventoryView(Constants.SHOW_INVENTORY);
 		}
 
@@ -232,13 +249,12 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		this.requestFocus();
 	}
 
-	public void openCashView(int option) {
+	public void openCashView() {
 
-		CashView cashDialog = new CashView(option, shop);
+		CashView cashDialog = new CashView(shop);
 		// Invoke the animation method.
 		cashDialog.setVisible(true);
 		cashDialog.setLocation(calculateDialogPosition());
-
 	}
 
 	// Option parameter is the chosen option by the user.
@@ -248,7 +264,6 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		ProductView openProductDialog = new ProductView(option, shop);
 		openProductDialog.setVisible(true);
 		openProductDialog.setLocation(calculateDialogPosition());
-
 	}
 
 	public void openInventoryView(int option) {
@@ -256,6 +271,13 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		ProductsView openInventoryDialog = new ProductsView(option, shop);
 		openInventoryDialog.setVisible(true);
 		openInventoryDialog.setLocation(calculateDialogPosition());
+	}
+
+	public void openSalesView() {
+
+		SaleView openSaleDialog = new SaleView(shop, client);
+		openSaleDialog.setVisible(true);
+		openSaleDialog.setLocation(calculateDialogPosition());
 	}
 
 	@Override
@@ -272,7 +294,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 		case KeyEvent.VK_1:
 			// We invoke the openCashView() with his constant as an argument.
-			openCashView(Constants.CHECK_MONEY);
+			openCashView();
 			break;
 
 		case KeyEvent.VK_2:
@@ -294,13 +316,18 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 			// We invoke the openInventoryView() with his constant as an argument.
 			openInventoryView(Constants.SHOW_INVENTORY);
 			break;
+
+		case KeyEvent.VK_6:
+			// We invoke the openSalesView().
+			openSalesView();
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
+
 	}
+
 	// Method to calculate the default relative dimensions. 
 	private Point calculateDialogPosition(double relativeX, double relativeY) {
 
@@ -309,7 +336,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		int y = (int) (screenSize.getHeight() * relativeY);
 		return new Point(x, y);
 	}
-	
+
 	// Method to open our JDialogs on the correct position.
 	private Point calculateDialogPosition() {
 		// We use the dimensions that we want for our popups.
