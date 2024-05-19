@@ -12,7 +12,7 @@ public class Client extends Person implements Payable {
 	final String MAGENTA = "\u001B[35m";
 
 	private final int MEMBER_ID = 456;
-	private final double BALANCE = 50.00;
+	public final double BALANCE = 50.00;
 
 	// We declare the variables.
 	private int memberID = MEMBER_ID;
@@ -23,9 +23,14 @@ public class Client extends Person implements Payable {
 	public Client() {
 
 	}
-
+	
 	public Amount getBalance() {
 		return balance;
+	}
+
+	// Manage new balance for the client.
+	public void setBalance(Amount newBalance) {
+		this.balance = newBalance;
 	}
 
 	// Constructor for the class shop.
@@ -53,7 +58,5 @@ public class Client extends Person implements Payable {
 			System.err.println("You owe the following amount of money: " + remainingMoney);
 			return false;
 		}
-
 	}
-
 }
