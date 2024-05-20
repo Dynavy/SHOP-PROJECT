@@ -33,13 +33,12 @@ public class Shop {
 	int salesCounter = 0; // Variable to count the index of the case 6 array.
 	private Scanner sc = new Scanner(System.in);
 
-	
 	public static void main(String[] args) {
-		
+
 		Shop shop = new Shop();
 		// Commented this line because it was affecting the ID numbers of the product when showing the inventary.
 		//	shop.loadInventory();
-		
+
 		// We call our initSession method to identify the user.
 		shop.initSession();
 
@@ -152,22 +151,22 @@ public class Shop {
 
 	public void initSession() {
 		LoginView loginView = new LoginView();
-		  // Enable the GUI display.
+		// Enable the GUI display.
 		loginView.setVisible(true);
-		
+
 		System.out.println(VERDE_CLARO + "Welcome to our store!" + RESET);
-		
-		}
-	
+
+	}
+
 	// load initial inventory to shop:
 
 	public void loadInventory() {
-		
+
 		// We call the method readFile which have all the default products on the .txt
 		readFile();
 
 	}
-	
+
 	public void readFile() {
 
 		try {
@@ -302,9 +301,8 @@ public class Shop {
 		System.out.println(VERDE_CLARO + "\nDinero actual: " + cash.toString() + RESET); // We call the 'toString' from the class amount so we can print the cash with the '€'
 	}
 
-	
 	public void addProduct() {
-		
+
 		System.out.print("Nombre: ");
 		String name = sc.nextLine();
 		System.out.print("Precio mayorista: ");
@@ -486,20 +484,20 @@ public class Shop {
 
 	// Add the product information to the inventory array.
 	public void addProduct(Product product) {
-		
+
 		inventory.add(product);
 
 	}
-	
+
 	// Check if a product is on our inventory array.
 	public Product findProduct(String name) {
 		for (int i = 0; i < inventory.size(); i++) {
-			
+
 			if (inventory.get(i) != null && inventory.get(i).getName().equalsIgnoreCase(name)) { // We fix the key sensitive (equalsIgnoreCase).
 				return inventory.get(i); // Adapt the arraylist.
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -555,19 +553,19 @@ public class Shop {
 		}
 	}
 
-	public String getCashValue() {
-		return cash.toString();
+	public Amount getCashValue() {
+		return cash;
 	}
 
 	public void setCashValue(Amount cash) {
 		this.cash = cash;
-		
+
 	}
 
 	public ArrayList<Product> getInventory() {
 		return inventory;
 	}
-	
+
 	public ArrayList<Sale> getSales() {
 		return sales;
 	}

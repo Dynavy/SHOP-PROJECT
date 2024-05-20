@@ -48,7 +48,7 @@ public class SaleView extends JDialog implements ActionListener, KeyListener {
 	public SaleView(Shop shop) {
 
 		this.shop = shop;
-		
+
 		initWindowUI();
 		salesViewUI();
 	}
@@ -149,21 +149,11 @@ public class SaleView extends JDialog implements ActionListener, KeyListener {
 		clientName.addKeyListener(this);
 		okeyButton.addKeyListener(this);
 		backButton.addKeyListener(this);
-		
+
 		// Disable tabulation on the premium box.
 		isPremiumBox.setFocusable(false);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent inputButton) {
-
-		if (inputButton.getSource() == okeyButton) {
-			makeSale();
-
-		} else if (inputButton.getSource() == backButton) {
-			dispose();
-		}
-	}
 
 	public void makeSale() {
 
@@ -175,7 +165,7 @@ public class SaleView extends JDialog implements ActionListener, KeyListener {
 		ArrayList<Product> saleProducts = new ArrayList<>();
 		double total = 0.0;
 		int stock = 0;
-	
+
 		try {
 
 			stock = Integer.parseInt(productStock.getText());
@@ -194,28 +184,27 @@ public class SaleView extends JDialog implements ActionListener, KeyListener {
 
 			// We check if the stock for that product is available.
 			checkStock(stock, checkProduct.getStock());
-			
+
 			// Only creates a new Client Object if not done previosly.
 			if (newClient == null) {
-	            newClient = new Client(client);
-	        }
-			
+				newClient = new Client(client);
+			}
+
 			// Product is on our shop.
 			if (checkProduct != null) {
-		
+
 				saleProducts.add(checkProduct);
 				// We calculate the total money that the client will spent.
 				total += checkProduct.getPublicPrice().getValue() * stock;
 				// Multiply the total with 4% of the IVA.
 				total = total * Shop.TAX_RATE;
+				// Total sale amount.
 				Amount totalAmount = new Amount(total);
 
+				// Method to add money to our cash.
+				addCashValue(total);
 				// Method to check if the client has enough money.
 				pay(totalAmount);
-
-				Amount addMoney = new Amount(total + 100.0);
-				// Add the money that the client spent to our cashMoney.
-				shop.setCashValue(addMoney);
 
 				int substractStock = checkProduct.getStock() - stock;
 				// Substract the stock from the product bought.
@@ -254,6 +243,17 @@ public class SaleView extends JDialog implements ActionListener, KeyListener {
 			return false;
 		}
 	}
+	
+	public void addCashValue(double total) {
+		
+		// Storage the current cashValue on a variable.
+		Amount cashValue = shop.getCashValue();
+		double newCashValue = cashValue.getValue() + total;
+		// Create a new instance of Amount so we can work with Amount objects.
+		Amount updatedCashValue = new Amount(newCashValue);
+		// Set the new value of CashValue in Shop.
+		shop.setCashValue(updatedCashValue);
+	}
 
 	private void showProductBought(Amount remainingMoney) {
 
@@ -275,10 +275,17 @@ public class SaleView extends JDialog implements ActionListener, KeyListener {
 
 		return false;
 	}
+	
 
 	@Override
-	public void keyTyped(KeyEvent e) {
+	public void actionPerformed(ActionEvent inputButton) {
 
+		if (inputButton.getSource() == okeyButton) {
+			makeSale();
+
+		} else if (inputButton.getSource() == backButton) {
+			dispose();
+		}
 	}
 
 	@Override
@@ -307,7 +314,12 @@ public class SaleView extends JDialog implements ActionListener, KeyListener {
 			}
 		}
 	}
+	
+	@Override
+	public void keyTyped(KeyEvent e) {
 
+	}
+	
 	@Override
 	public void keyReleased(KeyEvent e) {
 

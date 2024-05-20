@@ -67,7 +67,7 @@ public class CashView extends JDialog implements ActionListener {
 		availableMoney = new JTextField();
 		availableMoney.setEditable(false);
 		// We get the cashValue from the getter of the clash Shop.
-		availableMoney.setText(shop.getCashValue());
+		availableMoney.setText(shop.getCashValue().toString());
 		availableMoney.setHorizontalAlignment(JTextField.CENTER);
 		availableMoney.setBounds(120, 249, 96, 30);
 		getContentPane().add(availableMoney);
