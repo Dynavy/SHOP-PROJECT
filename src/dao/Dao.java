@@ -8,5 +8,5 @@ public interface Dao {
 
 	void connect() throws SQLException;
 	void disconnect() throws SQLException;
-	Employee getEmployee(int user, String pw, String name); 
+	Employee getEmployee(int user, String pw); 
 }
