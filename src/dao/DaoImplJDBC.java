@@ -13,7 +13,6 @@ public class DaoImplJDBC implements Dao {
 	private Connection connection;
 	
 	
-	
 	public DaoImplJDBC() {
 		
 	}
@@ -21,9 +20,9 @@ public class DaoImplJDBC implements Dao {
 	@Override
 	public void connect() throws SQLException {
 
-		String url = "jdbc:mysql://localhost:8889/ShopDB";
+		String url = "jdbc:mysql://localhost:3306/ShopDB";
 		String user = "root";
-		String pass = "root";
+		String pass = "";
 		this.connection = DriverManager.getConnection(url, user, pass);
 
 	}
@@ -40,23 +39,26 @@ public class DaoImplJDBC implements Dao {
 	public Employee getEmployee(int user, String pw) {
 
 		Employee employee = null;
-		// prepare query
-		String query = "select * from Employee where Employee_ID = ? ";
+		// Prepare SQL query.
+		String query = "select * from Employee where Employee_ID = ? AND password = ?";
 		
 		try (PreparedStatement ps = connection.prepareStatement(query)) { 
-			// set id to search for
+			// Set userID and password parameters.
 			ps.setInt(1,user);
-			ps.setString(1, pw);
-		  	//System.out.println(ps.toString());
+			ps.setString(2, pw);
+		  	
 	        try (ResultSet rs = ps.executeQuery()) {
+	        	// If we find any data, we create an Employee object.
 	        	if (rs.next()) {
+	        		// Creates an Employee instance to temporarily store the user and password data retrieved from the database.
 	        		employee =  new Employee(user, pw);            		            				
 	        	}
 	        }
-	    } catch (SQLException e) {
+	    } catch (SQLException SQLError) {
 			// in case error in SQL
-			e.printStackTrace();
+			SQLError.printStackTrace();
 		}
+		// We return the employee object.
 		return employee;
 	}
 	
