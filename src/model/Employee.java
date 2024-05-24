@@ -8,32 +8,16 @@ import main.Logable;
 
 public class Employee extends Person implements Logable {
 
-	private int EMPLOYEE_ID;
-	private String PASSWORD;
-	private int employeeID = EMPLOYEE_ID;
-	public Dao dao;
-
-	public int getEmployeeID() {
-		return employeeID;
-	}
-
-	public void setEmployeeID(int employeeID) {
-		this.employeeID = employeeID;
-	}
-
-	public int getEMPLOYEE_ID() {
-		return EMPLOYEE_ID;
-	}
-
-	public String getPASSWORD() {
-		return PASSWORD;
-	}
+	//	private int EMPLOYEE_ID;
+	//	private String PASSWORD;
+	//	private int employeeID = EMPLOYEE_ID;
+	
+	// Polymorphism enables accessing DaoImpl functionalities through the dao object.
+	public Dao dao = new DaoImplJDBC();
 
 	public Employee(int employee_id, String pw) {
-		super();
-		this.PASSWORD = pw;
-		this.EMPLOYEE_ID = employee_id;
-		dao = new DaoImplJDBC();
+		super(name);
+
 	}
 
 	public Employee() {
@@ -41,30 +25,27 @@ public class Employee extends Person implements Logable {
 	}
 
 	public boolean login(int user, String password) {
-		
-//		if (user == EMPLOYEE_ID && password.equals(PASSWORD)) {
-//			
-//			return true;
-//		}
-//		return false;
-		
-		try {
-			dao.connect();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		//		if (user == EMPLOYEE_ID && password.equals(PASSWORD)) {
+		//			
+		//			return true;
+		//		}
+		//		return false;
 
 		
-		Employee credentials = dao.getEmployee(user, password);
-		
-		try {
-			dao.disconnect();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		// Connects to the database, invokes the getEmployee method and then disconnects from the database. 
+		try  {
+			
+		    dao.connect();
+		    Employee credentials = dao.getEmployee(user, password);
+		    dao.disconnect();
+		    return credentials != null;
+		    
+		} catch (SQLException SQLError) {
+		  
+		    SQLError.printStackTrace();
 		}
-		return (credentials != null) ? true : false;
-
+		
+		return false;
 	}
 }
