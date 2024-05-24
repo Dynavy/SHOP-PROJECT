@@ -4,7 +4,7 @@ package model;
 // We create our abstract class Person.
 public abstract class Person {
 
-	protected String name = null;
+	protected static String name = null;
 
 	// Constructor for client.
 	public Person(String name) {
