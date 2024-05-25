@@ -14,6 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import main.Shop;
 import model.Product;
+import util.Constants;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -142,14 +144,14 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 		this.productName.requestFocusInWindow();
 		
 		// View when user wants to add stock.
-		if (option == 3) {
+		if (option == Constants.ADD_STOCK) {
 			setTitle("ADD STOCK");
 			introduceProductStock.setText("Add new stock :");
 			introduceProductPrice.setVisible(false);
 			productPrice.setVisible(false);
 			
 		// View when user wants to delete products.
-		} else if (option == 9) {
+		} else if (option == Constants.DELETE_PRODUCT) {
 			setTitle("DELETE PRODUCT");
 			introduceProductPrice.setVisible(false);
 			productPrice.setVisible(false);
