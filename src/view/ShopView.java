@@ -2,9 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
-
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -20,11 +18,9 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-
 import main.Shop;
-import model.Client;
-
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 
 public class ShopView extends JFrame implements ActionListener, KeyListener {
@@ -41,18 +37,20 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private JToggleButton deleteProduct;
 	private JToggleButton makeSale;
 	private JToggleButton showInventory;
+	private JToggleButton exportInventory;
 	private JLabel menu;
 	private JLabel welcomeText;
 	private JLabel shopImage;
 	// Buttons color:
 	private Color originalColor = new Color(184, 207, 229, 255);
 	private JSeparator separatorLine;
-	// This instance is going to be used by different classes so we don't have any inconsistencies.
+	// This instance is going to be used by different classes so we don't have any
+	// inconsistencies.
 	private Shop shop;
 
 	public ShopView() {
 
-		// We inicialize a shop instance and load the inventory.
+		// We initialize a shop instance and load the inventory.
 		this.shop = new Shop();
 		shop.loadInventory();
 		shop.showInventory();
@@ -141,21 +139,29 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		// MENU TITLE
 		menu = new JLabel();
 		menu.setText(" MENU - CHOOSE AN OPTION :");
-		menu.setBounds(22, 26, 314, 33);
+		menu.setBounds(22, 7, 314, 33);
 		leftPanel.add(menu);
 		menu.setFont(subTitle);
 		menu.setForeground(new Color(0, 108, 84));
 
 		// Green line.
 		separatorLine = new JSeparator();
-		separatorLine.setBounds(20, 51, 315, 11);
+		separatorLine.setBounds(20, 31, 315, 11);
 		separatorLine.setForeground(new Color(0, 108, 84));
 		separatorLine.setBackground(new Color(0, 108, 84));
 		leftPanel.add(separatorLine);
 
+		// Case 0 button (exportInventory).
+		exportInventory = new JToggleButton("0. Export inventory.");
+		exportInventory.setFont(new Font("Poppins", Font.PLAIN, 17));
+		exportInventory.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		exportInventory.setBackground(new Color(184, 207, 229));
+		exportInventory.setBounds(93, 47, 173, 25);
+		leftPanel.add(exportInventory);
+
 		// CASE 1 BUTTON (checkMoney).
 		checkMoney = new JToggleButton("1. Check money.");
-		checkMoney.setBounds(93, 97, 173, 25);
+		checkMoney.setBounds(93, 107, 173, 25);
 		checkMoney.setFont(textFont);
 		checkMoney.setBackground(originalColor);
 		checkMoney.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
@@ -165,7 +171,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		addProducts = new JToggleButton("2. Add products.");
 		addProducts.setFont(new Font("Poppins", Font.PLAIN, 17));
 		addProducts.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-		addProducts.setBounds(93, 157, 173, 25);
+		addProducts.setBounds(93, 167, 173, 25);
 		addProducts.setBackground(originalColor);
 		leftPanel.add(addProducts);
 
@@ -173,7 +179,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		addStock = new JToggleButton("3. Update stock.");
 		addStock.setFont(new Font("Poppins", Font.PLAIN, 17));
 		addStock.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-		addStock.setBounds(93, 217, 173, 25);
+		addStock.setBounds(93, 227, 173, 25);
 		addStock.setBackground(originalColor);
 
 		leftPanel.add(addStock);
@@ -182,24 +188,24 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		deleteProduct = new JToggleButton("9. Delete product.");
 		deleteProduct.setFont(new Font("Poppins", Font.PLAIN, 17));
 		deleteProduct.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-		deleteProduct.setBounds(93, 397, 173, 25);
+		deleteProduct.setBounds(93, 407, 173, 25);
 		deleteProduct.setBackground(originalColor);
 		leftPanel.add(deleteProduct);
 
-		// Case 5 button (showInventory).
+		// Case 6 button (makePurchase).
 		makeSale = new JToggleButton("6. Make purchase.");
 		makeSale.setFont(new Font("Poppins", Font.PLAIN, 17));
 		makeSale.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		makeSale.setBackground(new Color(184, 207, 229));
-		makeSale.setBounds(93, 337, 173, 25);
+		makeSale.setBounds(93, 347, 173, 25);
 		leftPanel.add(makeSale);
 
-		// Case 6 button (makeSale).
+		// Case 5 button (showInventory).
 		showInventory = new JToggleButton("5. Show inventory.");
 		showInventory.setFont(new Font("Poppins", Font.PLAIN, 17));
 		showInventory.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		showInventory.setBackground(new Color(184, 207, 229));
-		showInventory.setBounds(93, 277, 173, 25);
+		showInventory.setBounds(93, 287, 173, 25);
 		leftPanel.add(showInventory);
 
 		// Allow button interaction.
@@ -209,6 +215,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		deleteProduct.addActionListener(this);
 		makeSale.addActionListener(this);
 		showInventory.addActionListener(this);
+		exportInventory.addActionListener(this);
 
 		// KeyListener so we can detect when the user the keyboard.
 		this.addKeyListener(this);
@@ -218,36 +225,61 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	// Buttons interaction.
 	public void actionPerformed(ActionEvent buttonInteraction) {
 
-		if (buttonInteraction.getSource() == checkMoney) {
-			// Invoke the check money method.
-			openCashView();
+		// OPTION 0.
+		if (buttonInteraction.getSource() == exportInventory) {
+			exportInventory(Constants.EXPORT_INVENTORY);
+		}
 
+		// OPTION 1.
+		else if (buttonInteraction.getSource() == checkMoney) {
+			// We invoke the openCashView() with his constant as an argument.
+			openCashView(Constants.CASH_VIEW);
+
+			// OPTION 2.
 		} else if (buttonInteraction.getSource() == addProducts) {
 			// We invoke the openProductView() with his constant as an argument.
 			openProductView(Constants.ADD_PRODUCTS);
 
+			// OPTION 3.
 		} else if (buttonInteraction.getSource() == addStock) {
 			// We invoke the openProductView() with his constant as an argument.
 			openProductView(Constants.ADD_STOCK);
 
+			// OPTION 5.
+		} else if (buttonInteraction.getSource() == showInventory) {
+			openInventoryView(Constants.SHOW_INVENTORY);
+
+			// OPTION 6.
+		} else if (buttonInteraction.getSource() == makeSale) {
+			// We invoke the openSalesView() with his constant as an argument.
+			openSalesView(Constants.MAKE_SALE);
+
+			// OPTION 9.
 		} else if (buttonInteraction.getSource() == deleteProduct) {
 			// We invoke the openProductView() with his constant as an argument.
 			openProductView(Constants.DELETE_PRODUCT);
-
-		} else if (buttonInteraction.getSource() == makeSale) {
-			// We invoke the openInventoryView() with his constant as an argument.
-			openSalesView();
-			
-			// We invoke the openSalesView().
-		} else if (buttonInteraction.getSource() == showInventory) {
-			openInventoryView(Constants.SHOW_INVENTORY);
 		}
 
 		// Focus on the frame after clicking a button.
 		this.requestFocus();
 	}
 
-	public void openCashView() {
+	public void exportInventory(int option) {
+
+		boolean exportSuccess = shop.writeInventory();
+
+		if (exportSuccess) {
+
+			// Return true;
+			JOptionPane.showMessageDialog(this, "Export completed successfully.", "Petition done.",
+					JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
+		// Return false:
+		JOptionPane.showMessageDialog(this, "Error in data export.", "Petition done.", JOptionPane.ERROR_MESSAGE);
+	}
+
+	public void openCashView(int option) {
 
 		CashView cashDialog = new CashView(shop);
 		// Invoke the animation method.
@@ -258,22 +290,24 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	// Option parameter is the chosen option by the user.
 	public void openProductView(int option) {
 
-		// Create a ProductView object passing our instance of shop and chosen open as an argument.
+		// Create a ProductView object passing our instance of shop and chosen open as
+		// an argument.
 		ProductView openProductDialog = new ProductView(option, shop);
 		openProductDialog.setVisible(true);
 		openProductDialog.setLocation(calculateDialogPosition());
 	}
 
 	public void openInventoryView(int option) {
-		
-		// Create a ProductsView object passing our instance of shop and chosen open as an argument.
+
+		// Create a ProductsView object passing our instance of shop and chosen open as
+		// an argument.
 		ProductsView openInventoryDialog = new ProductsView(option, shop);
 		openInventoryDialog.setVisible(true);
 		openInventoryDialog.setLocation(calculateDialogPosition());
 	}
 
-	public void openSalesView() {
-		
+	public void openSalesView(int option) {
+
 		// Create a SaleView object passing our instance of shop as an argument.
 		SaleView openSaleDialog = new SaleView(shop);
 		openSaleDialog.setVisible(true);
@@ -292,9 +326,14 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 		switch (key) {
 
+		case KeyEvent.VK_0:
+			// We invoke the openCashView() with his constant as an argument.
+			exportInventory(Constants.EXPORT_INVENTORY);
+			break;
+
 		case KeyEvent.VK_1:
 			// We invoke the openCashView() with his constant as an argument.
-			openCashView();
+			openCashView(Constants.CASH_VIEW);
 			break;
 
 		case KeyEvent.VK_2:
@@ -319,7 +358,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 		case KeyEvent.VK_6:
 			// We invoke the openSalesView().
-			openSalesView();
+			openSalesView(Constants.MAKE_SALE);
 		}
 	}
 
@@ -328,7 +367,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 	}
 
-	// Method to calculate the default relative dimensions. 
+	// Method to calculate the default relative dimensions.
 	private Point calculateDialogPosition(double relativeX, double relativeY) {
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
