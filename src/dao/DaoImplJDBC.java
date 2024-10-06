@@ -5,8 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import model.Employee;
+import model.Product;
 
 public class DaoImplJDBC implements Dao {
 
@@ -20,9 +22,9 @@ public class DaoImplJDBC implements Dao {
 	@Override
 	public void connect() throws SQLException {
 
-		String url = "jdbc:mysql://localhost:3306/ShopDB";
+		String url = "jdbc:mysql://localhost:6788/ShopDB";
 		String user = "root";
-		String pass = "";
+		String pass = "root";
 		this.connection = DriverManager.getConnection(url, user, pass);
 
 	}
@@ -61,6 +63,21 @@ public class DaoImplJDBC implements Dao {
 		// We return the employee object.
 		return employee;
 	}
+
+	@Override
+	public boolean writeInventory(ArrayList<Product> product) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public ArrayList<Product> getInventory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+		
+	}
 	
 
-}
