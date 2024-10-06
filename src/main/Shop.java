@@ -1,5 +1,6 @@
 package main;
 
+import dao.Dao;
 import model.Amount;
 import model.Client;
 import model.Premium;
@@ -7,13 +8,14 @@ import model.Product;
 import model.Sale;
 import view.LoginView;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import dao.DaoImplFile;
 
 public class Shop {
 	// Colors start.
@@ -24,7 +26,6 @@ public class Shop {
 	final String AMARILLO = "\u001B[33m";
 	final String MAGENTA = "\u001B[35m";
 	// Colors end.
-
 	// New ArrayLists for inventory and sales without any limitations.
 	private ArrayList<Product> inventory = new ArrayList<>();
 	private ArrayList<Sale> sales = new ArrayList<>();
@@ -32,12 +33,14 @@ public class Shop {
 	public final static double TAX_RATE = 1.04; // We change the IVA to a 4%
 	int salesCounter = 0; // Variable to count the index of the case 6 array.
 	private Scanner sc = new Scanner(System.in);
+	
+	/*  We use Polymorphism toe create a 'dao' object using the 'Dao' interface, 
+	allowing it to use the attributes and methods of 'DaoImplFile'. */
+	Dao dao = new DaoImplFile();
 
 	public static void main(String[] args) {
 
 		Shop shop = new Shop();
-		// Commented this line because it was affecting the ID numbers of the product when showing the inventary.
-		//	shop.loadInventory();
 
 		// We call our initSession method to identify the user.
 		shop.initSession();
@@ -46,7 +49,7 @@ public class Shop {
 		boolean exit = false;
 
 		do {
-			// We display the menu 
+			// We display the menu
 			displayMenu();
 
 			if (scanner.hasNextInt()) {
@@ -104,7 +107,11 @@ public class Shop {
 				}
 
 			} else {
-				System.err.println("Invalid input. Please enter a valid number between 1 and 5. \n"); // Validation error if the user introduces a letter 
+				System.err.println("Invalid input. Please enter a valid number between 1 and 5. \n"); // Validation
+																										// error if the
+																										// user
+																										// introduces a
+																										// letter
 				scanner.nextLine();
 			}
 
@@ -142,7 +149,8 @@ public class Shop {
 			// Loop is executing permanently until it finds the break on the if or elseif.
 		} while (true);
 
-		// We return true or false and we assign it to the static boolean premium that we declared on our Shop class.
+		// We return true or false and we assign it to the static boolean premium that
+		// we declared on our Shop class.
 		return answer;
 
 	}
@@ -169,71 +177,33 @@ public class Shop {
 
 	public void readFile() {
 
-		try {
-			// Path to our .txt with the default products.
-			File files = new File("files/inputInventory.txt"); // Observation: it's not key sensitive.
-			// This scanned is going to read all our inputInventory.txt
-			Scanner scanner = new Scanner(files);
+		inventory = dao.getInventory();
 
-			// While .txt has text in the line:
-			while (scanner.hasNextLine()) {
-				String data = scanner.nextLine();
-				// We split all the ';' of the text.
-				String[] line1 = data.split(";");
+	}
+	
+	public boolean writeInventory() {
 
-				// We need to declare variables before the loop.
-				String nombre = null;
-				double wholesalerPrice = 0.0;
-				int stock = 0;
-
-				// line1.length = lines on the .txt.
-				for (int i = 0; i < line1.length; i++) {
-					// We split with differents lines by ":"
-					String[] line2 = line1[i].split(":");
-
-					switch (i) {
-
-					// We need to parse every single variable that is not string.
-					case 0:
-						nombre = line2[1];
-						break;
-					case 1:
-						// Parse to Double because its settled as string.
-						wholesalerPrice = Double.parseDouble(line2[1]);
-						break;
-					case 2:
-						// Parse to Integer because its settled as string.
-						stock = Integer.parseInt(line2[1]);
-						break;
-					default:
-						System.err.println("Error in the array position.");
-					}
-				}
-				// We pass all the variables as an argument to the addProduct method.
-				addProduct(new Product(nombre, wholesalerPrice, true, stock));
-
-			}
-			scanner.close();
-		} catch (FileNotFoundException error) {
-			System.err.println("An error occurred.");
-			error.printStackTrace();
-		}
+		return dao.writeInventory(inventory);
 
 	}
 
 	public double totalAmount() {
 
-		Amount totalAmount = new Amount(0.0); // Initialize the 'totalAmount' object from the class amount with a value of 0.
+		Amount totalAmount = new Amount(0.0); // Initialize the 'totalAmount' object from the class amount with a value
+												// of 0.
 		double resultado = 0;
 		// 1. Sale --> Reference to the class 'Sale'
 		// 2. sale --> Creates a new variable named 'sale'
-		// 3. sales --> Fills out the 'sale' variable with information from the array 'sales'.
+		// 3. sales --> Fills out the 'sale' variable with information from the array
+		// 'sales'.
 
 		for (Sale sale : sales) {
 			if (sale != null) {
 				resultado += sale.getAmount().getValue();
-				totalAmount.setValue(resultado); // We set the totalAmount with all the amount of money that we got with all the sales.
-				System.out.println(sale.toStringAmount()); // We use 'toString' to print all the information we want to show to the user.
+				totalAmount.setValue(resultado); // We set the totalAmount with all the amount of money that we got with
+													// all the sales.
+				System.out.println(sale.toStringAmount()); // We use 'toString' to print all the information we want to
+															// show to the user.
 			}
 		}
 
@@ -254,7 +224,7 @@ public class Shop {
 		System.out.println("\nAvailable products on our inventory:\n");
 		for (Product product : inventory) {
 
-			// We display the available products to the user. 
+			// We display the available products to the user.
 			if (product != null) {
 				System.out.print(ORANGE + product.getName() + RESET);
 				System.out.println("");
@@ -264,7 +234,8 @@ public class Shop {
 		System.out.println("\nWritte the name of the product that you want to delete:");
 		String borrarProducto = sc.next();
 
-		Product product = findProduct(borrarProducto); // We create a new object from the class Product and we assign findProduct with the argument borrarProducto.
+		Product product = findProduct(borrarProducto); // We create a new object from the class Product and we assign
+														// findProduct with the argument borrarProducto.
 
 		// If the ArrayList contains the product introduced by the user, we remove it.
 		if (inventory.contains(product)) {
@@ -277,7 +248,7 @@ public class Shop {
 		}
 	}
 
-	// DISPLAY MENU 
+	// DISPLAY MENU
 	private static void displayMenu() {
 		System.out.println("\n");
 		System.out.println("===========================");
@@ -298,7 +269,10 @@ public class Shop {
 
 	// SHOW CURRENT TOTAL CASH
 	public void showCash() {
-		System.out.println(VERDE_CLARO + "\nDinero actual: " + cash.toString() + RESET); // We call the 'toString' from the class amount so we can print the cash with the '€'
+		System.out.println(VERDE_CLARO + "\nDinero actual: " + cash.toString() + RESET); // We call the 'toString' from
+																							// the class amount so we
+																							// can print the cash with
+																							// the '€'
 	}
 
 	public void addProduct() {
@@ -308,8 +282,10 @@ public class Shop {
 		System.out.print("Precio mayorista: ");
 		double wholesalerPrice = sc.nextDouble();
 
-		/* We don't need this line anymore since we use it from the class AMOUNT.
-		double publicPrice = wholesalerPrice * 2; */
+		/*
+		 * We don't need this line anymore since we use it from the class AMOUNT. double
+		 * publicPrice = wholesalerPrice * 2;
+		 */
 		System.out.print("Stock: ");
 
 		int stock = sc.nextInt();
@@ -330,7 +306,8 @@ public class Shop {
 			System.out.print("Seleccione la cantidad a añadir: ");
 			int stock = sc.nextInt();
 			// update stock product
-			int addStock = product.getStock() + stock; // We add the new stock number that the user introduced to the actual stock.
+			int addStock = product.getStock() + stock; // We add the new stock number that the user introduced to the
+														// actual stock.
 			product.setStock(addStock);
 
 			System.out.println(
@@ -365,13 +342,14 @@ public class Shop {
 		System.out.println("\nContenido actual de la tienda:");
 		for (Product product : inventory) {
 			if (product != null) {
-				System.out.println(product.toString()); // We use toString to get all the information we want from our inventory.
+				System.out.println(product.toString()); // We use toString to get all the information we want from our
+														// inventory.
 
 			}
 		}
 	}
 
-	// MAKE A SALE OF PRODUCTS TO A CLIENT. 
+	// MAKE A SALE OF PRODUCTS TO A CLIENT.
 	public void sale() {
 
 		LocalDateTime saleDate = null;
@@ -384,9 +362,10 @@ public class Shop {
 		String client = sc.nextLine();
 
 		ArrayList<Product> saleProducts = new ArrayList<>();
-		// Product[] saleProducts = new Product[10]; 
+		// Product[] saleProducts = new Product[10];
 
-		// Object named consumer from the client class, so we can be able to invoke all client methods.
+		// Object named consumer from the client class, so we can be able to invoke all
+		// client methods.
 		Client consumer = new Client(client);
 
 		System.out.println("");
@@ -416,7 +395,8 @@ public class Shop {
 
 			if (product != null && product.isAvailable()) {
 				productAvailable = true;
-				total += product.getPublicPrice().getValue(); // We add the price of the product to the 'totalAmount'spent by the user.
+				total += product.getPublicPrice().getValue(); // We add the price of the product to the
+																// 'totalAmount'spent by the user.
 				product.setStock(product.getStock() - 1);
 				// if no more stock, set as not available to sale
 				if (product.getStock() == 0) {
@@ -441,14 +421,19 @@ public class Shop {
 		// show cost total
 		total = total * TAX_RATE; // We add the 4% of IVA to the totalAmount.
 		double totalCash = cash.getValue();
-		cash.setValue(totalCash + total);// We set the new cash that we have on our shop and we use the 'Amount' so we can have the '€' at the end.
-		sales.add(new Sale(client, saleProducts, total, saleDate)); // It's going to count the sales with the information of the client, what he bought, the amount of the purchased products and the date of the sale.
+		cash.setValue(totalCash + total);// We set the new cash that we have on our shop and we use the 'Amount' so we
+											// can have the '€' at the end.
+		sales.add(new Sale(client, saleProducts, total, saleDate)); // It's going to count the sales with the
+																	// information of the client, what he bought, the
+																	// amount of the purchased products and the date of
+																	// the sale.
 		Amount totalAmount = new Amount(total);
 		System.out.println(VERDE_CLARO + "Venta realizada con éxito, total: " + totalAmount + RESET);
 
 		// User introduces 'TRUE':
 		if (premium) {
-			// We create a premiumClient object so we can be able to invoke the method premiumPoints().
+			// We create a premiumClient object so we can be able to invoke the method
+			// premiumPoints().
 			Premium premiumClient = new Premium();
 			premiumClient.premiumPoints(totalAmount);
 		}
@@ -464,7 +449,8 @@ public class Shop {
 
 		// 1. Sale --> Reference to the class 'Sale'
 		// 2. sale --> Creates a new variable named 'sale'
-		// 3. sales --> Fills out the 'sale' variable with information from the array 'sales'.5
+		// 3. sales --> Fills out the 'sale' variable with information from the array
+		// 'sales'.5
 
 		for (Sale sale : sales) {
 			if (sale != null) {
@@ -493,7 +479,9 @@ public class Shop {
 	public Product findProduct(String name) {
 		for (int i = 0; i < inventory.size(); i++) {
 
-			if (inventory.get(i) != null && inventory.get(i).getName().equalsIgnoreCase(name)) { // We fix the key sensitive (equalsIgnoreCase).
+			if (inventory.get(i) != null && inventory.get(i).getName().equalsIgnoreCase(name)) { // We fix the key
+																									// sensitive
+																									// (equalsIgnoreCase).
 				return inventory.get(i); // Adapt the arraylist.
 			}
 		}
@@ -516,7 +504,8 @@ public class Shop {
 				if (file.createNewFile()) { // Aware the user that the file has been created.
 					System.out.println("File created: " + fileName);
 
-				} else { // If the file already exists, its not going to be created and we are displaying the error to the user.
+				} else { // If the file already exists, its not going to be created and we are displaying
+							// the error to the user.
 
 					System.out.println("File already exists.");
 				}
@@ -525,7 +514,8 @@ public class Shop {
 				error.printStackTrace();
 			}
 
-			FileWriter writer = new FileWriter(fileName, true); // We allow to add new purchases instead of overwritting them.
+			FileWriter writer = new FileWriter(fileName, true); // We allow to add new purchases instead of overwritting
+																// them.
 			int saleIndex = 1; // Variable to help us track the numbers of purchases.
 			// The numbers of each purchase.
 			for (int i = 0; i < sales.size(); i++) {
