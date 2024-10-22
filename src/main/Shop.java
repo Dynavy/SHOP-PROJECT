@@ -14,8 +14,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import dao.DaoImplFile;
+import dao.DaoImplXml;
 
 public class Shop {
 	// Colors start.
@@ -35,8 +34,8 @@ public class Shop {
 	private Scanner sc = new Scanner(System.in);
 	
 	/*  We use Polymorphism toe create a 'dao' object using the 'Dao' interface, 
-	allowing it to use the attributes and methods of 'DaoImplFile'. */
-	Dao dao = new DaoImplFile();
+	allowing it to use the attributes and methods of 'DaoImplxml'. */
+	Dao dao = new DaoImplXml();
 
 	public static void main(String[] args) {
 
@@ -252,27 +251,25 @@ public class Shop {
 	private static void displayMenu() {
 		System.out.println("\n");
 		System.out.println("===========================");
-		System.out.println("Menu principal miTienda.com");
+		System.out.println("Main menu myStore.com");
 		System.out.println("===========================");
-		System.out.println("1) Contar caja");
-		System.out.println("2) Añadir producto");
-		System.out.println("3) Añadir stock");
-		System.out.println("4) Marcar producto proxima caducidad");
-		System.out.println("5) Ver inventario");
-		System.out.println("6) Venta");
-		System.out.println("7) Ver ventas");
-		System.out.println("8) Ver venta totales");
-		System.out.println("9) Eliminar un producto");
-		System.out.println("10) Salir programa");
-		System.out.print("Seleccione una opción: ");
+		System.out.print("Select an option:: \n\n");
+		System.out.println("1) Show cash.");
+		System.out.println("2) Add product.");
+		System.out.println("3) Add stock.");
+		System.out.println("4) Mark product expiration.");
+		System.out.println("5) Show inventory.");
+		System.out.println("6) Make a sale.");
+		System.out.println("7) Show sales.");
+		System.out.println("8) Show total sales.");
+		System.out.println("9) Delete product.");
+		System.out.println("10) Exit program.");
 	}
 
-	// SHOW CURRENT TOTAL CASH
+	// SHOW CURRENT TOTAL CASH.
 	public void showCash() {
-		System.out.println(VERDE_CLARO + "\nDinero actual: " + cash.toString() + RESET); // We call the 'toString' from
-																							// the class amount so we
-																							// can print the cash with
-																							// the '€'
+		// We call the 'toString' from the class amount so we can print the cash with the €.
+		System.out.println(VERDE_CLARO + "\nDinero actual: " + cash.toString() + RESET); 																			
 	}
 
 	public void addProduct() {
@@ -338,15 +335,9 @@ public class Shop {
 
 	// SHOW ALL INVENTORY.
 	public void showInventory() {
-
-		System.out.println("\nContenido actual de la tienda:");
-		for (Product product : inventory) {
-			if (product != null) {
-				System.out.println(product.toString()); // We use toString to get all the information we want from our
-														// inventory.
-
-			}
-		}
+		
+		System.out.println("Available products:");
+		readFile();
 	}
 
 	// MAKE A SALE OF PRODUCTS TO A CLIENT.
@@ -358,7 +349,7 @@ public class Shop {
 		// We assign if user is premium or not on our premium variable.
 		boolean premium = premiumUser();
 
-		System.out.println("Realizar venta, escribir nombre cliente");
+		System.out.println("Make a sale, write the client name.");
 		String client = sc.nextLine();
 
 		ArrayList<Product> saleProducts = new ArrayList<>();
@@ -373,7 +364,7 @@ public class Shop {
 		String name = "";
 
 		while (!name.equals("0")) {
-			System.out.println("Productos disponibles: \n");
+			System.out.println("Available products: \n");
 
 			for (Product product : inventory) {
 
@@ -479,13 +470,11 @@ public class Shop {
 	public Product findProduct(String name) {
 		for (int i = 0; i < inventory.size(); i++) {
 
-			if (inventory.get(i) != null && inventory.get(i).getName().equalsIgnoreCase(name)) { // We fix the key
-																									// sensitive
-																									// (equalsIgnoreCase).
-				return inventory.get(i); // Adapt the arraylist.
+			if (inventory.get(i) != null && inventory.get(i).getName().equalsIgnoreCase(name)) {																				
+				// Adapt the arraylist.																
+				return inventory.get(i); 
 			}
 		}
-
 		return null;
 	}
 
