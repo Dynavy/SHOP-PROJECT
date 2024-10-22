@@ -17,12 +17,13 @@ public class Product {
 	private int stock;
 	private static int totalProducts;
 	static double EXPIRATION_RATE = 0.60;
+	private String currency;
 
 	public Product(String name, double wholesalerPrice, boolean available, int stock) {
 		super();
 		this.id = totalProducts + 1;
 		this.name = name;
-		this.publicPrice = new Amount(wholesalerPrice * 2); // We create a new object named Amount to the variable								
+		this.publicPrice = new Amount(wholesalerPrice * 2); // We create a new object named Amount to the variable.								
 		this.wholesalerPrice = new Amount(wholesalerPrice);
 		this.available = available;
 		this.stock = stock;
@@ -30,6 +31,22 @@ public class Product {
 
 	}
 
+	// New constructor for the SaxReader.
+	public Product(String name) {
+		this.name = name;
+	}
+	
+	/**
+	 * @return the badge
+	 */
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+	
 	@Override
 	public String toString() { // CASE 5 AND CASE 7
 
