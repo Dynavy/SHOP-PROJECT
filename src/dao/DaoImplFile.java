@@ -9,12 +9,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import main.Shop;
 import model.Product;
 import model.Employee;
-import model.Product;
-import model.Sale;
 
 public class DaoImplFile implements Dao {
 
@@ -42,7 +38,7 @@ public class DaoImplFile implements Dao {
 
 				// line1.length = lines on the .txt.
 				for (int i = 0; i < line1.length; i++) {
-					// We split with differents lines by ":"
+					// We split with different lines by ":"
 					String[] line2 = line1[i].split(":");
 
 					switch (i) {
