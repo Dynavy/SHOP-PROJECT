@@ -1,4 +1,4 @@
-JAVA Practice from UF3, UF4 AND UF5.
+JAVA PROJECT 1º AND 2º GRADE OF DAM.
 
 It consists of developing a store and implementing new logic and features.
 
