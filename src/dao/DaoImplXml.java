@@ -8,35 +8,43 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
+
+import main.Shop;
 import model.Employee;
 import model.Product;
 
 public class DaoImplXml implements Dao{
-
-
+ 
+ 
 	@Override
 	public ArrayList<Product> getInventory() {
-
-		// ArrayList that will contain the default products.
+		
+		// ArrayList to store the default products.
 		ArrayList<Product> products = new ArrayList<>();
 
+		// New instance of SAXParserFactory.
 		SAXParserFactory factory = SAXParserFactory.newInstance();
+		// Initialize a SAXParser.
 		SAXParser parser;
+		
+		// New instance of saxReader.
+		dao.xml.SaxReader saxReader = new dao.xml.SaxReader();
+		
 		try {
 			parser = factory.newSAXParser();
 			// Path of the XML file.
 			File file = new File ("xml/inputInventory.xml");
-			dao.xml.SaxReader saxReader = new dao.xml.SaxReader();
 			parser.parse(file, saxReader);
-			
-		} catch (ParserConfigurationException | SAXException e) {
+			// We store the products on our arrayList.
+			products = saxReader.getProducts();
+		} catch (ParserConfigurationException | SAXException error) {
 			System.out.println("ERROR creating the parser");
-		} catch (IOException e) {
+		} catch (IOException error) {
 			System.out.println("ERROR file not found");
 		}
 		
 		// We return the array with the products.
-		return products;
+		  return products;
 	}
 	
 	@Override
