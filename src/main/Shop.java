@@ -32,18 +32,20 @@ public class Shop {
 	public final static double TAX_RATE = 1.04; // We change the IVA to a 4%
 	int salesCounter = 0; // Variable to count the index of the case 6 array.
 	private Scanner sc = new Scanner(System.in);
-	
-	/*  We use Polymorphism toe create a 'dao' object using the 'Dao' interface, 
-	allowing it to use the attributes and methods of 'DaoImplxml'. */
+
+	/*
+	 * We use Polymorphism toe create a 'dao' object using the 'Dao' interface,
+	 * allowing it to use the attributes and methods of 'DaoImplxml'.
+	 */
 	Dao dao = new DaoImplXml();
 
 	public static void main(String[] args) {
 
 		Shop shop = new Shop();
-
 		// We call our initSession method to identify the user.
 		shop.initSession();
-
+		// We load the inventory of our shop.
+		shop.loadInventory();
 		Scanner scanner = new Scanner(System.in);
 		boolean exit = false;
 
@@ -165,21 +167,13 @@ public class Shop {
 
 	}
 
-	// load initial inventory to shop:
-
+	// Load the inventory of our shop.
 	public void loadInventory() {
-
-		// We call the method readFile which have all the default products on the .txt
-		readFile();
-
-	}
-
-	public void readFile() {
-
-		inventory = dao.getInventory();
-
-	}
+		
+		setInventory(dao.getInventory());
 	
+	}
+
 	public boolean writeInventory() {
 
 		return dao.writeInventory(inventory);
@@ -268,8 +262,9 @@ public class Shop {
 
 	// SHOW CURRENT TOTAL CASH.
 	public void showCash() {
-		// We call the 'toString' from the class amount so we can print the cash with the €.
-		System.out.println(VERDE_CLARO + "\nDinero actual: " + cash.toString() + RESET); 																			
+		// We call the 'toString' from the class amount so we can print the cash with
+		// the €.
+		System.out.println(VERDE_CLARO + "\nDinero actual: " + cash.toString() + RESET);
 	}
 
 	public void addProduct() {
@@ -335,9 +330,14 @@ public class Shop {
 
 	// SHOW ALL INVENTORY.
 	public void showInventory() {
-		
+
 		System.out.println("Available products:");
-		readFile();
+		
+		for (Product product : inventory) {
+			if (product != null) {
+				System.out.println(product.toString());
+			}
+		}
 	}
 
 	// MAKE A SALE OF PRODUCTS TO A CLIENT.
@@ -470,9 +470,9 @@ public class Shop {
 	public Product findProduct(String name) {
 		for (int i = 0; i < inventory.size(); i++) {
 
-			if (inventory.get(i) != null && inventory.get(i).getName().equalsIgnoreCase(name)) {																				
-				// Adapt the arraylist.																
-				return inventory.get(i); 
+			if (inventory.get(i) != null && inventory.get(i).getName().equalsIgnoreCase(name)) {
+				// Adapt the arraylist.
+				return inventory.get(i);
 			}
 		}
 		return null;
@@ -511,15 +511,15 @@ public class Shop {
 				Sale sale = sales.get(i);
 				if (sale != null) {
 
-					// Write client and date
+					// Write client and date.
 					writer.write(saleIndex + ";Client=" + sale.getClient() + ";Date=" + sale.getDate() + ";\n");
-					// Write products
+					// Write products.
 					writer.write(saleIndex + ";Products=");
 					for (Product product : sale.getProducts()) {
 						writer.write(product.getName() + "," + product.getPublicPrice() + ";");
 					}
 					writer.write("\n");
-					// Write amount
+					// Write amount.
 					writer.write(saleIndex + ";Amount=" + sale.getAmount() + ";\n");
 
 					saleIndex++; // We increment each purchase (1,2,3,4...).
@@ -533,19 +533,28 @@ public class Shop {
 	}
 
 	public Amount getCashValue() {
+		
 		return cash;
 	}
 
 	public void setCashValue(Amount cash) {
+		
 		this.cash = cash;
-
 	}
 
 	public ArrayList<Product> getInventory() {
+		
 		return inventory;
 	}
 
+	public void setInventory(ArrayList<Product> product) {
+		// We set our inventory with the default products.
+		this.inventory = product;
+	}
+	
+
 	public ArrayList<Sale> getSales() {
+		
 		return sales;
 	}
 
