@@ -1,70 +1,66 @@
-package dao.xml;
-
-import java.util.ArrayList;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.Attributes;
-
-import model.Amount;
-import model.Product;
-
-public class SaxReader extends DefaultHandler {
+	package dao.xml;
 	
-	ArrayList<Product> products;
-	Product product;
-	String value;
-	String parsedElement;
+	import java.util.ArrayList;
+	import org.xml.sax.SAXException;
+	import org.xml.sax.helpers.DefaultHandler;
+	import org.xml.sax.Attributes;
 	
-	public ArrayList<Product> getProducts() {
-	    return products;
-	}
+	import model.Amount;
+	import model.Product;
 	
-	public void setProducts(ArrayList<Product> products) {
-		this.products = products;
-	}
-	
-
-	@Override
-	public void startDocument() throws SAXException {
-		this.products = new ArrayList<>();
-	}
-
-	@Override
-	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-		switch (qName) {
-		case "product":
-			this.product = new Product(attributes.getValue("name") != null ? attributes.getValue("name") : "empty");
-			break;
-		case "wholeSalerPrice":  
-			this.product.setCurrency(attributes.getValue("currency"));
-			break;
-		}
-		this.parsedElement = qName;
-	}
-
-	@Override
-	public void characters(char[] ch, int start, int length) throws SAXException {
-		value = new String(ch, start, length);
-		switch (parsedElement) {
-		case "wholeSalerPrice":  
-			this.product.setWholesalerPrice(new Amount(Float.valueOf(value)));
-			this.product.setPublicPrice(new Amount(Float.valueOf(value) * 2));
-			break;
-		case "stock":
-			this.product.setStock(Integer.valueOf(value));
-			break;
-		}
-	}
-
-	@Override
-	public void endElement(String uri, String localName, String qName) throws SAXException {
+	public class SaxReader extends DefaultHandler {
 		
-		if (qName.equals("product"))
-			this.products.add(product);
-		this.parsedElement = "";
+		ArrayList<Product> products;
+		Product product;
+		String value;
+		String parsedElement;
+		
+		public ArrayList<Product> getProducts() {
+		    return products;
+		}
+	
+		@Override
+		public void startDocument() throws SAXException {
+			this.products = new ArrayList<>();
+		}
+	
+		@Override
+		public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+			switch (qName) {
+			case "product":
+				this.product = new Product(attributes.getValue("name") != null ? attributes.getValue("name") : "empty");
+				break;
+			case "wholeSalerPrice":  
+				this.product.setCurrency(attributes.getValue("currency"));
+				break;
+			}
+			this.parsedElement = qName;
+		}
+	
+		@Override
+		public void characters(char[] ch, int start, int length) throws SAXException {
+			value = new String(ch, start, length);
+			switch (parsedElement) {
+			case "wholeSalerPrice":  
+				this.product.setWholesalerPrice(new Amount(Float.valueOf(value)));
+				this.product.setPublicPrice(new Amount(Float.valueOf(value) * 2));
+				break;
+			case "stock":
+				this.product.setStock(Integer.valueOf(value));
+				break;
+			}
+		}
+	
+		@Override
+		public void endElement(String uri, String localName, String qName) throws SAXException {
+			
+			// We add the products objects to our ArrayList.
+			if (qName.equals("product"))
+				this.products.add(product);
+			this.parsedElement = "";
+		}
+	
+		@Override
+		public void endDocument() throws SAXException {
+		}
 	}
-
-	@Override
-	public void endDocument() throws SAXException {
-	}
-}
