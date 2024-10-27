@@ -15,9 +15,14 @@ public class SaxReader extends DefaultHandler {
 	String value;
 	String parsedElement;
 	
+	public ArrayList<Product> getProducts() {
+	    return products;
+	}
+	
 	public void setProducts(ArrayList<Product> products) {
 		this.products = products;
 	}
+	
 
 	@Override
 	public void startDocument() throws SAXException {
@@ -61,12 +66,5 @@ public class SaxReader extends DefaultHandler {
 
 	@Override
 	public void endDocument() throws SAXException {
-		printDocument();
-	}
-
-	private void printDocument() {
-		for (Product p : products) {
-			System.out.println(p.toString());
-		}
 	}
 }
