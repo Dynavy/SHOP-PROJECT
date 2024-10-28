@@ -54,14 +54,13 @@ public class DaoImplXml implements Dao{
 	}
 	
 	@Override
-	public void connect() throws SQLException {
-		// TODO Auto-generated method stub
+	public void connect() {
+		
 		
 	}
 
 	@Override
-	public void disconnect() throws SQLException {
-		// TODO Auto-generated method stub
+	public void disconnect(){
 		
 	}
 

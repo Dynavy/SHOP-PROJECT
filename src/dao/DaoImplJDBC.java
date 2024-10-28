@@ -6,34 +6,45 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import model.Employee;
 import model.Product;
 
 public class DaoImplJDBC implements Dao {
 
 	private Connection connection;
-	
-	
+
 	public DaoImplJDBC() {
-		
+
 	}
 
 	@Override
-	public void connect() throws SQLException {
+	public void connect() {
 
 		String url = "jdbc:mysql://localhost:6788/ShopDB";
 		String user = "root";
 		String pass = "root";
-		this.connection = DriverManager.getConnection(url, user, pass);
 
+		try {
+			this.connection = DriverManager.getConnection(url, user, pass);
+
+		} catch (SQLException SqlError) {
+
+			System.out.println("Error connecting with the database" + SqlError.getMessage());
+			SqlError.printStackTrace();
+		}
 	}
 
 	@Override
-	public void disconnect() throws SQLException {
+	public void disconnect() {
 
 		if (connection != null) {
-			connection.close();
+			try {
+				connection.close();
+			} catch (SQLException SqlError) {
+
+				System.out.println("Error connecting with the database" + SqlError.getMessage());
+				SqlError.printStackTrace();
+			}
 		}
 	}
 
@@ -43,22 +54,23 @@ public class DaoImplJDBC implements Dao {
 		Employee employee = null;
 		// Prepare SQL query.
 		String query = "select * from Employee where Employee_ID = ? AND password = ?";
-		
-		try (PreparedStatement ps = connection.prepareStatement(query)) { 
+
+		try (PreparedStatement ps = connection.prepareStatement(query)) {
 			// Set userID and password parameters.
-			ps.setInt(1,user);
+			ps.setInt(1, user);
 			ps.setString(2, pw);
-		  	
-	        try (ResultSet rs = ps.executeQuery()) {
-	        	// If we find any data, we create an Employee object.
-	        	if (rs.next()) {
-	        		// Creates an Employee instance to temporarily store the user and password data retrieved from the database.
-	        		employee =  new Employee(user, pw);            		            				
-	        	}
-	        }
-	    } catch (SQLException SQLError) {
-			// in case error in SQL
-			SQLError.printStackTrace();
+
+			try (ResultSet rs = ps.executeQuery()) {
+				// If we find any data, we create an Employee object.
+				if (rs.next()) {
+					// Creates an Employee instance to temporarily store the user and password data retrieved from the database.
+					employee = new Employee(user, pw);
+				}
+			}
+		} catch (SQLException SqlError) {
+
+			System.out.println("Error connecting with the database" + SqlError.getMessage());
+			SqlError.printStackTrace();
 		}
 		// We return the employee object.
 		return employee;
@@ -76,8 +88,4 @@ public class DaoImplJDBC implements Dao {
 		return null;
 	}
 
-
-		
-	}
-	
-
+}

@@ -122,20 +122,18 @@ public class DaoImplFile implements Dao {
 	}
 
 	@Override
-	public void connect() throws SQLException {
-		// TODO Auto-generated method stub
+	public void connect()  {
 
 	}
 
 	@Override
-	public void disconnect() throws SQLException {
-		// TODO Auto-generated method stub
+	public void disconnect(){
 
 	}
 
 	@Override
 	public Employee getEmployee(int user, String pw) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
