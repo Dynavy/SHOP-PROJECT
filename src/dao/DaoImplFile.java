@@ -78,7 +78,7 @@ public class DaoImplFile implements Dao {
 
 		try {
 			// Get current date for the file name.
-			String currentDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
+			String currentDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 			// Create the file name with the current date.
 			String fileName = "files/sales_" + currentDate + ".txt";
 			// Create a new file for each different day.
