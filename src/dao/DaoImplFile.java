@@ -110,7 +110,7 @@ public class DaoImplFile implements Dao {
 				counter++;
 				
 			}
-			writer.write("Total of products:" + counter);
+			writer.write("Total of products:" + counter + ";");
 
 			// Close the file writer.
 			writer.close();
