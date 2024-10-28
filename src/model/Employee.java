@@ -1,4 +1,7 @@
 package model;
+
+import java.sql.SQLException;
+
 import dao.Dao;
 import dao.DaoImplJDBC;
 import main.Logable;
