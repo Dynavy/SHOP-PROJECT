@@ -8,10 +8,6 @@ import main.Logable;
 
 public class Employee extends Person implements Logable {
 
-	//	private int EMPLOYEE_ID;
-	//	private String PASSWORD;
-	//	private int employeeID = EMPLOYEE_ID;
-	
 	// Polymorphism enables accessing DaoImpl functionalities through the dao object.
 	public Dao dao = new DaoImplJDBC();
 
@@ -25,27 +21,14 @@ public class Employee extends Person implements Logable {
 	}
 
 	public boolean login(int user, String password) {
-
-		//		if (user == EMPLOYEE_ID && password.equals(PASSWORD)) {
-		//			
-		//			return true;
-		//		}
-		//		return false;
-
 		
-		// Connects to the database, invokes the getEmployee method and then disconnects from the database. 
-		try  {
-			
-		    dao.connect();
-		    Employee credentials = dao.getEmployee(user, password);
-		    dao.disconnect();
-		    return credentials != null;
-		    
-		} catch (SQLException SQLError) {
-		  
-		    SQLError.printStackTrace();
-		}
-		
-		return false;
+		// We made the connection to the database.
+		dao.connect();
+		// If we have matches, we store it on the credentials instance.
+		Employee credentials = dao.getEmployee(user, password);
+		// We close the conection to the database after checking the credentials.
+		dao.disconnect();
+		// If we have no matches, we return null.
+		return credentials != null;
 	}
 }

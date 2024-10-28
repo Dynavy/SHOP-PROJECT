@@ -10,6 +10,4 @@ public class LimitLoginException extends Exception{
 	public LimitLoginException() {
 		super(CustomMessage);
 	}
-	
-	
 }
