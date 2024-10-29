@@ -2,19 +2,19 @@
 
 <products>
     <product name="Apple">
-        <wholeSalerPrice badge="Euro">10.00</wholeSalerPrice>
+        <wholeSalerPrice currency="Euro">10.00</wholeSalerPrice>
         <stock>10</stock>
     </product>
     <product name="Strawberry">
-        <wholeSalerPrice badge="Euro">5.00</wholeSalerPrice>
+        <wholeSalerPrice currency="Euro">5.00</wholeSalerPrice>
         <stock>20</stock>
     </product>
     <product name="Hamburguer">
-        <wholeSalerPrice badge="Euro">30.00</wholeSalerPrice>
+        <wholeSalerPrice currency="Euro">30.00</wholeSalerPrice>
         <stock>30</stock>
     </product>
     <product name="Peach">
-        <wholeSalerPrice badge="Euro">20.00</wholeSalerPrice>
+        <wholeSalerPrice currency="Euro">20.00</wholeSalerPrice>
         <stock>20</stock>
     </product>
 </products>

@@ -12,7 +12,7 @@ import java.util.Scanner;
 import model.Product;
 import model.Employee;
 
-public class DaoImplFile implements Dao {
+public class DaoImplFile implements Dao{
 
 	ArrayList<Product> inventory = new ArrayList<Product>();
 
@@ -72,7 +72,6 @@ public class DaoImplFile implements Dao {
 		return inventory;
 
 	}
-
 	@Override
 	public boolean writeInventory(ArrayList<Product> productList) {
 
@@ -120,17 +119,14 @@ public class DaoImplFile implements Dao {
 		}
 		return false;
 	}
-
 	@Override
 	public void connect()  {
 
 	}
-
 	@Override
 	public void disconnect(){
 
 	}
-
 	@Override
 	public Employee getEmployee(int user, String pw) {
 		
