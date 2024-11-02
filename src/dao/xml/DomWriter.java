@@ -54,6 +54,10 @@ public class DomWriter {
 				Element productElement = document.createElement("product");
 				productElement.setAttribute("id", Integer.toString(product.getId()));
 
+				// Creates a tag '<name>' without any attributes.
+				Element nameElement = document.createElement("name");
+				nameElement.setTextContent(String.valueOf(product.getName()));
+				
 				// Creates a tag '<price>' with 'currency' and '€' as attributes.
 				Element wholeSalerPriceElement = document.createElement("price");
 				wholeSalerPriceElement.setAttribute("currency", "€");
@@ -67,6 +71,7 @@ public class DomWriter {
 
 				// Append the tags of stock, publicPrice and wholeSalerPrice to the '<product>'
 				// tag,
+				productElement.appendChild(nameElement);
 				productElement.appendChild(wholeSalerPriceElement);
 				productElement.appendChild(stockElement);
 
