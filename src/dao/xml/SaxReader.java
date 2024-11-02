@@ -22,7 +22,7 @@ public class SaxReader extends DefaultHandler {
 	@Override
 	public void startDocument() throws SAXException {
 		this.products = new ArrayList<>();
-		 Product.setTotalProducts(1);
+		Product.setTotalProducts(1);
 	}
 
 	@Override
@@ -32,7 +32,8 @@ public class SaxReader extends DefaultHandler {
 			this.product = new Product(attributes.getValue("name") != null ? attributes.getValue("name") : "empty");
 			break;
 		case "wholeSalerPrice":
-			this.product.setCurrency(attributes.getValue("currency"));
+			this.product
+					.setCurrency(attributes.getValue("currency") != null ? attributes.getValue("currency") : "EURO");
 			break;
 		}
 		this.parsedElement = qName;
@@ -55,10 +56,15 @@ public class SaxReader extends DefaultHandler {
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 
 		// We add the products objects to our ArrayList.
-		if (qName.equals("product")) 
-			
-			this.products.add(product);
-			this.parsedElement = "";
+		if (qName.equals("product")) {
+			if (this.product != null) {
+				this.products.add(product);
+			} else {
+				System.err.println("NULL PRODUCT DETECTED");
+			}
+		}
+		// Clears the parsedElement variable after reading all the XML.
+		this.parsedElement = "";
 	}
 
 	@Override
