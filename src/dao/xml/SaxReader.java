@@ -14,7 +14,6 @@ public class SaxReader extends DefaultHandler {
 	Product product;
 	String value;
 	String parsedElement;
-	int counter = 1;
 
 	public ArrayList<Product> getProducts() {
 		return products;
