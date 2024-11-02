@@ -18,11 +18,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import model.Amount;
 import model.Product;
 
 public class DomWriter {
@@ -45,8 +42,9 @@ public class DomWriter {
 	public boolean generateXml(ArrayList<Product> products) {
 
 		try {
-			// Create the 'rootElement' and track it by 'products' name.
+			// Create the 'rootElement' and writes depending on the products list size.
 			Element rootElement = document.createElement("products");
+			rootElement.setAttribute("total", Integer.toString(products.size()));
 			document.appendChild(rootElement);
 
 			// Loop to iterate the products list and write with the elements.
@@ -54,16 +52,10 @@ public class DomWriter {
 
 				// Creates a tag '<product>' with the name as an attribute.
 				Element productElement = document.createElement("product");
-				productElement.setAttribute("name", product.getName());
+				productElement.setAttribute("id", Integer.toString(product.getId()));
 
-				// Creates a tag '<publicPrice>' with 'currency' and '€' as attributes.
-				Element publicPriceElement = document.createElement("publicPrice");
-				publicPriceElement.setAttribute("currency", "€");
-				// The information is taken thanks to the PublicPrice getter.
-				publicPriceElement.setTextContent(String.valueOf(product.getPublicPrice().getValue()));
-
-				// Creates a tag '<wholeSalerPrice>' with 'currency' and '€' as attributes.
-				Element wholeSalerPriceElement = document.createElement("wholeSalerPrice");
+				// Creates a tag '<price>' with 'currency' and '€' as attributes.
+				Element wholeSalerPriceElement = document.createElement("price");
 				wholeSalerPriceElement.setAttribute("currency", "€");
 				// The information is taken thanks to the WholeSalerPrice getter.
 				wholeSalerPriceElement.setTextContent(String.valueOf(product.getWholesalerPrice().getValue()));
@@ -73,8 +65,8 @@ public class DomWriter {
 				// The information is taken thanks to the stock getter.
 				stockElement.setTextContent(String.valueOf(product.getStock()));
 
-				// Append the tags of stock, publicPrice and wholeSalerPrice to the '<product>' tag,
-				productElement.appendChild(publicPriceElement);
+				// Append the tags of stock, publicPrice and wholeSalerPrice to the '<product>'
+				// tag,
 				productElement.appendChild(wholeSalerPriceElement);
 				productElement.appendChild(stockElement);
 
@@ -84,12 +76,13 @@ public class DomWriter {
 
 			// Create the file name with the current date
 			String currentDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-			String fileName = "xml/sales_" + currentDate + ".xml"; // Use .xml extension
+			String baseFileName = "xml/sales_" + currentDate;
+			String fileName = baseFileName + ".xml";
 			int counter = 1;
 
 			// Loop to generate more than 1 XML document with the same name.
 			while (new File(fileName).exists()) {
-				fileName = fileName + "_" + counter + ".xml"; //
+				fileName = baseFileName + "_" + "(" +counter + ")" + ".xml";
 				counter++;
 			}
 
@@ -103,7 +96,7 @@ public class DomWriter {
 				Transformer transformer = factory.newTransformer();
 				transformer.transform(source, result);
 			}
-			// return true if the XML file has been written succesfully. 
+			// return true if the XML file has been written successfully.
 			return true;
 		} catch (IOException e) {
 			System.out.println("Error when creating writer file: " + e.getMessage());
