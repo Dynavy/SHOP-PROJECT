@@ -28,8 +28,9 @@ public class DomWriter {
 	private Document document;
 
 	public DomWriter() {
+		
+		// Initialize DocumentBuilderFactory and create and empty XML document using DocumentBuilder.
 		try {
-
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
 			DocumentBuilder builder;
 			builder = factory.newDocumentBuilder();
