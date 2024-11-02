@@ -108,11 +108,8 @@ public class Shop {
 				}
 
 			} else {
-				System.err.println("Invalid input. Please enter a valid number between 1 and 5. \n"); // Validation
-																										// error if the
-																										// user
-																										// introduces a
-																										// letter
+				// Validation error if the user introduces a letter.
+				System.err.println("Invalid input. Please enter a valid number between 1 and 5. \n"); 																							
 				scanner.nextLine();
 			}
 
