@@ -21,19 +21,18 @@ public class Product {
 
 	public Product(String name, double wholesalerPrice, boolean available, int stock) {
 		super();
-		this.id = totalProducts + 1;
+		this.id = totalProducts++;
 		this.name = name;
 		this.publicPrice = new Amount(wholesalerPrice * 2); // We create a new object named Amount to the variable.								
 		this.wholesalerPrice = new Amount(wholesalerPrice);
 		this.available = available;
 		this.stock = stock;
-		totalProducts++;
-
 	}
 
 	// New constructor for the SaxReader.
 	public Product(String name) {
 		this.name = name;
+		this.id = totalProducts++;
 	}
 	
 	/**
