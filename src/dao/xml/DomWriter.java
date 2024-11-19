@@ -45,7 +45,7 @@ public class DomWriter {
 		try {
 			// Create the 'rootElement' and writes depending on the products list size.
 			Element rootElement = document.createElement("products");
-			rootElement.setAttribute("total", Integer.toString(products.size()));
+			rootElement.setAttribute("total", Integer.toString(Product.getTotalProducts()));	
 			document.appendChild(rootElement);
 
 			// Loop to iterate the products list and write with the elements.
