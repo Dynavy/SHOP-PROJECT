@@ -1,6 +1,7 @@
 package main;
 
 import dao.Dao;
+import dao.DaoImplJaxb;
 import model.Amount;
 import model.Client;
 import model.Premium;
@@ -14,7 +15,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
-import dao.DaoImplXml;
 
 public class Shop {
 	// Colors start.
@@ -37,7 +37,7 @@ public class Shop {
 	 * We use Polymorphism toe create a 'dao' object using the 'Dao' interface,
 	 * allowing it to use the attributes and methods of 'DaoImplxml'.
 	 */
-	Dao dao = new DaoImplXml();
+	Dao dao = new DaoImplJaxb();
 
 	public static void main(String[] args) {
 
@@ -153,7 +153,7 @@ public class Shop {
 
 	}
 
-	// Logeo:
+	// Login:
 
 	public void initSession() {
 		LoginView loginView = new LoginView();
