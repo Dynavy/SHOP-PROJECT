@@ -38,20 +38,16 @@ cd SHOP-PROJECT
 ```
 3. Build the project with Maven (ensure you have Maven installed): 
 ```
-bash mvn clean install
+mvn clean install
 ```
 4. Ensure MySQL is installed and running. - Configure the database connection with your own credentials. - Create a new database in MySQL:<br>
 ```
 sql CREATE DATABASE ShopDB
 ````
-5. Run the application:
-```
-mvn exec
-```
 
 ## Requirements:
-- **Windows Builder**: To run and design the graphical interface, make sure to have Windows Builder installed in your IDE.
-- **SQL Dependency**: Ensure that the `pom.xml` file includes the SQL dependency to execute SQL queries correctly.
+- **Windows Builder**: To be able to design the graphical interface, make sure to have Windows Builder installed in your IDE.
+- **DEPENDENCIES**: Ensure that the `pom.xml` file includes the necessary dependencies (Maven should have installed all).
 
 ## Usage:
 To use the Shop Management Project, run the application after completing the installation steps. The user interface will allow you to manage products, view inventory, track cash flow and other functionalities.
