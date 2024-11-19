@@ -28,7 +28,7 @@ public class DomWriter {
 	private Document document;
 
 	public DomWriter() {
-		
+
 		// Initialize DocumentBuilderFactory and create and empty XML document using DocumentBuilder.
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
@@ -58,7 +58,7 @@ public class DomWriter {
 				// Creates a tag '<name>' without any attributes.
 				Element nameElement = document.createElement("name");
 				nameElement.setTextContent(String.valueOf(product.getName()));
-				
+
 				// Creates a tag '<price>' with 'currency' and '€' as attributes.
 				Element wholeSalerPriceElement = document.createElement("price");
 				wholeSalerPriceElement.setAttribute("currency", "€");
@@ -82,13 +82,13 @@ public class DomWriter {
 
 			// Create the file name with the current date
 			String currentDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-			String baseFileName = "xml/sales_" + currentDate;
+			String baseFileName = "xml/inventory_" + currentDate;
 			String fileName = baseFileName + ".xml";
 			int counter = 1;
 
 			// Loop to generate more than 1 XML document with the same name.
 			while (new File(fileName).exists()) {
-				fileName = baseFileName + "_" + "(" +counter + ")" + ".xml";
+				fileName = baseFileName + "_" + "(" + counter + ")" + ".xml";
 				counter++;
 			}
 
