@@ -34,7 +34,7 @@ public class Shop {
 	private Scanner sc = new Scanner(System.in);
 	private static Shop shop;
 
-	// Creates an instance of shop that can be used 
+	// Creates a method that returns a shop instance.
 	public static Shop getInstance() {
 		if (shop == null) {
 			shop = new Shop();
@@ -49,7 +49,7 @@ public class Shop {
 	Dao dao = new DaoImplJaxb();
 
 	public static void main(String[] args) {
-		
+
 		Shop shop = Shop.getInstance();
 		// We call our initSession method to identify the user.
 		shop.initSession();
