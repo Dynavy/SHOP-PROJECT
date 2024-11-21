@@ -50,9 +50,8 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 	public ShopView() {
 
-		// We initialize a shop instance and load the inventory.
-		this.shop = new Shop();
-		shop.loadInventory();
+		// We use the initial shop instance created on Shop class.
+		this.shop = Shop.getInstance();
 		// Invoke all the methods.
 		initWindowUI();
 		menuUI();
@@ -242,7 +241,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 			// OPTION 3.
 		} else if (buttonInteraction.getSource() == addStock) {
 			// We invoke the openProductView() with his constant as an argument.
-			openProductView(Constants.ADD_STOCK);
+			openProductView(Constants.UPDATE_STOCK);
 
 			// OPTION 5.
 		} else if (buttonInteraction.getSource() == showInventory) {
@@ -342,7 +341,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 		case KeyEvent.VK_3:
 			// We invoke the openProductView() with his constant as an argument.
-			openProductView(Constants.ADD_STOCK);
+			openProductView(Constants.UPDATE_STOCK);
 			break;
 
 		case KeyEvent.VK_9:

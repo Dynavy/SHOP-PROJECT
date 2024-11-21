@@ -32,6 +32,15 @@ public class Shop {
 	public final static double TAX_RATE = 1.04; // We change the IVA to a 4%
 	int salesCounter = 0; // Variable to count the index of the case 6 array.
 	private Scanner sc = new Scanner(System.in);
+	private static Shop shop;
+
+	// Creates an instance of shop that can be used 
+	public static Shop getInstance() {
+		if (shop == null) {
+			shop = new Shop();
+		}
+		return shop;
+	}
 
 	/*
 	 * We use Polymorphism toe create a 'dao' object using the 'Dao' interface,
@@ -40,8 +49,8 @@ public class Shop {
 	Dao dao = new DaoImplJaxb();
 
 	public static void main(String[] args) {
-
-		Shop shop = new Shop();
+		
+		Shop shop = Shop.getInstance();
 		// We call our initSession method to identify the user.
 		shop.initSession();
 		// We load the inventory of our shop.
@@ -50,7 +59,7 @@ public class Shop {
 		boolean exit = false;
 
 		do {
-			// We display the menu
+			// We display fthe menu
 			displayMenu();
 
 			if (scanner.hasNextInt()) {
@@ -109,7 +118,7 @@ public class Shop {
 
 			} else {
 				// Validation error if the user introduces a letter.
-				System.err.println("Invalid input. Please enter a valid number between 1 and 5. \n"); 																							
+				System.err.println("Invalid input. Please enter a valid number between 1 and 5. \n");
 				scanner.nextLine();
 			}
 
@@ -166,9 +175,9 @@ public class Shop {
 
 	// Load the inventory of our shop.
 	public void loadInventory() {
-		
+
 		setInventory(dao.getInventory());
-	
+
 	}
 
 	public boolean writeInventory() {
@@ -328,8 +337,8 @@ public class Shop {
 	// SHOW ALL INVENTORY.
 	public void showInventory() {
 
-		System.out.println("Available products:");
-		
+		System.out.println("\nAvailable products:");
+
 		for (Product product : inventory) {
 			if (product != null) {
 				System.out.println(product.toString());
@@ -530,17 +539,17 @@ public class Shop {
 	}
 
 	public Amount getCashValue() {
-		
+
 		return cash;
 	}
 
 	public void setCashValue(Amount cash) {
-		
+
 		this.cash = cash;
 	}
 
 	public ArrayList<Product> getInventory() {
-		
+
 		return inventory;
 	}
 
@@ -548,10 +557,9 @@ public class Shop {
 		// We set our inventory with the default products.
 		this.inventory = product;
 	}
-	
 
 	public ArrayList<Sale> getSales() {
-		
+
 		return sales;
 	}
 
