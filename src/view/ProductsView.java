@@ -89,8 +89,8 @@ public class ProductsView extends JDialog implements ActionListener {
             Product product = productsInfo.get(i);
             data[i][0] = product.getId();
             data[i][1] = product.getName();
-            data[i][2] = product.getPublicPrice() != null ? product.getPublicPrice().getValue() : "N/A"; 
-            data[i][3] = product.getWholesalerPrice() != null ? product.getWholesalerPrice().getValue() : "N/A"; 
+            data[i][2] = product.getPublicPrice() != null ? product.getPublicPrice().toString() : "N/A"; 
+            data[i][3] = product.getWholesalerPrice() != null ? product.getWholesalerPrice().toString() : "N/A"; 
             data[i][4] = product.getStock();
         }
 
