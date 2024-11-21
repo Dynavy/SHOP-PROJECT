@@ -5,21 +5,21 @@ import javax.xml.bind.annotation.XmlValue;
 
 public class Amount {
 	private double value;
-	private final String currency  = "€";
+	private final String currency = "€";
 
 	@Override
 	public String toString() {
-		return value + currency ;
+		return value + currency;
 	}
 
 	public Amount(double value) {
 		this.value = value;
 	}
-	
+
 	// Deserialization constructor.
 	public Amount() {
-	  
-    }
+
+	}
 
 	@XmlValue
 	public double getValue() {
@@ -32,6 +32,6 @@ public class Amount {
 
 	@XmlAttribute(name = "currency")
 	public String getCurrency() {
-		return currency ;
+		return currency;
 	}
 }
