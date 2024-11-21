@@ -47,9 +47,8 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 	private JLabel validationWarningImage;
 	private JLabel passImage;
 	private JLabel idImage;
-	// We need this variable to manage the user attempts. 
+	// We need this variable to manage the user attempts.
 	private int countError = 0;
-
 
 	public LoginView() {
 
@@ -62,7 +61,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 	}
 
 	public void initWindowUI() {
-		
+
 		// Window title.
 		setTitle("LOGIN GUI");
 		// Size of the window when executing.
@@ -221,19 +220,21 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 	}
 
 	public void validateCredentials() {
-		// Every user introduces wrong credentials, we add 1 to the class variable. 
+		// Every user introduces wrong credentials, we add 1 to the class variable.
 		countError++;
 		String stringEmployeeID = employeeUser.getText();
-		// We have to assign the password chars to a new array because is a JpasswordField.
+		// We have to assign the password chars to a new array because is a
+		// JpasswordField.
 		char[] passwordChars = employeePass.getPassword();
-		// We transform the chars into a String. 
+		// We transform the chars into a String.
 		String userPassword = new String(passwordChars);
 		// Need this variable to parse the stringEmployeeID.
 		int userID = 0;
 
 		try {
 
-			// The first thing that is going check is if credentials are invalid for the third consecutive time .
+			// The first thing that is going check is if credentials are invalid for the
+			// third consecutive time .
 			if (countError >= Constants.MAX_ATTEMPTS && !isLogged) {
 				throw new LimitLoginException();
 			}
@@ -283,7 +284,8 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 
 		// Detects if user uses the submit button.
 		if (loginButton.getSource() == submit) {
-			// We invoke the method that validates if the introduced credentials are correct or not.
+			// We invoke the method that validates if the introduced credentials are correct
+			// or not.
 			validateCredentials();
 			resetText();
 		}
