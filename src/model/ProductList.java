@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -17,6 +18,11 @@ public class ProductList {
 
 	public ProductList(ArrayList<Product> products) {
 		this.products = products;
+	}
+	
+	@XmlAttribute(name = "total")
+	public int getTotalProducts() {
+		return Product.getTotalProducts();
 	}
 
 	// This method is automatically called thanks to the @XmlElement on the getter.

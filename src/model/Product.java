@@ -30,7 +30,7 @@ public class Product {
 
 	public Product(String name, double wholesalerPrice, boolean available, int stock) {
 		super();
-		this.id = totalProducts++;
+		this.id = ++totalProducts;
 		this.name = name;
 		this.publicPrice = new Amount(wholesalerPrice * 2); // We create a new object named Amount to the variable.
 		this.wholesalerPrice = new Amount(wholesalerPrice);
@@ -41,12 +41,12 @@ public class Product {
 	// New constructor for the SaxReader.
 	public Product(String name) {
 		this.name = name;
-		this.id = totalProducts++;
+		this.id = ++totalProducts;
 	}
 
-	// New constructor for the JaxbUnMarshaller.
+	// New constructor for the Jaxb.
 	public Product() {
-		this.id = totalProducts++;
+		this.id = ++totalProducts;
 	}
 
 	public void publicPriceCalculation() {
@@ -108,7 +108,7 @@ public class Product {
 		this.publicPrice = publicPrice;
 	}
 
-	@XmlElement(name = "wholeSalerPrice")
+	@XmlElement(name = "wholesalerPrice")
 	public Amount getWholesalerPrice() {
 		return wholesalerPrice;
 	}
@@ -117,16 +117,19 @@ public class Product {
 		this.wholesalerPrice = wholesalerPrice;
 	}
 
-	@XmlElement
 	public boolean isAvailable() {
-		return available;
+		return checkAvailable();
 	}
 
 	public void setAvailable(boolean available) {
 		this.available = available;
 	}
 
-	@XmlElement
+	private boolean checkAvailable() {
+		// Establish availability depending on stock.
+		return this.stock > 0;
+	}
+
 	public int getStock() {
 		return stock;
 	}
