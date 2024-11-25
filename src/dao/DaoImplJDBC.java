@@ -20,9 +20,9 @@ public class DaoImplJDBC implements Dao {
 	@Override
 	public void connect() {
 
-		String url = "jdbc:mysql://localhost:6788/ShopDB";
+		String url = "jdbc:mysql://localhost:3306/ShopDB";
 		String user = "root";
-		String pass = "root";
+		String pass = "";
 
 		try {
 			this.connection = DriverManager.getConnection(url, user, pass);

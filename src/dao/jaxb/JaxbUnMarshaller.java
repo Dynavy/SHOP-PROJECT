@@ -19,7 +19,7 @@ public class JaxbUnMarshaller {
 			// Create a JAXB context (instance) for marshalling and unmarshalling ProductList objects.
 			JAXBContext context = JAXBContext.newInstance(ProductList.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
-			// Store products on our products List.
+			// Unmarshal the XML data and store it in the ProductList object named products.
 			products = (ProductList) unmarshaller.unmarshal(new File("./jaxb/inputInventory.xml"));
 
 			// Iterate through the products and calculate public price.
