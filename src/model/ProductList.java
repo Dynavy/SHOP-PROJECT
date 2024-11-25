@@ -15,10 +15,6 @@ public class ProductList {
 	public ProductList() {
 	
 	}
-
-	public ProductList(ArrayList<Product> products) {
-		this.products = products;
-	}
 	
 	@XmlAttribute(name = "total")
 	public int getTotalProducts() {
