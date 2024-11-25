@@ -108,7 +108,6 @@ public class Product {
 		this.publicPrice = publicPrice;
 	}
 
-	@XmlElement(name = "wholesalerPrice")
 	public Amount getWholesalerPrice() {
 		return wholesalerPrice;
 	}
