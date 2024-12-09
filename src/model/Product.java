@@ -1,7 +1,6 @@
 package model;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -108,7 +107,6 @@ public class Product {
 		this.publicPrice = publicPrice;
 	}
 
-	@XmlElement(name = "wholesalerPrice")
 	public Amount getWholesalerPrice() {
 		return wholesalerPrice;
 	}
