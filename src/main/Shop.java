@@ -1,7 +1,7 @@
 package main;
 
 import dao.Dao;
-import dao.DaoImplJaxb;
+import dao.DaoImplJDBC;
 import model.Amount;
 import model.Client;
 import model.Premium;
@@ -46,7 +46,7 @@ public class Shop {
 	 * We use Polymorphism toe create a 'dao' object using the 'Dao' interface,
 	 * allowing it to use the attributes and methods of 'DaoImplxml'.
 	 */
-	Dao dao = new DaoImplJaxb();
+	Dao dao = new DaoImplJDBC();
 
 	public static void main(String[] args) {
 
@@ -174,11 +174,11 @@ public class Shop {
 	}
 
 	// Load the inventory of our shop.
-	public void loadInventory() {
-
-		setInventory(dao.getInventory());
-
-	}
+		public void loadInventory() {
+	
+			setInventory(dao.getInventory());
+	
+		}
 
 	public boolean writeInventory() {
 
@@ -231,18 +231,20 @@ public class Shop {
 			}
 		}
 		System.out.println("\nWritte the name of the product that you want to delete:");
-		String borrarProducto = sc.next();
+		String deleteProduct = sc.next();
 
-		Product product = findProduct(borrarProducto); // We create a new object from the class Product and we assign
+		Product product = findProduct(deleteProduct); // We create a new object from the class Product and we assign
 														// findProduct with the argument borrarProducto.
 
 		// If the ArrayList contains the product introduced by the user, we remove it.
 		if (inventory.contains(product)) {
-			inventory.remove(product);
+			dao.deleteProduct(product);
+			shop.loadInventory();
 			System.out.println(VERDE_CLARO + "\nThe product has been succesfully deleted." + RESET);
+			
 		} else {
 			System.err
-					.println("\nThe product " + ORANGE + borrarProducto + RESET + " doesn't exists on our inventory.");
+					.println("\nThe product " + ORANGE + deleteProduct + RESET + " doesn't exists on our inventory.");
 			sc.nextLine(); // Clear .
 		}
 	}
@@ -270,14 +272,14 @@ public class Shop {
 	public void showCash() {
 		// We call the 'toString' from the class amount so we can print the cash with
 		// the €.
-		System.out.println(VERDE_CLARO + "\nDinero actual: " + cash.toString() + RESET);
+		System.out.println(VERDE_CLARO + "\nRemaining money: " + cash.toString() + RESET);
 	}
 
 	public void addProduct() {
 
-		System.out.print("Nombre: ");
+		System.out.print("Product name: ");
 		String name = sc.nextLine();
-		System.out.print("Precio mayorista: ");
+		System.out.print("WholesalerPrice: ");
 		double wholesalerPrice = sc.nextDouble();
 
 		/*
@@ -288,7 +290,9 @@ public class Shop {
 
 		int stock = sc.nextInt();
 		sc.nextLine();
-		addProduct(new Product(name, wholesalerPrice, true, stock));
+		// We use the addProduct method from DaoImplJDBC.
+		dao.addProduct(new Product(name, wholesalerPrice, true, stock));
+		shop.loadInventory();
 		System.out.println(VERDE_CLARO + "The product " + ORANGE + name + RESET
 				+ " has been succesfully added to the inventary." + RESET);
 	}
@@ -339,7 +343,7 @@ public class Shop {
 
 		System.out.println("\nAvailable products:");
 
-		for (Product product : inventory) {
+		for (Product product : dao.getInventory()) {
 			if (product != null) {
 				System.out.println(product.toString());
 			}
