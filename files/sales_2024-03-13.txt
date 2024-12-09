@@ -1,6 +1,0 @@
-1;Client=dylan;Date=13-03-2024 22:43:19;
-1;Products=Fresa,10.0€;Manzana,20.0€;
-1;Amount=31.200000000000003€;
-2;Client=paco;Date=13-03-2024 22:43:25;
-2;Products=Hamburguesa,60.0€;
-2;Amount=62.400000000000006€;

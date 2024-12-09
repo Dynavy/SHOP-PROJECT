@@ -1,3 +1,0 @@
-1;Client=model.Client@4f3f5b24;Date=04-04-2024 09:18:03;
-1;Products=Fresa,10.0€;
-1;Amount=10.4€;
