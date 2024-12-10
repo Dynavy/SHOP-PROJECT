@@ -19,6 +19,10 @@ import util.Constants;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import dao.Dao;
+import dao.DaoImplJDBC;
+
 import javax.swing.JSeparator;
 
 public class ProductView extends JDialog implements ActionListener, KeyListener {
@@ -36,6 +40,9 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 	private JLabel introduceProductName;
 	private JLabel introduceProductStock;
 	private JLabel introduceProductPrice;
+
+	// Polymorphism to use the DaoImplJDBC logic (CRUD).
+	Dao dao = new DaoImplJDBC();
 
 	// We inicialize the instance from ShopView on this variable.
 	private Shop shop;
@@ -231,7 +238,7 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 		String product = productName.getText();
 		// Create a variable of type Product, invoke findProduct method, use the
 		// inputVariable to find product.
-		Product productName = shop.findProduct(product);
+		Product productData = shop.findProduct(product);
 		int stock = 0;
 
 		try {
@@ -249,14 +256,16 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 				throw new NumberFormatException("STOCK CAN'T BE EMPTY.");
 			}
 			// Add stock if the product exists on our inventory.
-			if (productName != null) {
+			if (productData != null) {
 				int newStock = stock;
 				if (newStock < 0) {
 					// Stock can't be negative.
 					throw new NumberFormatException("STOCK CAN'T BE NEGATIVE.");
 				}
 
-				productName.setStock(newStock);
+				productData.setStock(newStock);
+				// Update the product through the database.
+				dao.updateProduct(productData);
 				shop.showInventory();
 				showProductAddedMessage();
 				dispose();
