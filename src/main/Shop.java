@@ -79,7 +79,7 @@ public class Shop {
 					break;
 
 				case 3:
-					shop.addStock();
+					shop.updateStock();
 					break;
 
 				case 4:
@@ -174,11 +174,11 @@ public class Shop {
 	}
 
 	// Load the inventory of our shop.
-		public void loadInventory() {
-	
-			setInventory(dao.getInventory());
-	
-		}
+	public void loadInventory() {
+
+		setInventory(dao.getInventory());
+
+	}
 
 	public boolean writeInventory() {
 
@@ -241,10 +241,9 @@ public class Shop {
 			dao.deleteProduct(product);
 			shop.loadInventory();
 			System.out.println(VERDE_CLARO + "\nThe product has been succesfully deleted." + RESET);
-			
+
 		} else {
-			System.err
-					.println("\nThe product " + ORANGE + deleteProduct + RESET + " doesn't exists on our inventory.");
+			System.err.println("\nThe product " + ORANGE + deleteProduct + RESET + " doesn't exists on our inventory.");
 			sc.nextLine(); // Clear .
 		}
 	}
@@ -258,7 +257,7 @@ public class Shop {
 		System.out.print("Select an option:: \n\n");
 		System.out.println("1) Show cash.");
 		System.out.println("2) Add product.");
-		System.out.println("3) Add stock.");
+		System.out.println("3) Update stock.");
 		System.out.println("4) Mark product expiration.");
 		System.out.println("5) Show inventory.");
 		System.out.println("6) Make a sale.");
@@ -298,26 +297,37 @@ public class Shop {
 	}
 
 	// ADD STOCK FOR SPECIFIC PRODUCT.
-	public void addStock() {
-		Scanner sc = new Scanner(System.in);
-		System.out.print("Seleccione un nombre de producto: ");
-		String name = sc.next();
-		Product product = findProduct(name);
-		if (product != null) {
-			// ask for stock
-			System.out.print("Seleccione la cantidad a añadir: ");
-			int stock = sc.nextInt();
-			// update stock product
-			int addStock = product.getStock() + stock; // We add the new stock number that the user introduced to the
-														// actual stock.
-			product.setStock(addStock);
+	public void updateStock() {
+	    Scanner sc = new Scanner(System.in);
+	    System.out.print("Select a product by its name: ");
+	    String name = sc.next();
+	    Product product = findProduct(name);
 
-			System.out.println(
-					VERDE_CLARO + "\nEl stock del producto " + name + " ha sido actualizado a " + addStock + RESET);
+	    if (product != null) {
+	        // Ask for stock inside the loop to handle invalid input.
+	        int newStock;
+	        while (true) {
+	            System.out.println("Select the new stock quantity for the following product: " + product.getName());
+	            newStock = sc.nextInt();
 
-		} else {
-			System.out.println("No se ha encontrado el producto con nombre " + name);
-		}
+	            if (newStock < 0) {
+	                System.err.println("Stock has to be 0 or higher.");
+	            } else {
+	                // Exit the loop if the input is valid.
+	                break;
+	            }
+	        }
+
+	        // Set the new stock to the product instance.
+	        product.setStock(newStock);
+	        dao.updateProduct(product);
+
+	        System.out.println(
+	                VERDE_CLARO + "\nThe stock from the product " + name + " has been updated to: " + newStock + RESET);
+
+	    } else {
+	        System.out.println("Couldn't find the product with the name " + name);
+	    }
 	}
 
 	// SET A PRODUCT AS EXPIRED.
