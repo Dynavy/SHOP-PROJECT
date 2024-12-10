@@ -22,9 +22,9 @@ public class DaoImplJDBC implements Dao {
 	@Override
 	public void connect() {
 
-		String url = "jdbc:mysql://localhost:3306/ShopDB";
+		String url = "jdbc:mysql://localhost:6788/ShopDB";
 		String user = "root";
-		String pass = "";
+		String pass = "root";
 
 		try {
 			this.connection = DriverManager.getConnection(url, user, pass);
@@ -128,17 +128,15 @@ public class DaoImplJDBC implements Dao {
 	
 	@Override
 	public void updateProduct(Product product) {
-	    String query = "UPDATE Inventory SET Name = ?, wholesalerPrice = ?, Available = ?, Stock = ? WHERE Name = ?";
+	    String query = "UPDATE Inventory SET Stock = ? WHERE Name = ?";
 
 	    try (PreparedStatement ps = connection.prepareStatement(query)) {
-	        ps.setString(1, product.getName());
-	        ps.setBigDecimal(2, BigDecimal.valueOf(product.getWholesalerPrice().getValue()));
-	        ps.setBoolean(3, product.isAvailable());
-	        ps.setInt(4, product.getStock());
+	        ps.setInt(1, product.getStock());
+	        ps.setString(2, product.getName());
 
 	        ps.executeUpdate();
 	    } catch (SQLException SqlError) {
-	        System.out.println("Error updating product in the database: " + SqlError.getMessage());
+	        System.out.println("Error updating product stock in the database: " + SqlError.getMessage());
 	        SqlError.printStackTrace();
 	    }
 	}
