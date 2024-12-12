@@ -292,7 +292,7 @@ public class Shop {
 		// We use the addProduct method from DaoImplJDBC.
 		dao.addProduct(new Product(name, wholesalerPrice, true, stock));
 		shop.loadInventory();
-		System.out.println(VERDE_CLARO + "The product " + ORANGE + name + RESET
+		System.out.println(VERDE_CLARO + "The product " + ORANGE + name + VERDE_CLARO 
 				+ " has been succesfully added to the inventary." + RESET);
 	}
 
@@ -321,7 +321,7 @@ public class Shop {
 	        // Set the new stock to the product instance.
 	        product.setStock(newStock);
 	        dao.updateProduct(product);
-
+	        shop.loadInventory();
 	        System.out.println(
 	                VERDE_CLARO + "\nThe stock from the product " + name + " has been updated to: " + newStock + RESET);
 
@@ -350,7 +350,9 @@ public class Shop {
 
 	// SHOW ALL INVENTORY.
 	public void showInventory() {
-
+		
+		//Load inventory to avoid possible data errors.
+		shop.loadInventory();
 		System.out.println("\nAvailable products:");
 
 		for (Product product : dao.getInventory()) {
@@ -488,14 +490,12 @@ public class Shop {
 
 	// Check if a product is on our inventory array.
 	public Product findProduct(String name) {
-		for (int i = 0; i < inventory.size(); i++) {
-
-			if (inventory.get(i) != null && inventory.get(i).getName().equalsIgnoreCase(name)) {
-				// Adapt the arraylist.
-				return inventory.get(i);
-			}
-		}
-		return null;
+	    for (Product product : inventory) {
+	        if (product != null && product.getName().equalsIgnoreCase(name)) {
+	            return product;
+	        }
+	    }
+	    return null;
 	}
 
 	public void writeFile() {
