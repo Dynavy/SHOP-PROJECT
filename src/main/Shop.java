@@ -177,13 +177,11 @@ public class Shop {
 	public void loadInventory() {
 
 		setInventory(dao.getInventory());
-
 	}
 
 	public boolean writeInventory() {
 
 		return dao.writeInventory(inventory);
-
 	}
 
 	public double totalAmount() {
