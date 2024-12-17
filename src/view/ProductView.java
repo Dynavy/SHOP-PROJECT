@@ -197,8 +197,9 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 			// Check if the product already exists on our inventory.
 			// We are operating on the same instance than ShopView.
 			if (shop.findProduct(product) == null) {
+				// Add the product trough the database.
 				shop.addProduct(newProduct);
-				shop.showInventory();
+				shop.loadInventory();
 				showProductAddedMessage();
 				dispose();
 
@@ -265,8 +266,8 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 
 				productData.setStock(newStock);
 				// Update the product through the database.
-				dao.updateProduct(productData);
-				shop.showInventory();
+				shop.updateProduct(productData);
+				shop.loadInventory();
 				showProductAddedMessage();
 				dispose();
 
@@ -304,8 +305,8 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 			}
 			// Executes when product exists on our inventory.
 			if (productName != null) {
-				shop.getInventory().remove(productName);
-				shop.showInventory();
+				shop.removeProduct(productName);
+				shop.loadInventory();
 				showProductAddedMessage();
 				dispose();
 			} else {
@@ -367,7 +368,7 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 				addProduct();
 
 				// If user uses enter on the ArrayList components and the chosed option is 3, we
-				// invoke addStock().
+				// invoke updateStock().
 			} else if (componentList.contains(focusedComponent) && option == 3) {
 				updateStock();
 
