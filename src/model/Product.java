@@ -26,17 +26,18 @@ public class Product {
 	private static int totalProducts;
 	static double EXPIRATION_RATE = 0.60;
 	private String currency;
+	// Added productId for shared product_id
+	private int productId;
 
 	public Product(String name, double wholesalerPrice, boolean available, int stock) {
-		super();
-		this.id = ++totalProducts;
+//		this.id = ++totalProducts;
 		this.name = name;
-		this.publicPrice = new Amount(wholesalerPrice * 2); // We create a new object named Amount to the variable.
+		this.publicPrice = new Amount(wholesalerPrice * 2);
 		this.wholesalerPrice = new Amount(wholesalerPrice);
 		this.available = available;
 		this.stock = stock;
 	}
-
+	
 	// New constructor for the SaxReader.
 	public Product(String name) {
 		this.name = name;
@@ -46,6 +47,14 @@ public class Product {
 	// New constructor for the Jaxb.
 	public Product() {
 		this.id = ++totalProducts;
+	}
+
+	public int getProductId() {
+		return productId;
+	}
+
+	public void setProductId(int productId) {
+		this.productId = productId;
 	}
 
 	public void publicPriceCalculation() {
