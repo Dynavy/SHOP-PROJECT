@@ -46,7 +46,7 @@ public class Shop {
 	 * We use Polymorphism toe create a 'dao' object using the 'Dao' interface,
 	 * allowing it to use the attributes and methods of 'DaoImplxml'.
 	 */
-	Dao dao = new DaoImplJDBC();
+	private Dao dao = new DaoImplJDBC();
 
 	public static void main(String[] args) {
 
@@ -278,6 +278,12 @@ public class Shop {
 
 		System.out.print("Product name: ");
 		String name = sc.nextLine();
+		Product productName = findProduct(name);
+		
+		if (inventory.contains(productName)) {
+			System.err.println("The product already exists, redirecting to the menu.");
+			return;
+		}
 		System.out.print("WholesalerPrice: ");
 		double wholesalerPrice = sc.nextDouble();
 
@@ -476,7 +482,7 @@ public class Shop {
 		String answer = sc.nextLine().toLowerCase();
 
 		if (answer.equals("yes")) {
-			writeFile();
+			writeSaleFiles();
 			System.out.println(VERDE_CLARO + "\nSales data exported successfully." + RESET);
 		}
 	}
@@ -485,7 +491,19 @@ public class Shop {
 	public void addProduct(Product product) {
 
 		inventory.add(product);
+		dao.addProduct(product);
 
+	}
+
+	// Update the product through the database.
+	public void updateProduct(Product product) {
+
+		dao.updateProduct(product);
+	}
+	
+	public void removeProduct(Product product) {
+
+		dao.deleteProduct(product);
 	}
 
 	// Check if a product is on our inventory array.
@@ -498,7 +516,8 @@ public class Shop {
 	    return null;
 	}
 
-	public void writeFile() {
+	// Case 7: Show sales.
+	public void writeSaleFiles() {
 
 		try {
 			// Get current date for the file name.
