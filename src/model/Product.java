@@ -1,31 +1,52 @@
 package model;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.persistence.*;
 
-@XmlRootElement(name = "product")
-@XmlType(propOrder = { "available", "wholesalerPrice", "publicPrice", "stock" })
+@Entity
+@Table(name = "Inventory")
 public class Product {
-	// Colors start.
+	// Console colors.
+	@Transient
 	final String RESET = "\u001B[0m";
+	@Transient
 	final String AZUL_CLARO = "\u001B[94m";
+	@Transient
 	final String ORANGE = "\u001B[38;5;208m";
+	@Transient
 	final String VERDE_CLARO = "\u001B[92m";
+	@Transient
 	final String AMARILLO = "\u001B[33m";
+	@Transient
 	final String MAGENTA = "\u001B[35m";
-	// Colors end.
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+
+	@Column(name = "name")
 	private String name;
-	// We declare a private object of type Amount named publicPrice. This allows us
-	// reference objects from the class 'Amount' on the variable publicPrice.
+
+	@Transient
 	private Amount publicPrice;
+
+	@Transient
 	private Amount wholesalerPrice;
+
+	@Column(name = "price")
+	private double price;
+
+	@Column(name = "available")
 	private boolean available;
+
+	@Column(name = "stock")
 	private int stock;
+
 	private static int totalProducts;
 	static double EXPIRATION_RATE = 0.60;
+	@Transient
 	private String currency;
+	
 	// Added productId for shared product_id
 	private int productId;
 
@@ -37,7 +58,7 @@ public class Product {
 		this.available = available;
 		this.stock = stock;
 	}
-	
+
 	// New constructor for the SaxReader.
 	public Product(String name) {
 		this.name = name;
@@ -59,10 +80,20 @@ public class Product {
 
 	public void publicPriceCalculation() {
 		if (this.wholesalerPrice != null) {
+			System.out.println("precio wholesalerprice"+this.wholesalerPrice);
 			this.publicPrice = new Amount(this.wholesalerPrice.getValue() * 2);
+		System.out.println("precio publicprice"+this.publicPrice.getValue());
 		} else {
-			System.err.println("WholesalerPrice is null");
+			System.err.println("WholesalerPrice is null calculatepublicprice method");
 		}
+	}
+	
+	public void syncPriceWithWholesalerPrice() {
+	    if (this.wholesalerPrice != null) {
+	        this.price = this.wholesalerPrice.getValue();
+	    } else {
+	        System.err.println("WholesalerPrice is null syncprice method");
+	    }
 	}
 
 	public void setCurrency(String currency) {
@@ -124,6 +155,14 @@ public class Product {
 		this.wholesalerPrice = wholesalerPrice;
 	}
 
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
 	public boolean isAvailable() {
 		return checkAvailable();
 	}
@@ -153,7 +192,7 @@ public class Product {
 	public static void setTotalProducts(int totalProducts) {
 		Product.totalProducts = totalProducts;
 	}
-
+	
 	public void expire() {
 		// We set the value of publicPrice a 40% cheaper.
 		double expiratedPrice = this.publicPrice.getValue() * (EXPIRATION_RATE);
