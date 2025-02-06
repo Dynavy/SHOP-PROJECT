@@ -34,17 +34,21 @@
 			<version>2.3.3</version>
 		</dependency>
 
+		<!-- Hibernate-->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.4.10.Final</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<resources>
-			<resource>
-				<directory>src</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-		</resources>
+        <resource>
+            <directory>src/main/resources</directory>
+        </resource>
+    </resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
