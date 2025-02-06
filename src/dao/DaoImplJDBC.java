@@ -81,7 +81,7 @@ public class DaoImplJDBC implements Dao {
 
 	@Override
 	public ArrayList<Product> getInventory() {
-		
+
 		ArrayList<Product> productsList = new ArrayList<>();
 		// Prepare SQL query.
 		String query = "SELECT * FROM Inventory";
@@ -130,15 +130,18 @@ public class DaoImplJDBC implements Dao {
 
 	@Override
 	public void updateProduct(Product product) {
-		String query = "UPDATE Inventory SET Stock = ? WHERE Name = ?";
-
+		String query = "UPDATE Inventory SET ProductID = ?, WholesalerPrice = ?, Available = ?, Stock = ? WHERE Name = ?";
 		try (PreparedStatement ps = connection.prepareStatement(query)) {
-			ps.setInt(1, product.getStock());
-			ps.setString(2, product.getName());
+			
+			ps.setInt(1, product.getProductId());
+			ps.setBigDecimal(2, BigDecimal.valueOf(product.getWholesalerPrice().getValue()));
+			ps.setBoolean(3, product.isAvailable());
+			ps.setInt(4, product.getStock());
+			ps.setString(5, product.getName());
 
 			ps.executeUpdate();
 		} catch (SQLException SqlError) {
-			System.out.println("Error updating product stock in the database: " + SqlError.getMessage());
+			System.out.println("Error updating product in the database: " + SqlError.getMessage());
 			SqlError.printStackTrace();
 		}
 	}
