@@ -78,36 +78,39 @@ public class ProductsView extends JDialog implements ActionListener {
 	}
 
 	public void tableInformation() {
-       
-		List<Product> productsInfo = shop.getInventory();
-        
-        // Name of the tables.
-        String[] columnNames = { "Id", "Name", "PublicPrice", "WholesalerPrice ", "Stock" };
-        Object[][] data = new Object[productsInfo.size()][5];
+	    List<Product> productsInfo = shop.getInventory();
+	    
+	    // Column names.
+	    String[] columnNames = { "Id", "Name", "Price", "Stock" };
+	    
+	    // Create data array with 4 columns.
+	    Object[][] data = new Object[productsInfo.size()][4];
 
-        for (int i = 0; i < productsInfo.size(); i++) {
-            Product product = productsInfo.get(i);
-            data[i][0] = product.getId();
-            data[i][1] = product.getName();
-            data[i][2] = product.getPublicPrice() != null ? product.getPublicPrice().toString() : "N/A"; 
-            data[i][3] = product.getWholesalerPrice() != null ? product.getWholesalerPrice().toString() : "N/A"; 
-            data[i][4] = product.getStock();
-        }
+	    for (int i = 0; i < productsInfo.size(); i++) {
+	        Product product = productsInfo.get(i);
+	        data[i][0] = product.getId();  // Product ID.
+	        data[i][1] = product.getName();  // Product name.
+	        // Check if price is 0.0, if so assign "N/A".
+	        data[i][2] = product.getPrice() != 0.0 ? product.getPrice() : "N/A";  // Price.
+	        data[i][3] = product.getStock();  // Product stock.
+	    }
 
-        productTable = new JTable(data, columnNames);
-        JScrollPane scrollPane = new JScrollPane(productTable);
+	    // Create the table with the data and column names.
+	    productTable = new JTable(data, columnNames);
+	    
+	    // Add a scroll pane for the table.
+	    JScrollPane scrollPane = new JScrollPane(productTable);
 
-        // Modify columns.
-        productTable.getColumnModel().getColumn(0).setPreferredWidth(20); // Id.
-        productTable.getColumnModel().getColumn(1).setPreferredWidth(80); // Name.
-        productTable.getColumnModel().getColumn(2).setPreferredWidth(80); // PublicPrice.
-        productTable.getColumnModel().getColumn(3).setPreferredWidth(110); // WholesalerPrice.
-        productTable.getColumnModel().getColumn(4).setPreferredWidth(40); // Stock
+	    // Modify the column widths as needed.
+	    productTable.getColumnModel().getColumn(0).setPreferredWidth(20); // Id.
+	    productTable.getColumnModel().getColumn(1).setPreferredWidth(80); // Name.
+	    productTable.getColumnModel().getColumn(2).setPreferredWidth(80); // Price.
+	    productTable.getColumnModel().getColumn(3).setPreferredWidth(40); // Stock (index 3).
 
-        // Size of the table.
-        scrollPane.setBounds(10, 50, 310, 264);
-        getContentPane().add(scrollPane);
-    }
+	    // Set bounds for the scroll pane.
+	    scrollPane.setBounds(10, 50, 310, 264);
+	    getContentPane().add(scrollPane);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent inputButton) {
