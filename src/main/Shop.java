@@ -1,7 +1,7 @@
 package main;
 
 import dao.Dao;
-import dao.DaoImplJDBC;
+import dao.DaoImplHibernate;
 import model.Amount;
 import model.Client;
 import model.Premium;
@@ -46,7 +46,7 @@ public class Shop {
 	 * We use Polymorphism toe create a 'dao' object using the 'Dao' interface,
 	 * allowing it to use the attributes and methods of 'DaoImplxml'.
 	 */
-	private Dao dao = new DaoImplJDBC();
+	private Dao dao = new DaoImplHibernate();
 
 	public static void main(String[] args) {
 
@@ -277,7 +277,7 @@ public class Shop {
 		System.out.print("Product name: ");
 		String name = sc.nextLine();
 		Product productName = findProduct(name);
-		
+
 		if (inventory.contains(productName)) {
 			System.err.println("The product already exists, redirecting to the menu.");
 			return;
@@ -296,42 +296,42 @@ public class Shop {
 		// We use the addProduct method from DaoImplJDBC.
 		dao.addProduct(new Product(name, wholesalerPrice, true, stock));
 		shop.loadInventory();
-		System.out.println(VERDE_CLARO + "The product " + ORANGE + name + VERDE_CLARO 
+		System.out.println(VERDE_CLARO + "The product " + ORANGE + name + VERDE_CLARO
 				+ " has been succesfully added to the inventary." + RESET);
 	}
 
 	// ADD STOCK FOR SPECIFIC PRODUCT.
 	public void updateStock() {
-	    Scanner sc = new Scanner(System.in);
-	    System.out.print("Select a product by its name: ");
-	    String name = sc.next();
-	    Product product = findProduct(name);
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Select a product by its name: ");
+		String name = sc.next();
+		Product product = findProduct(name);
 
-	    if (product != null) {
-	        // Ask for stock inside the loop to handle invalid input.
-	        int newStock;
-	        while (true) {
-	            System.out.println("Select the new stock quantity for the following product: " + product.getName());
-	            newStock = sc.nextInt();
+		if (product != null) {
+			// Ask for stock inside the loop to handle invalid input.
+			int newStock;
+			while (true) {
+				System.out.println("Select the new stock quantity for the following product: " + product.getName());
+				newStock = sc.nextInt();
 
-	            if (newStock < 0) {
-	                System.err.println("Stock has to be 0 or higher.");
-	            } else {
-	                // Exit the loop if the input is valid.
-	                break;
-	            }
-	        }
+				if (newStock < 0) {
+					System.err.println("Stock has to be 0 or higher.");
+				} else {
+					// Exit the loop if the input is valid.
+					break;
+				}
+			}
 
-	        // Set the new stock to the product instance.
-	        product.setStock(newStock);
-	        dao.updateProduct(product);
-	        shop.loadInventory();
-	        System.out.println(
-	                VERDE_CLARO + "\nThe stock from the product " + name + " has been updated to: " + newStock + RESET);
+			// Set the new stock to the product instance.
+			product.setStock(newStock);
+			dao.updateProduct(product);
+			shop.loadInventory();
+			System.out.println(
+					VERDE_CLARO + "\nThe stock from the product " + name + " has been updated to: " + newStock + RESET);
 
-	    } else {
-	        System.out.println("Couldn't find the product with the name " + name);
-	    }
+		} else {
+			System.out.println("Couldn't find the product with the name " + name);
+		}
 	}
 
 	// SET A PRODUCT AS EXPIRED.
@@ -354,8 +354,8 @@ public class Shop {
 
 	// SHOW ALL INVENTORY.
 	public void showInventory() {
-		
-		//Load inventory to avoid possible data errors.
+
+		// Load inventory to avoid possible data errors.
 		shop.loadInventory();
 		System.out.println("\nAvailable products:");
 
@@ -498,7 +498,7 @@ public class Shop {
 
 		dao.updateProduct(product);
 	}
-	
+
 	public void removeProduct(Product product) {
 
 		dao.deleteProduct(product);
@@ -506,7 +506,7 @@ public class Shop {
 
 	// Check if a product is on our inventory array.
 	public Product findProduct(String name) {
-	    for (Product product : inventory) {
+	    for (Product product : shop.getInventory()) {
 	        if (product != null && product.getName().equalsIgnoreCase(name)) {
 	            return product;
 	        }
