@@ -19,6 +19,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
+import dao.Dao;
+import dao.DaoImplHibernate;
 import main.Shop;
 import model.Amount;
 import model.Client;
@@ -44,7 +46,7 @@ public class SaleView extends JDialog implements ActionListener, KeyListener {
 	private JButton okeyButton;
 	private JButton backButton;
 	private Client newClient;
-
+	
 	public SaleView(Shop shop) {
 
 		this.shop = shop;
@@ -156,74 +158,80 @@ public class SaleView extends JDialog implements ActionListener, KeyListener {
 
 
 	public void makeSale() {
+	    String client = clientName.getText();
+	    String product = productName.getText();
+	    String isPremiumString = (String) isPremiumBox.getSelectedItem();
+	    boolean isPremium = "Yes".equals(isPremiumString);
+	    LocalDateTime saleDate = null;
+	    ArrayList<Product> saleProducts = new ArrayList<>();
+	    double total = 0.0;
+	    int stock = 0;
 
-		String client = clientName.getText();
-		String product = productName.getText();
-		String isPremiumString = (String) isPremiumBox.getSelectedItem();
-		boolean isPremium = "Yes".equals(isPremiumString);
-		LocalDateTime saleDate = null;
-		ArrayList<Product> saleProducts = new ArrayList<>();
-		double total = 0.0;
-		int stock = 0;
+	    try {
+	        stock = Integer.parseInt(productStock.getText());
 
-		try {
+	        if (product.isEmpty() || client.isEmpty()) {
+	            throw new IllegalArgumentException("CLIENT AND PRODUCT NAME CAN'T BE EMPTY.");
+	        }
 
-			stock = Integer.parseInt(productStock.getText());
+	        Product checkProduct = shop.findProduct(product);
+	        if (checkProduct == null) {
+	            throw new IllegalArgumentException("PRODUCT DOESN'T EXIST, TRY AGAIN.");
+	        }
 
-			if (product.isEmpty() || client.isEmpty()) {
-				// Throw exception when client or product are empty.
-				throw new IllegalArgumentException("CLIENT AND PRODUCT NAME CAN'T BE EMPTY.");
-			}
+	        // We set the wholesaler thanks to the Price Column.
+	        checkProduct.setWholesalerPrice(new Amount(checkProduct.getPrice()));
+	        
+	        checkProduct.publicPriceCalculation();
 
-			// Search if the prooduct is available.
-			Product checkProduct = shop.findProduct(product);
+	        // Check if the requested stock is available.
+	        checkStock(stock, checkProduct.getStock());
 
-			if (checkProduct == null) {
-				throw new IllegalArgumentException("PRODUCT DOESN'T EXIST, TRY AGAIN.");
-			}
+	        // Create a new Client object if it hasn't been created yet.
+	        if (newClient == null) {
+	            newClient = new Client(client);
+	        }
 
-			// We check if the stock for that product is available.
-			checkStock(stock, checkProduct.getStock());
+	        // Add the product to the list of products being sold.
+	        saleProducts.add(checkProduct);
 
-			// Only creates a new Client Object if not done previosly.
-			if (newClient == null) {
-				newClient = new Client(client);
-			}
+	        // Calculate the total amount the client will spend.
+	        total += checkProduct.getPublicPrice().getValue() * stock;
 
-			// Product is on our shop.
-			if (checkProduct != null) {
+	        // Apply the tax rate (e.g., 4% IVA).
+	        total = total * Shop.TAX_RATE;
 
-				saleProducts.add(checkProduct);
-				// We calculate the total money that the client will spent.
-				total += checkProduct.getPublicPrice().getValue() * stock;
-				// Multiply the total with 4% of the IVA.
-				total = total * Shop.TAX_RATE;
-				// Total sale amount.
-				Amount totalAmount = new Amount(total);
+	        // Create an Amount object for the total sale amount.
+	        Amount totalAmount = new Amount(total);
 
-				// Method to add money to our cash.
-				addCashValue(total);
-				// Method to check if the client has enough money.
-				pay(totalAmount);
+	        // Add the total sale amount to the shop's cash register.
+	        addCashValue(total);
 
-				int substractStock = checkProduct.getStock() - stock;
-				// Substract the stock from the product bought.
-				checkProduct.setStock(substractStock);
+	        // Check if the client has enough money to make the purchase.
+	        pay(totalAmount);
 
-				// Add the purchase to our Sales array.
-				shop.getSales().add(new Sale(client, saleProducts, total, saleDate));
-				shop.showInventory();
-			}
-			// Exception to control if stock is empty or string.
-		} catch (NumberFormatException emptyError) {
-			JOptionPane.showMessageDialog(SaleView.this, "STOCK MUST BE A NUMBER.", "STOCK CAN'T BE EMPTY",
-					JOptionPane.ERROR_MESSAGE);
+	        // Subtract the purchased stock from the product's inventory.
+	        int subtractStock = checkProduct.getStock() - stock;
+	        checkProduct.setStock(subtractStock);
 
-			// Exception to control if product and client are empty.
-		} catch (IllegalArgumentException emptyError) {
-			JOptionPane.showMessageDialog(SaleView.this, emptyError.getMessage(), "WARNING, WE DETECTED AN ERROR.",
-					JOptionPane.ERROR_MESSAGE);
-		}
+	        // Update the product in the database to reflect the new stock
+	        shop.updateProduct(checkProduct);
+
+	        // Add the sale to the shop's sales history.
+	        shop.getSales().add(new Sale(client, saleProducts, total, saleDate));
+
+	        // Display the updated inventory.
+	        shop.showInventory();
+	        
+	    } catch (NumberFormatException emptyError) {
+	        // Handle the case where the stock input is not a valid number.
+	        JOptionPane.showMessageDialog(SaleView.this, "STOCK MUST BE A NUMBER.", "STOCK CAN'T BE EMPTY",
+	                JOptionPane.ERROR_MESSAGE);
+	    } catch (IllegalArgumentException | IllegalStateException emptyError) {
+	        // Handle other validation errors or invalid states.
+	        JOptionPane.showMessageDialog(SaleView.this, emptyError.getMessage(), "WARNING, WE DETECTED AN ERROR.",
+	                JOptionPane.ERROR_MESSAGE);
+	    }
 	}
 
 	public boolean pay(Amount amount) {
