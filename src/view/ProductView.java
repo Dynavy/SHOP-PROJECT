@@ -20,9 +20,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import dao.Dao;
-import dao.DaoImplJDBC;
-
 import javax.swing.JSeparator;
 
 public class ProductView extends JDialog implements ActionListener, KeyListener {
@@ -40,9 +37,6 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 	private JLabel introduceProductName;
 	private JLabel introduceProductStock;
 	private JLabel introduceProductPrice;
-
-	// Polymorphism to use the DaoImplJDBC logic (CRUD).
-	Dao dao = new DaoImplJDBC();
 
 	// We inicialize the instance from ShopView on this variable.
 	private Shop shop;
