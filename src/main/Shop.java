@@ -44,7 +44,7 @@ public class Shop {
 
 	/*
 	 * We use Polymorphism toe create a 'dao' object using the 'Dao' interface,
-	 * allowing it to use the attributes and methods of 'DaoImplxml'.
+	 * allowing it to use the attributes and methods of 'DaoImplHibernate'.
 	 */
 	private Dao dao = new DaoImplHibernate();
 
@@ -580,7 +580,9 @@ public class Shop {
 	}
 
 	public ArrayList<Product> getInventory() {
-
+		
+		// Ensure that inventory matches the database Inventory table.
+		shop.loadInventory();
 		return inventory;
 	}
 
