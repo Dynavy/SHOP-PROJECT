@@ -44,10 +44,10 @@ public class Product {
 
 	private static int totalProducts;
 	static double EXPIRATION_RATE = 0.60;
-	
+
 	@Transient
 	private String currency;
-	
+
 	// Added productId for shared product_id
 	@Transient
 	private int productId;
@@ -81,21 +81,20 @@ public class Product {
 	}
 
 	public void publicPriceCalculation() {
+		
 		if (this.wholesalerPrice != null) {
-			System.out.println("precio wholesalerprice"+this.wholesalerPrice);
+
 			this.publicPrice = new Amount(this.wholesalerPrice.getValue() * 2);
-		System.out.println("precio publicprice"+this.publicPrice.getValue());
-		} else {
-			System.err.println("WholesalerPrice is null calculatepublicprice method");
 		}
 	}
-	
-	public void syncPriceWithWholesalerPrice() {
-	    if (this.wholesalerPrice != null) {
-	        this.price = this.wholesalerPrice.getValue();
-	    } else {
-	        System.err.println("WholesalerPrice is null syncprice method");
-	    }
+
+	public void updatePricesFromWholesaler() {
+		
+		if (this.wholesalerPrice != null) {
+
+			this.price = this.wholesalerPrice.getValue();
+			this.publicPrice = new Amount(this.price * 2);
+		}
 	}
 
 	public void setCurrency(String currency) {
@@ -194,7 +193,7 @@ public class Product {
 	public static void setTotalProducts(int totalProducts) {
 		Product.totalProducts = totalProducts;
 	}
-	
+
 	public void expire() {
 		// We set the value of publicPrice a 40% cheaper.
 		double expiratedPrice = this.publicPrice.getValue() * (EXPIRATION_RATE);
