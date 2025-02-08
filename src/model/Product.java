@@ -44,10 +44,12 @@ public class Product {
 
 	private static int totalProducts;
 	static double EXPIRATION_RATE = 0.60;
+	
 	@Transient
 	private String currency;
 	
 	// Added productId for shared product_id
+	@Transient
 	private int productId;
 
 	public Product(String name, double wholesalerPrice, boolean available, int stock) {
