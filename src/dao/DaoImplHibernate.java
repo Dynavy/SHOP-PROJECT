@@ -147,7 +147,8 @@ public class DaoImplHibernate implements Dao {
 	public void deleteProduct(Product product) {
 
 		Transaction transaction = null;
-
+		
+		// Load the product entity from the database using its ID. 
 		try (Session session = sessionFactory.openSession()) {
 			transaction = session.beginTransaction();
 			
