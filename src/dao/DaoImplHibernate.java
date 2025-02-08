@@ -133,11 +133,6 @@ public class DaoImplHibernate implements Dao {
 		try (Session session = sessionFactory.openSession()) {
 			transaction = session.beginTransaction();
 
-			// Synchronize price with wholesalerPrice.
-			product.syncPriceWithWholesalerPrice();
-			// Calculate public price.
-			product.publicPriceCalculation();
-
 			// Update the product.
 			session.update(product);
 			transaction.commit();
