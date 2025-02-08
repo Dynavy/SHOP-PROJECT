@@ -303,6 +303,7 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 				shop.loadInventory();
 				showProductAddedMessage();
 				dispose();
+				
 			} else {
 				// Product doesn't exit popup.
 				JOptionPane.showMessageDialog(ProductView.this, "PRODUCT DOESN'T EXISTS, TRY AGAIN.",
