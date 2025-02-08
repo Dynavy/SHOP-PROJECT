@@ -106,11 +106,8 @@ public class DaoImplHibernate implements Dao {
 
 			transaction = session.beginTransaction();
 
-			// Synchronize price with wholesalerPrice.
-			product.syncPriceWithWholesalerPrice();
-
-			// Calculate public price.
-			product.publicPriceCalculation();
+			// Update the prices thanks to the wholsalerPrice.
+			product.updatePricesFromWholesaler();
 
 			// Save the product.
 			session.save(product);
@@ -153,14 +150,25 @@ public class DaoImplHibernate implements Dao {
 
 		try (Session session = sessionFactory.openSession()) {
 			transaction = session.beginTransaction();
-			session.delete(product);
-			transaction.commit();
+			
+			product = session.get(Product.class, product.getId());
+			
+			  if (product != null) {
+				  
+		            session.delete(product);
+		            transaction.commit();
+		            
+		        } else {
+		        	
+		            System.out.println("Product not found for deletion");
+		        }
 
 		} catch (Exception e) {
 
 			if (transaction != null) {
 				transaction.rollback();
 			}
+			
 			e.printStackTrace();
 		}
 	}
