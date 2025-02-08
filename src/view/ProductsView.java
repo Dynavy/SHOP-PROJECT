@@ -48,7 +48,7 @@ public class ProductsView extends JDialog implements ActionListener {
 	}
 
 	public void productsViewUI() {
-		
+
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		Font titleFont = new Font("Poppins", Font.PLAIN, 19);
 
@@ -71,45 +71,52 @@ public class ProductsView extends JDialog implements ActionListener {
 		backButton.addActionListener(this);
 		backButton.setBounds(110, 321, 117, 29);
 		getContentPane().add(backButton);
-		
+
 		// Interaction with the button.
 		backButton.addActionListener(this);
 
 	}
 
 	public void tableInformation() {
-	    List<Product> productsInfo = shop.getInventory();
-	    
-	    // Column names.
-	    String[] columnNames = { "Id", "Name", "Price", "Stock" };
-	    
-	    // Create data array with 4 columns.
-	    Object[][] data = new Object[productsInfo.size()][4];
+		List<Product> productsInfo = shop.getInventory();
 
-	    for (int i = 0; i < productsInfo.size(); i++) {
-	        Product product = productsInfo.get(i);
-	        data[i][0] = product.getId();  // Product ID.
-	        data[i][1] = product.getName();  // Product name.
-	        // Check if price is 0.0, if so assign "N/A".
-	        data[i][2] = product.getPrice() != 0.0 ? product.getPrice() : "N/A";  // Price.
-	        data[i][3] = product.getStock();  // Product stock.
-	    }
+		// Column names.
+		String[] columnNames = { "Id", "Available", "Name", "Price", "Stock" };
 
-	    // Create the table with the data and column names.
-	    productTable = new JTable(data, columnNames);
-	    
-	    // Add a scroll pane for the table.
-	    JScrollPane scrollPane = new JScrollPane(productTable);
+		// Create data array with 4 columns.
+		Object[][] data = new Object[productsInfo.size()][5];
 
-	    // Modify the column widths as needed.
-	    productTable.getColumnModel().getColumn(0).setPreferredWidth(20); // Id.
-	    productTable.getColumnModel().getColumn(1).setPreferredWidth(80); // Name.
-	    productTable.getColumnModel().getColumn(2).setPreferredWidth(80); // Price.
-	    productTable.getColumnModel().getColumn(3).setPreferredWidth(40); // Stock (index 3).
+		for (int i = 0; i < productsInfo.size(); i++) {
+			
+			Product product = productsInfo.get(i);
+			// Product ID.
+			data[i][0] = product.getId(); 
+			// Product Availability.
+			data[i][1] = product.isAvailable();
+			// Product Name.
+			data[i][2] = product.getName(); 
+			// Check if price is 0.0, if so assign "N/A".
+			data[i][3] = product.getPrice() != 0.0 ? product.getPrice() : "N/A"; 
+			// Product Stock.
+			data[i][4] = product.getStock(); 
+		}
 
-	    // Set bounds for the scroll pane.
-	    scrollPane.setBounds(10, 50, 310, 264);
-	    getContentPane().add(scrollPane);
+		// Create the table with the data and column names.
+		productTable = new JTable(data, columnNames);
+
+		// Add a scroll pane for the table.
+		JScrollPane scrollPane = new JScrollPane(productTable);
+
+		// Modify the column widths as needed.
+		productTable.getColumnModel().getColumn(0).setPreferredWidth(20); 
+		productTable.getColumnModel().getColumn(0).setPreferredWidth(90); 
+		productTable.getColumnModel().getColumn(2).setPreferredWidth(80); 
+		productTable.getColumnModel().getColumn(3).setPreferredWidth(80); 
+		productTable.getColumnModel().getColumn(4).setPreferredWidth(40); 
+
+		// Set bounds for the scroll pane.
+		scrollPane.setBounds(10, 50, 310, 264);
+		getContentPane().add(scrollPane);
 	}
 
 	@Override
