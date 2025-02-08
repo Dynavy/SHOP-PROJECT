@@ -182,8 +182,8 @@ public class SaleView extends JDialog implements ActionListener, KeyListener {
 	        // We set the wholesaler thanks to the Price Column.
 	        checkProduct.setWholesalerPrice(new Amount(checkProduct.getPrice()));
 	        
-	        checkProduct.publicPriceCalculation();
-
+	        checkProduct.updatePricesFromWholesaler();
+	        
 	        // Check if the requested stock is available.
 	        checkStock(stock, checkProduct.getStock());
 
@@ -219,9 +219,6 @@ public class SaleView extends JDialog implements ActionListener, KeyListener {
 
 	        // Add the sale to the shop's sales history.
 	        shop.getSales().add(new Sale(client, saleProducts, total, saleDate));
-
-	        // Display the updated inventory.
-	        shop.showInventory();
 	        
 	    } catch (NumberFormatException emptyError) {
 	        // Handle the case where the stock input is not a valid number.
