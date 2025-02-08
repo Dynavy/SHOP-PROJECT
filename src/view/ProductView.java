@@ -231,6 +231,9 @@ public class ProductView extends JDialog implements ActionListener, KeyListener 
 
 		// Recopile data from user.
 		String product = productName.getText();
+		// Convert the input to lowe case.
+		product = product.toLowerCase();
+		
 		// Create a variable of type Product, invoke findProduct method, use the
 		// inputVariable to find product.
 		Product productData = shop.findProduct(product);
