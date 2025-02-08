@@ -30,6 +30,7 @@ public class DaoImplHibernate implements Dao {
 
 	@Override
 	public void disconnect() {
+
 		if (sessionFactory != null) {
 			sessionFactory.close();
 		}
@@ -37,15 +38,15 @@ public class DaoImplHibernate implements Dao {
 
 	@Override
 	public Employee getEmployee(int user, String pw) {
-		
+
 		try (Session session = sessionFactory.openSession()) {
-			
+
 			String sql = "SELECT * FROM Employee WHERE employeeId = :user AND password = :pw";
 			return (Employee) session.createNativeQuery(sql, Employee.class).setParameter("user", user)
 					.setParameter("pw", pw).uniqueResult();
-			
+
 		} catch (Exception e) {
-			
+
 			e.printStackTrace();
 			return null;
 		}
@@ -53,31 +54,25 @@ public class DaoImplHibernate implements Dao {
 
 	@Override
 	public ArrayList<Product> getInventory() {
-		
+
 		try (Session session = sessionFactory.openSession()) {
-			
+
 			return (ArrayList<Product>) session.createQuery("FROM Product", Product.class).list();
 		}
 	}
 
 	@Override
 	public boolean writeInventory(ArrayList<Product> products) {
+
 		Transaction transaction = null;
+		
 		try (Session session = sessionFactory.openSession()) {
+
 			transaction = session.beginTransaction();
 
-			// Iterate over the products and save/update in the main table + history.
+			// Iterates through products ArrayList and saves the data into
+			// historical_inventory table.
 			for (Product product : products) {
-				// Synchronize price with wholesalerPrice
-				product.syncPriceWithWholesalerPrice();
-
-				// Calculate public price.
-				product.publicPriceCalculation();
-
-				// Save or update in the main products table (inventory).
-				session.saveOrUpdate(product);
-
-				// Create and save in the historical_inventory table.
 				ProductHistory productHistory = new ProductHistory();
 				productHistory.setProductId(product.getId());
 				productHistory.setName(product.getName());
@@ -85,13 +80,15 @@ public class DaoImplHibernate implements Dao {
 				productHistory.setAvailable(product.isAvailable());
 				productHistory.setStock(product.getStock());
 				productHistory.setCreatedAt(LocalDateTime.now());
+
 				session.save(productHistory);
 			}
 
-			// Commit the transaction.
 			transaction.commit();
 			return true;
+
 		} catch (Exception e) {
+
 			if (transaction != null) {
 				transaction.rollback();
 			}
@@ -102,8 +99,11 @@ public class DaoImplHibernate implements Dao {
 
 	@Override
 	public void addProduct(Product product) {
+
 		Transaction transaction = null;
+
 		try (Session session = sessionFactory.openSession()) {
+
 			transaction = session.beginTransaction();
 
 			// Synchronize price with wholesalerPrice.
@@ -115,7 +115,9 @@ public class DaoImplHibernate implements Dao {
 			// Save the product.
 			session.save(product);
 			transaction.commit();
+
 		} catch (Exception e) {
+
 			if (transaction != null) {
 				transaction.rollback();
 			}
@@ -125,7 +127,9 @@ public class DaoImplHibernate implements Dao {
 
 	@Override
 	public void updateProduct(Product product) {
+
 		Transaction transaction = null;
+
 		try (Session session = sessionFactory.openSession()) {
 			transaction = session.beginTransaction();
 
@@ -137,7 +141,9 @@ public class DaoImplHibernate implements Dao {
 			// Update the product.
 			session.update(product);
 			transaction.commit();
+
 		} catch (Exception e) {
+
 			if (transaction != null) {
 				transaction.rollback();
 			}
@@ -147,12 +153,16 @@ public class DaoImplHibernate implements Dao {
 
 	@Override
 	public void deleteProduct(Product product) {
+
 		Transaction transaction = null;
+
 		try (Session session = sessionFactory.openSession()) {
 			transaction = session.beginTransaction();
 			session.delete(product);
 			transaction.commit();
+
 		} catch (Exception e) {
+
 			if (transaction != null) {
 				transaction.rollback();
 			}
