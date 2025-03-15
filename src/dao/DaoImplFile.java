@@ -128,7 +128,7 @@ public class DaoImplFile implements Dao{
 
 	}
 	@Override
-	public Employee getEmployee(int user, String pw) {
+	public Employee getEmployee(String user, String pw) {
 		
 		return null;
 	}

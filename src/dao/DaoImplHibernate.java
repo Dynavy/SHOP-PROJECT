@@ -37,7 +37,7 @@ public class DaoImplHibernate implements Dao {
 	}
 
 	@Override
-	public Employee getEmployee(int user, String pw) {
+	public Employee getEmployee(String user, String pw) {
 
 		try (Session session = sessionFactory.openSession()) {
 

@@ -25,7 +25,7 @@ public class DaoImplJaxb implements Dao {
 	}
 
 	@Override
-	public Employee getEmployee(int user, String pw) {
+	public Employee getEmployee(String user, String pw) {
 		// TODO Auto-generated method stub
 		return null;
 	}

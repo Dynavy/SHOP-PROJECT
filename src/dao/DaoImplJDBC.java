@@ -51,7 +51,7 @@ public class DaoImplJDBC implements Dao {
 	}
 
 	@Override
-	public Employee getEmployee(int user, String pw) {
+	public Employee getEmployee(String user, String pw) {
 
 		Employee employee = null;
 		// Prepare SQL query.
@@ -59,7 +59,7 @@ public class DaoImplJDBC implements Dao {
 
 		try (PreparedStatement ps = connection.prepareStatement(query)) {
 			// Set userID and password parameters.
-			ps.setInt(1, user);
+			ps.setString(1, user);
 			ps.setString(2, pw);
 
 			try (ResultSet rs = ps.executeQuery()) {
