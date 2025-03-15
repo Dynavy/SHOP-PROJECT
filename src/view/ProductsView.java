@@ -81,7 +81,7 @@ public class ProductsView extends JDialog implements ActionListener {
 		List<Product> productsInfo = shop.getInventory();
 
 		// Column names.
-		String[] columnNames = { "Id", "Available", "Name", "Price", "Stock" };
+		String[] columnNames = { "Id", "Name", "Available", "Price", "Stock" };
 
 		// Create data array with 4 columns.
 		Object[][] data = new Object[productsInfo.size()][5];
@@ -92,11 +92,11 @@ public class ProductsView extends JDialog implements ActionListener {
 			// Product ID.
 			data[i][0] = product.getId(); 
 			// Product Availability.
-			data[i][1] = product.isAvailable();
+			data[i][1] = product.getName();
 			// Product Name.
-			data[i][2] = product.getName(); 
+			data[i][2] = product.isAvailable(); 
 			// Check if price is 0.0, if so assign "N/A".
-			data[i][3] = product.getPrice() != 0.0 ? product.getPrice() : "N/A"; 
+			data[i][3] = product.getWholesalerPrice() != null ? product.getWholesalerPrice().getValue() : "N/A"; 
 			// Product Stock.
 			data[i][4] = product.getStock(); 
 		}
