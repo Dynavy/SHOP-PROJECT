@@ -23,7 +23,7 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-
+	
 	@Column(name = "name")
 	private String name;
 
@@ -48,12 +48,12 @@ public class Product {
 	@Transient
 	private String currency;
 
-	// Added productId for shared product_id
+	// Added productId for shared product_id.
 	@Transient
 	private int productId;
 
 	public Product(String name, double wholesalerPrice, boolean available, int stock) {
-//		this.id = ++totalProducts;
+	//	this.id = ++totalProducts;
 		this.name = name;
 		this.publicPrice = new Amount(wholesalerPrice * 2);
 		this.wholesalerPrice = new Amount(wholesalerPrice);
@@ -61,6 +61,17 @@ public class Product {
 		this.stock = stock;
 	}
 
+	// New constructor for MongoDB.
+	public Product(int id, String name, Amount wholesalerPrice, boolean available, int stock) {
+	 //	this.id = ++totalProducts;
+	 	this.id = id;
+		this.name = name;
+		this.wholesalerPrice = wholesalerPrice;
+		this.available = available;
+		this.stock = stock;
+	}
+
+	
 	// New constructor for the SaxReader.
 	public Product(String name) {
 		this.name = name;
