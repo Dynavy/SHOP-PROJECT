@@ -16,9 +16,9 @@ public class Amount {
 		this.value = value;
 	}
 
-	// Deserialization constructor.
-	public Amount() {
-
+	// Constructor for MongoDB getInventory().
+	public Amount(Double wholeSalerPrice, String currency) {
+	    this.value = (wholeSalerPrice != null) ? wholeSalerPrice : 0.0;
 	}
 
 	@XmlValue
