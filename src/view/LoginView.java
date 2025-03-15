@@ -266,8 +266,7 @@ public class LoginView extends JFrame implements ActionListener, KeyListener {
 	                JOptionPane.ERROR_MESSAGE);
 	    }
 	}
-
-
+	
 	// We are invoking this everytime user interacts with loginButton.
 	public void resetText() {
 		employeeUser.setText("");
