@@ -1,7 +1,7 @@
 package main;
 
 import dao.Dao;
-import dao.DaoImplHibernate;
+import dao.DaoImplMongoDB;
 import model.Amount;
 import model.Client;
 import model.Premium;
@@ -9,12 +9,19 @@ import model.Product;
 import model.Sale;
 import view.LoginView;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Logger;
+
+import org.jboss.jandex.Main;
+
+import java.util.logging.Level;
+import java.util.logging.LogManager;
 
 public class Shop {
 	// Colors start.
@@ -46,9 +53,11 @@ public class Shop {
 	 * We use Polymorphism toe create a 'dao' object using the 'Dao' interface,
 	 * allowing it to use the attributes and methods of 'DaoImplHibernate'.
 	 */
-	private Dao dao = new DaoImplHibernate();
+	private Dao dao = new DaoImplMongoDB();
 
 	public static void main(String[] args) {
+
+		loadLoggingConfiguration();
 
 		Shop shop = Shop.getInstance();
 		// We call our initSession method to identify the user.
@@ -506,12 +515,12 @@ public class Shop {
 
 	// Check if a product is on our inventory array.
 	public Product findProduct(String name) {
-	    for (Product product : shop.getInventory()) {
-	        if (product != null && product.getName().equalsIgnoreCase(name)) {
-	            return product;
-	        }
-	    }
-	    return null;
+		for (Product product : shop.getInventory()) {
+			if (product != null && product.getName().equalsIgnoreCase(name)) {
+				return product;
+			}
+		}
+		return null;
 	}
 
 	// Case 7: Show sales.
@@ -580,7 +589,7 @@ public class Shop {
 	}
 
 	public ArrayList<Product> getInventory() {
-		
+
 		// Ensure that inventory matches the database Inventory table.
 		shop.loadInventory();
 		return inventory;
@@ -595,5 +604,20 @@ public class Shop {
 
 		return sales;
 	}
+
+    public static void loadLoggingConfiguration() {
+        try {
+            
+            String logConfigFile = "C:\\Users\\Dynavy\\git\\SHOP-PROJECT\\src\\main\\resources\\logging.properties";
+
+            FileInputStream inStream = new FileInputStream(logConfigFile);
+
+            LogManager.getLogManager().readConfiguration(inStream);
+            System.out.println("Logging configuration loaded successfully");
+
+        } catch (IOException e) {
+            System.err.println("Error loading logging configuration: " + e.getMessage());
+        }
+    }
 
 }
