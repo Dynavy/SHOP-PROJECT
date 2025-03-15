@@ -8,7 +8,7 @@ public abstract class Person {
 
 	// Constructor for client.
 	public Person(String name) {
-		this.name = name;
+		Person.name = name;
 
 	}
 
