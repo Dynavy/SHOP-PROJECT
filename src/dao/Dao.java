@@ -10,7 +10,7 @@ public interface Dao {
 
 	void disconnect();
 
-	Employee getEmployee(int user, String pw);
+	Employee getEmployee(String user, String pw);
 
 	// New methods to manage the inventory.
 	ArrayList<Product> getInventory();
